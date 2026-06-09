@@ -95,4 +95,19 @@ class DistributorsTest extends CIUnitTestCase
         $this->assertArrayHasKey('password', $json);
         $this->assertEquals(8, strlen($json['password']));
     }
+
+    public function testCreateDistributorWithManualPassword()
+    {
+        $result = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ])->withBodyFormat('json')->post('api/distributors', [
+            'username' => 'distributor_manual',
+            'email'    => 'distributor_manual@test.com',
+            'password' => 'rahasia123',
+        ]);
+
+        $result->assertStatus(201);
+        $json = json_decode($result->getJSON(), true);
+        $this->assertEquals('rahasia123', $json['password']);
+    }
 }

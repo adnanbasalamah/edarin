@@ -34,6 +34,7 @@ class Distributors extends BaseController
         $rules = [
             'username' => 'required|min_length[3]|max_length[100]|is_unique[users.username]',
             'email'    => 'required|valid_email|is_unique[users.email]',
+            'password' => 'permit_empty|min_length[6]',
         ];
 
         if (!$this->validate($rules)) {
@@ -42,7 +43,8 @@ class Distributors extends BaseController
                 ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
         }
 
-        $plainPassword = bin2hex(random_bytes(4));
+        $inputPassword = $this->getInput('password');
+        $plainPassword = $inputPassword ?: bin2hex(random_bytes(4));
         $passwordHash = password_hash($plainPassword, PASSWORD_BCRYPT);
 
         $userModel = new UserModel();

@@ -20,8 +20,8 @@ $routes->group('api', ['filter' => 'jwt-auth'], static function ($routes) {
     $routes->group('stores', static function ($routes) {
         $routes->get('/', 'Stores::index');
         $routes->get('(:num)', 'Stores::show/$1');
-        $routes->post('/', 'Stores::create', ['filter' => 'role-check:admin']);
-        $routes->put('(:num)', 'Stores::update/$1', ['filter' => 'role-check:admin']);
+        $routes->post('/', 'Stores::create');
+        $routes->put('(:num)', 'Stores::update/$1');
         $routes->delete('(:num)', 'Stores::delete/$1', ['filter' => 'role-check:admin']);
     });
 
@@ -31,5 +31,22 @@ $routes->group('api', ['filter' => 'jwt-auth'], static function ($routes) {
         $routes->post('/', 'Distributors::create', ['filter' => 'role-check:admin']);
         $routes->put('(:num)', 'Distributors::update/$1', ['filter' => 'role-check:admin']);
         $routes->delete('(:num)', 'Distributors::delete/$1', ['filter' => 'role-check:admin']);
+    });
+
+    $routes->group('sales', static function ($routes) {
+        $routes->get('/', 'Sales::index');
+        $routes->get('summary', 'Sales::summary');
+        $routes->post('/', 'Sales::create');
+    });
+
+    $routes->group('reports', static function ($routes) {
+        $routes->get('/', 'Reports::index');
+        $routes->get('download', 'Reports::download');
+        $routes->get('dashboard', 'Reports::dashboard');
+        $routes->get('stats', 'Reports::stats');
+    });
+
+    $routes->group('audit', static function ($routes) {
+        $routes->get('/', 'Audit::index', ['filter' => 'role-check:admin']);
     });
 });

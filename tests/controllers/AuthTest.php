@@ -67,4 +67,25 @@ class AuthTest extends CIUnitTestCase
         $result = $this->post('api/auth/refresh');
         $result->assertStatus(401);
     }
+
+    public function testRefreshSucceedsWithValidToken()
+    {
+        $loginResult = $this->withBodyFormat('json')
+            ->post('api/auth/login', [
+                'username' => 'admin',
+                'password' => 'admin123',
+            ]);
+
+        $json = json_decode($loginResult->getJSON(), true);
+        $token = $json['token'] ?? '';
+
+        $result = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->post('api/auth/refresh');
+
+        $result->assertStatus(200);
+        $json = json_decode($result->getJSON(), true);
+        $this->assertArrayHasKey('token', $json);
+        $this->assertNotEmpty($json['token']);
+    }
 }

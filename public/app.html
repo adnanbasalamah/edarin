@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-[#f9f9fc]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Edarin — Sistem Distribusi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00468c',
+                        'primary-dark': '#003063',
+                        'primary-light': '#8cb6ff',
+                        success: '#46b450',
+                        'success-dark': '#006e1f',
+                        teal: '#009688',
+                        danger: '#ba1a1a',
+                        surface: { DEFAULT: '#f9f9fc', dim: '#dadadc', bright: '#f9f9fc' },
+                        'on-surface': '#1a1c1e',
+                        'on-surface-variant': '#424751',
+                        outline: '#737782',
+                        'outline-variant': '#c2c6d2',
+                    },
+                    fontFamily: {
+                        heading: ['IBM Plex Sans', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    borderRadius: {
+                        DEFAULT: '0.25rem',
+                        lg: '0.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="h-full font-body text-[#1a1c1e] antialiased" x-data="app()" x-init="init()">
+    <div x-show="loading" class="fixed inset-0 z-50 flex items-center justify-center bg-white/80">
+        <div class="flex flex-col items-center gap-3">
+            <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+            <p class="text-sm text-[#424751]">Memuat...</p>
+        </div>
+    </div>
+
+    <div x-cloak x-show="!loading" class="flex h-full flex-col lg:flex-row">
+        <aside x-show="isLoggedIn" class="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-[#e2e2e5] lg:bg-white">
+            <div class="flex h-16 items-center gap-2 border-b border-[#e2e2e5] px-6">
+                                <img src="edarin-logo.png" alt="Edarin" class="h-8 w-auto">
+                            </div>
+            <nav class="flex-1 space-y-1 p-4">
+                <template x-for="item in navItems" :key="item.id">
+                    <a :href="'#' + item.path"
+                       @click.prevent="navigate(item.path)"
+                       class="flex items-center gap-3 rounded px-3 py-2.5 text-sm font-medium transition-colors"
+                       :class="currentRoute === item.path ? 'bg-[#d6e3ff] text-primary' : 'text-[#424751] hover:bg-[#f3f3f6]'">
+                        <span x-text="item.icon" class="text-lg"></span>
+                        <span x-text="item.label"></span>
+                    </a>
+                </template>
+            </nav>
+            <div class="border-t border-[#e2e2e5] p-4">
+                <button @click="logout" class="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-[#424751] hover:bg-[#f3f3f6]">
+                    <span>🚪</span>
+                    <span>Keluar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="flex flex-1 flex-col overflow-hidden">
+            <header x-show="isLoggedIn" class="flex h-16 items-center justify-between border-b border-[#e2e2e5] bg-white px-4 lg:px-6">
+                <div class="flex items-center gap-3">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="-ml-2 flex h-11 w-11 items-center justify-center rounded lg:hidden">
+                        <svg class="h-6 w-6 text-[#424751]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-bold font-heading text-[#1a1c1e]" x-text="pageTitle"></h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div x-show="!isOnline" class="flex items-center gap-1.5 rounded bg-[#fff3cd] px-2.5 py-1 text-xs font-medium text-[#856404]">
+                        <span class="h-2 w-2 rounded-full bg-[#856404]"></span>
+                        Offline
+                    </div>
+                    <div x-show="isOnline && pendingCount > 0" class="flex items-center gap-1.5 rounded bg-[#e3f2fd] px-2.5 py-1 text-xs font-medium text-[#00468c]">
+                        <span x-show="isSyncing" class="h-3 w-3 animate-spin rounded-full border-2 border-[#00468c] border-t-transparent"></span>
+                        <span x-show="!isSyncing" class="h-2 w-2 rounded-full bg-[#00468c]"></span>
+                        <span x-text="isSyncing ? 'Menyinkronkan...' : pendingCount + ' antrean'"></span>
+                    </div>
+                    <div x-show="lastSyncResult" class="flex items-center gap-1.5 rounded bg-[#e8f5e9] px-2.5 py-1 text-xs font-medium text-[#006e1f]">
+                        <span x-text="lastSyncResult"></span>
+                    </div>
+                    <span class="hidden text-sm text-[#424751] lg:inline" x-text="'@' + user?.username"></span>
+                </div>
+            </header>
+
+            <div x-show="isLoggedIn && mobileMenuOpen" class="fixed inset-0 z-40 flex lg:hidden" @click.self="mobileMenuOpen = false">
+                <div class="w-64 bg-white shadow-lg">
+                    <div class="flex h-16 items-center gap-2 border-b border-[#e2e2e5] px-6">
+                        <img src="edarin-logo.png" alt="Edarin" class="h-8 w-auto">
+                    </div>
+                    <nav class="space-y-1 p-4">
+                        <template x-for="item in navItems" :key="item.id">
+                            <a :href="'#' + item.path"
+                               @click.prevent="navigate(item.path); mobileMenuOpen = false"
+                               class="flex items-center gap-3 rounded px-3 py-2.5 text-sm font-medium transition-colors"
+                               :class="currentRoute === item.path ? 'bg-[#d6e3ff] text-primary' : 'text-[#424751] hover:bg-[#f3f3f6]'">
+                                <span x-text="item.icon" class="text-lg"></span>
+                                <span x-text="item.label"></span>
+                            </a>
+                        </template>
+                    </nav>
+                    <div class="border-t border-[#e2e2e5] p-4">
+                        <button @click="logout" class="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-[#424751] hover:bg-[#f3f3f6]">
+                            <span>🚪</span>
+                            <span>Keluar</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex-1 bg-black/30"></div>
+            </div>
+
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6">
+                <div x-show="currentRoute === 'login'">
+                    <div class="mx-auto mt-8 max-w-sm lg:mt-24">
+                        <div class="rounded-lg bg-white p-6 shadow-sm border border-[#e2e2e5]">
+                            <div class="mb-6 text-center">
+                                <img src="edarin-logo.png" alt="Edarin" class="mx-auto h-16 w-auto mb-3">
+                            </div>
+                            <form @submit.prevent="doLogin" class="space-y-4">
+                                <div>
+                                    <label for="username" class="mb-1 block text-sm font-medium text-[#424751]">Username</label>
+                                    <input type="text" id="username" x-model="form.username" required
+                                           class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                           placeholder="Masukkan username">
+                                </div>
+                                <div>
+                                    <label for="password" class="mb-1 block text-sm font-medium text-[#424751]">Kata Sandi</label>
+                                    <input type="password" id="password" x-model="form.password" required
+                                           class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                           placeholder="Masukkan kata sandi">
+                                </div>
+                                <div x-show="loginError" class="rounded bg-[#ffdad6] px-3 py-2 text-sm text-[#93000a]" x-text="loginError"></div>
+                                <button type="submit" :disabled="loginLoading"
+                                        class="flex min-h-[44px] w-full items-center justify-center rounded bg-primary font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50">
+                                    <span x-show="!loginLoading">Masuk</span>
+                                    <span x-show="loginLoading" class="flex items-center gap-2">
+                                        <span class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                                        Memproses...
+                                    </span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="isLoggedIn && currentRoute === 'dashboard'">
+                    <div x-show="statsLoading" class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <template x-for="i in 4" :key="i">
+                            <div class="animate-pulse rounded-xl bg-white p-6 border border-[#e2e2e5]">
+                                <div class="h-8 w-8 rounded-xl bg-[#e2e2e5] mb-4"></div>
+                                <div class="h-3 w-24 rounded bg-[#e2e2e5]"></div>
+                                <div class="mt-3 h-8 w-20 rounded bg-[#e2e2e5]"></div>
+                            </div>
+                        </template>
+                    </div>
+                    <div x-show="!statsLoading" class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <div class="bg-white border border-[#e2e2e5] p-6 rounded-xl shadow-sm transition-transform duration-300 hover:-translate-y-1">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="p-2 bg-[#d6e3ff] rounded-xl">
+                                    <span class="text-lg">💰</span>
+                                </div>
+                                <span x-show="stats.returnBadge" class="text-xs font-medium flex items-center bg-[#e8f5e9] text-[#006e1f] px-2 py-1 rounded-lg" x-text="stats.returnBadge"></span>
+                            </div>
+                            <p class="text-xs font-medium text-[#424751] uppercase tracking-wider font-mono">Total Sales (IDR)</p>
+                            <h3 class="mt-1 text-2xl font-bold font-heading text-[#1a1c1e]" x-text="'Rp ' + Number(stats.totalSalesIdr).toLocaleString('id-ID')"></h3>
+                        </div>
+                        <div class="bg-white border border-[#e2e2e5] p-6 rounded-xl shadow-sm transition-transform duration-300 hover:-translate-y-1">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="p-2 bg-[#d6e3ff] rounded-xl">
+                                    <span class="text-lg">👥</span>
+                                </div>
+                                <span class="text-xs font-medium text-[#424751] flex items-center bg-[#f3f3f6] px-2 py-1 rounded-lg">Aktif</span>
+                            </div>
+                            <p class="text-xs font-medium text-[#424751] uppercase tracking-wider font-mono">Total Sales Person</p>
+                            <h3 class="mt-1 text-2xl font-bold font-heading text-[#1a1c1e]" x-text="stats.distributors"></h3>
+                        </div>
+                        <div class="bg-white border border-[#e2e2e5] p-6 rounded-xl shadow-sm transition-transform duration-300 hover:-translate-y-1">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="p-2 bg-[#d6e3ff] rounded-xl">
+                                    <span class="text-lg">🏪</span>
+                                </div>
+                            </div>
+                            <p class="text-xs font-medium text-[#424751] uppercase tracking-wider font-mono">Total Store</p>
+                            <h3 class="mt-1 text-2xl font-bold font-heading text-[#1a1c1e]" x-text="stats.stores"></h3>
+                        </div>
+                        <div class="bg-white border border-[#e2e2e5] p-6 rounded-xl shadow-sm transition-transform duration-300 hover:-translate-y-1">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="p-2 bg-[#ffdad6] rounded-xl">
+                                    <span class="text-lg">↩️</span>
+                                </div>
+                                <span x-show="stats.returnRate > 5" class="text-xs font-medium flex items-center bg-[#ffdad6] text-[#93000a] px-2 py-1 rounded-lg" x-text="stats.returnRate + '%'"></span>
+                                <span x-show="stats.returnRate <= 5 && stats.returnRate >= 0" class="text-xs font-medium flex items-center bg-[#e8f5e9] text-[#006e1f] px-2 py-1 rounded-lg" x-text="stats.returnRate + '%'"></span>
+                            </div>
+                            <p class="text-xs font-medium text-[#424751] uppercase tracking-wider font-mono">Return Rate</p>
+                            <h3 class="mt-1 text-2xl font-bold font-heading text-[#1a1c1e]" x-text="stats.returnRate + '%'"></h3>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <div class="lg:col-span-8 space-y-6">
+                            <div class="rounded-xl bg-white border border-[#e2e2e5] overflow-hidden shadow-sm">
+                                <div class="px-6 py-4 border-b border-[#e2e2e5] flex justify-between items-center">
+                                    <h4 class="text-lg font-bold font-heading">Produk Terlaris</h4>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead class="bg-[#f3f3f6] text-xs font-medium text-[#424751] uppercase tracking-wider font-mono">
+                                            <tr>
+                                                <th class="px-6 py-3 text-left">Nama Product</th>
+                                                <th class="px-6 py-3 text-right">Terjual</th>
+                                                <th class="px-6 py-3 text-right">Total Revenue</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-[#e2e2e5]">
+                                            <template x-for="(tp, i) in topProducts" :key="i">
+                                                <tr class="hover:bg-[#f9f9fc] transition-colors">
+                                                    <td class="px-6 py-4"><p class="font-medium" x-text="tp.name"></p><p class="text-xs text-[#424751]" x-text="tp.total_qty + ' × ' + (tp.unit || 'pcs')"></p></td>
+                                                    <td class="px-6 py-4 text-right font-mono text-sm" x-text="Number(tp.total_qty).toLocaleString('id-ID')"></td>
+                                                    <td class="px-6 py-4 text-right font-mono text-sm text-primary" x-text="'Rp ' + Number(tp.total_revenue).toLocaleString('id-ID')"></td>
+                                                </tr>
+                                            </template>
+                                            <tr x-show="topProducts.length === 0">
+                                                <td colspan="3" class="px-6 py-8 text-center text-sm text-[#424751]">Belum ada data penjualan.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="rounded-xl bg-white border border-[#e2e2e5] p-6 shadow-sm">
+                                <h4 class="text-lg font-bold font-heading mb-4">Monthly Trend</h4>
+                                <div class="h-40 flex items-end gap-2 px-2">
+                                    <template x-for="(m, i) in monthlyTrend" :key="i">
+                                        <div class="flex-1 flex flex-col items-center gap-1">
+                                            <span class="text-[10px] text-[#424751] font-mono" x-text="'Rp ' + (Math.round(m.total / 1000000)) + 'M'"></span>
+                                            <div class="w-full bg-primary rounded-t" :style="'height:' + Math.max(4, (m.total / maxMonthlyTotal) * 100) + '%'"></div>
+                                            <span class="text-[10px] text-[#424751]" x-text="m.month"></span>
+                                        </div>
+                                    </template>
+                                    <template x-if="monthlyTrend.length === 0">
+                                        <div class="w-full text-center text-sm text-[#424751] py-8">Belum ada data.</div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-4 space-y-6">
+                            <div class="rounded-xl bg-white border border-[#e2e2e5] overflow-hidden shadow-sm">
+                                <div class="px-6 py-4 border-b border-[#e2e2e5]">
+                                    <h4 class="text-lg font-bold font-heading">Toko Penjualan Tertinggi</h4>
+                                </div>
+                                <div class="p-4 space-y-3">
+                                    <template x-for="(ts, i) in topStores" :key="i">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-[#e8f5e9] text-[#006e1f] flex items-center justify-center font-bold text-xs font-mono" x-text="i + 1"></div>
+                                            <div class="flex-1">
+                                                <p class="text-sm font-medium" x-text="ts.name"></p>
+                                                <p class="text-xs text-[#424751]" x-text="'Rp ' + Number(ts.total_sales).toLocaleString('id-ID')"></p>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template x-if="topStores.length === 0">
+                                        <p class="text-sm text-[#424751] text-center py-4">Belum ada data.</p>
+                                    </template>
+                                </div>
+                            </div>
+                            <div class="rounded-xl bg-white border border-[#e2e2e5] overflow-hidden shadow-sm border-t-4 border-t-danger" x-show="returnStores.length > 0">
+                                <div class="px-6 py-4 border-b border-[#e2e2e5] bg-[#ffdad6]/20">
+                                    <h4 class="text-lg font-bold font-heading text-danger flex items-center gap-2">⚠️ High Return Store</h4>
+                                </div>
+                                <div class="p-4 space-y-3">
+                                    <template x-for="rs in returnStores" :key="rs.name">
+                                        <div class="p-3 bg-[#ffdad6]/20 border border-danger/20 rounded-lg">
+                                            <div class="flex justify-between items-start mb-1">
+                                                <p class="text-sm font-medium" x-text="rs.name"></p>
+                                                <span class="text-danger font-bold text-xs font-mono" x-text="(rs.total_return / rs.total_sales * 100).toFixed(1) + '%'"></span>
+                                            </div>
+                                            <p class="text-xs text-[#424751]" x-text="'Retur: Rp ' + Number(rs.total_return).toLocaleString('id-ID')"></p>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="isLoggedIn && currentRoute === 'products'">
+                    <div class="mb-4 flex items-center justify-between">
+                        <h2 class="text-lg font-bold font-heading text-[#1a1c1e]">Product</h2>
+                        <button @click="showProductForm = true; productForm = {}" class="flex min-h-[44px] items-center gap-1.5 rounded bg-primary px-4 text-sm font-medium text-white hover:bg-primary-dark">
+                            <span>+</span>
+                            <span>Tambah Product</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto rounded-lg border border-[#e2e2e5] bg-white">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-[#f3f3f6] text-left text-xs font-medium text-[#424751] uppercase tracking-wider">
+                                    <th class="px-4 py-3 font-mono">Nama</th>
+                                    <th class="px-4 py-3 font-mono">Harga</th>
+                                    <th class="px-4 py-3 font-mono">Satuan</th>
+                                    <th class="px-4 py-3 font-mono">Status</th>
+                                    <th class="px-4 py-3 font-mono">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="p in products" :key="p.id">
+                                    <tr class="border-t border-[#e2e2e5]">
+                                        <td class="px-4 py-3 font-medium" x-text="p.name"></td>
+                                        <td class="px-4 py-3" x-text="'Rp ' + Number(p.price).toLocaleString('id-ID')"></td>
+                                        <td class="px-4 py-3" x-text="p.unit"></td>
+                                        <td class="px-4 py-3">
+                                            <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                                                  :class="p.status === 'active' ? 'bg-[#e8f5e9] text-[#006e1f]' : 'bg-[#fce4ec] text-[#93000a]'"
+                                                  x-text="p.status === 'active' ? 'Aktif' : 'Nonaktif'"></span>
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-3">
+                                            <button @click="editProduct(p)" class="min-h-[44px] rounded px-3 text-sm text-primary hover:bg-[#d6e3ff]">Edit</button>
+                                            <button @click="deleteProduct(p.id)" class="min-h-[44px] rounded px-3 text-sm text-danger hover:bg-[#ffdad6]">Hapus</button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr x-show="products.length === 0">
+                                    <td colspan="5" class="px-4 py-8 text-center text-sm text-[#424751]">Belum ada product.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div x-show="showProductForm" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30" @click.self="showProductForm = false">
+                        <div class="w-full max-w-md rounded-lg bg-white p-6 mx-4">
+                            <h3 class="mb-4 text-lg font-bold font-heading" x-text="productForm.id ? 'Edit Product' : 'Tambah Product'"></h3>
+                            <form @submit.prevent="productForm.id ? updateProduct() : createProduct()" class="space-y-4">
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Nama Product</label>
+                                    <input type="text" x-model="productForm.name" required class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Harga</label>
+                                    <input type="number" x-model="productForm.price" required min="0" class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Satuan</label>
+                                    <input type="text" x-model="productForm.unit" required class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div class="flex gap-3">
+                                    <button type="button" @click="showProductForm = false" class="flex-1 min-h-[44px] rounded border border-[#c2c6d2] text-sm font-medium text-[#424751] hover:bg-[#f3f3f6]">Batal</button>
+                                    <button type="submit" class="flex-1 min-h-[44px] rounded bg-primary text-sm font-medium text-white hover:bg-primary-dark">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="isLoggedIn && currentRoute === 'stores'">
+                    <div class="mb-4 flex items-center justify-between">
+                        <h2 class="text-lg font-bold font-heading text-[#1a1c1e]">Store</h2>
+                        <div class="flex items-center gap-2">
+                            <input type="text" x-model="storeSearch" placeholder="Cari store..."
+                                   class="min-h-[44px] w-48 rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            <button @click="showStoreForm = true; storeForm = {}" class="flex min-h-[44px] items-center gap-1.5 rounded bg-primary px-4 text-sm font-medium text-white hover:bg-primary-dark">
+                                <span>+</span>
+                                <span>Tambah Store</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto rounded-lg border border-[#e2e2e5] bg-white">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-[#f3f3f6] text-left text-xs font-medium text-[#424751] uppercase tracking-wider">
+                                    <th class="whitespace-nowrap px-4 py-3 font-mono">Nama</th>
+                                    <th class="whitespace-nowrap px-4 py-3 font-mono">Pemilik</th>
+                                    <th class="hidden whitespace-nowrap px-4 py-3 font-mono md:table-cell">Alamat</th>
+                                    <th class="whitespace-nowrap px-4 py-3 font-mono">Telepon</th>
+                                    <th class="hidden whitespace-nowrap px-4 py-3 font-mono lg:table-cell">Koordinat</th>
+                                    <th class="whitespace-nowrap px-4 py-3 font-mono">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="s in filteredStores" :key="s.id">
+                                    <tr class="border-t border-[#e2e2e5]">
+                                        <td class="px-4 py-3 font-medium" x-text="s.name"></td>
+                                        <td class="px-4 py-3" x-text="s.owner"></td>
+                                        <td class="hidden px-4 py-3 md:table-cell" x-text="s.address"></td>
+                                        <td class="px-4 py-3" x-text="s.phone"></td>
+                                        <td class="hidden px-4 py-3 font-mono text-xs lg:table-cell">
+                                            <span x-show="s.latitude" x-text="s.latitude + ', ' + s.longitude"></span>
+                                            <span x-show="!s.latitude" class="text-[#737782]">—</span>
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-3">
+                                            <button @click="editStore(s)" class="min-h-[44px] rounded px-3 text-sm text-primary hover:bg-[#d6e3ff]">Edit</button>
+                                            <button @click="deleteStore(s.id)" class="min-h-[44px] rounded px-3 text-sm text-danger hover:bg-[#ffdad6]">Hapus</button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr x-show="stores.length === 0">
+                                    <td colspan="6" class="px-4 py-8 text-center text-sm text-[#424751]">Belum ada store.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div x-show="showStoreForm" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30" @click.self="showStoreForm = false">
+                        <div class="w-full max-w-md rounded-lg bg-white p-6 mx-4">
+                            <h3 class="mb-4 text-lg font-bold font-heading" x-text="storeForm.id ? 'Edit Store' : 'Tambah Store'"></h3>
+                            <form @submit.prevent="storeForm.id ? updateStore() : createStore()" class="space-y-4">
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Nama Store</label>
+                                    <input type="text" x-model="storeForm.name" required class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Pemilik</label>
+                                    <input type="text" x-model="storeForm.owner" required class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Alamat</label>
+                                    <textarea x-model="storeForm.address" required class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"></textarea>
+                                </div>
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Telepon</label>
+                                    <input type="text" x-model="storeForm.phone" required class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Lokasi (Koordinat)</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" x-model="storeForm.latitude" placeholder="Latitude" class="min-h-[44px] w-1/2 rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                        <input type="text" x-model="storeForm.longitude" placeholder="Longitude" class="min-h-[44px] w-1/2 rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                    </div>
+                                    <button type="button" @click="getLocation" class="mt-2 flex min-h-[44px] w-full items-center justify-center gap-1.5 rounded border border-primary text-sm font-medium text-primary hover:bg-[#d6e3ff]">
+                                        <span>📍</span>
+                                        <span>Ambil Lokasi Saat Ini</span>
+                                    </button>
+                                    <p x-show="locationError" class="mt-1 text-xs text-danger" x-text="locationError"></p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button type="button" @click="showStoreForm = false" class="flex-1 min-h-[44px] rounded border border-[#c2c6d2] text-sm font-medium text-[#424751] hover:bg-[#f3f3f6]">Batal</button>
+                                    <button type="submit" class="flex-1 min-h-[44px] rounded bg-primary text-sm font-medium text-white hover:bg-primary-dark">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="isLoggedIn && currentRoute === 'distributors'">
+                    <div class="mb-4 flex items-center justify-between">
+                        <h2 class="text-lg font-bold font-heading text-[#1a1c1e]">Sales Person</h2>
+                        <button @click="showDistributorForm = true; distributorForm = {}" class="flex min-h-[44px] items-center gap-1.5 rounded bg-primary px-4 text-sm font-medium text-white hover:bg-primary-dark">
+                            <span>+</span>
+                            <span>Tambah Sales Person</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto rounded-lg border border-[#e2e2e5] bg-white">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-[#f3f3f6] text-left text-xs font-medium text-[#424751] uppercase tracking-wider">
+                                    <th class="px-4 py-3 font-mono">Username</th>
+                                    <th class="px-4 py-3 font-mono">Email</th>
+                                    <th class="px-4 py-3 font-mono">Status</th>
+                                    <th class="px-4 py-3 font-mono">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="d in distributors" :key="d.id">
+                                    <tr class="border-t border-[#e2e2e5]">
+                                        <td class="px-4 py-3 font-medium" x-text="d.username"></td>
+                                        <td class="px-4 py-3" x-text="d.email"></td>
+                                        <td class="px-4 py-3">
+                                            <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                                                  :class="d.status === 'active' ? 'bg-[#e8f5e9] text-[#006e1f]' : 'bg-[#fce4ec] text-[#93000a]'"
+                                                  x-text="d.status === 'active' ? 'Aktif' : 'Nonaktif'"></span>
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-3">
+                                            <button @click="editDistributor(d)" class="min-h-[44px] rounded px-3 text-sm text-primary hover:bg-[#d6e3ff]">Edit</button>
+                                            <button @click="deactivateDistributor(d.id)" x-show="d.status === 'active'" class="min-h-[44px] rounded px-3 text-sm text-danger hover:bg-[#ffdad6]">Nonaktifkan</button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr x-show="distributors.length === 0">
+                                    <td colspan="4" class="px-4 py-8 text-center text-sm text-[#424751]">Belum ada sales person.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div x-show="showDistributorForm" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30" @click.self="showDistributorForm = false">
+                        <div class="w-full max-w-md rounded-lg bg-white p-6 mx-4">
+                            <h3 class="mb-4 text-lg font-bold font-heading" x-text="distributorForm.id ? 'Edit Sales Person' : 'Tambah Sales Person'"></h3>
+                            <form @submit.prevent="distributorForm.id ? updateDistributor() : createDistributor()" class="space-y-4">
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Username</label>
+                                    <input type="text" x-model="distributorForm.username" :required="!distributorForm.id" class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Email</label>
+                                    <input type="email" x-model="distributorForm.email" :required="!distributorForm.id" class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div x-show="!distributorForm.id">
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Password (kosongkan untuk auto-generate)</label>
+                                    <input type="password" x-model="distributorForm.password" placeholder="Kosongkan untuk auto-generate" class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div x-show="createdPassword" class="rounded bg-[#e8f5e9] px-3 py-2 text-sm text-[#006e1f] text-center font-medium">
+                                    Password: <strong class="font-mono text-base" x-text="createdPassword"></strong>
+                                    <br><span class="text-xs">Catat password ini dan berikan ke sales person.</span>
+                                </div>
+                                <div x-show="distributorForm.id">
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Password Baru (kosongkan jika tidak diubah)</label>
+                                    <input type="password" x-model="distributorForm.password" placeholder="Biarkan kosong jika tidak diubah" class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                </div>
+                                <div class="flex gap-3">
+                                    <button type="button" @click="showDistributorForm = false" class="flex-1 min-h-[44px] rounded border border-[#c2c6d2] text-sm font-medium text-[#424751] hover:bg-[#f3f3f6]">Batal</button>
+                                    <button type="submit" class="flex-1 min-h-[44px] rounded bg-primary text-sm font-medium text-white hover:bg-primary-dark">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="isLoggedIn && currentRoute === 'reports'">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold font-heading text-primary mb-1">Laporan Penjualan</h2>
+                        <p class="text-sm text-[#424751]">Ringkasan operasional dan distribusi real-time.</p>
+                    </div>
+
+                    <div class="flex gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar">
+                        <button @click="reportPeriod='today'; loadReports()" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                                :class="reportPeriod === 'today' ? 'bg-primary text-white' : 'bg-[#e5eeff] text-[#424751]'">Hari Ini</button>
+                        <button @click="reportPeriod='week'; loadReports()" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                                :class="reportPeriod === 'week' ? 'bg-primary text-white' : 'bg-[#e5eeff] text-[#424751]'">Minggu Ini</button>
+                        <button @click="reportPeriod='month'; loadReports()" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                                :class="reportPeriod === 'month' ? 'bg-primary text-white' : 'bg-[#e5eeff] text-[#424751]'">Bulan Ini</button>
+                    </div>
+
+                    <div x-show="reportLoading" class="grid grid-cols-2 gap-2 mb-6">
+                        <div class="col-span-2 animate-pulse rounded-xl bg-white border border-[#e2e2e5] p-4 h-24"></div>
+                        <div class="animate-pulse rounded-xl bg-white border border-[#e2e2e5] p-4 h-24"></div>
+                        <div class="animate-pulse rounded-xl bg-white border border-[#e2e2e5] p-4 h-24"></div>
+                    </div>
+
+                    <div x-show="!reportLoading" class="grid grid-cols-2 gap-2 mb-6">
+                        <div class="col-span-2 rounded-xl bg-white border border-[#e2e2e5] p-4 flex flex-col justify-between">
+                            <span class="text-xs font-medium text-[#424751] font-mono uppercase tracking-wider">Total Pendapatan</span>
+                            <p class="text-xl font-bold font-heading text-primary mt-1" x-text="'Rp ' + Number(reportStats.total_revenue).toLocaleString('id-ID')"></p>
+                            <div class="mt-2 flex items-center gap-1 text-xs" :class="reportStats.percent_change >= 0 ? 'text-[#006e1f]' : 'text-[#ba1a1a]'">
+                                <span x-text="reportStats.percent_change >= 0 ? '▲' : '▼'"></span>
+                                <span x-text="Math.abs(reportStats.percent_change) + '% vs Kemarin'"></span>
+                            </div>
+                        </div>
+                        <div class="rounded-xl bg-white border border-[#e2e2e5] p-4">
+                            <span class="text-xs font-medium text-[#424751] font-mono uppercase tracking-wider">Transaksi</span>
+                            <p class="text-xl font-bold font-heading mt-1" x-text="reportStats.count"></p>
+                            <div class="mt-2 h-1 w-full bg-[#e2e2e5] rounded-full overflow-hidden">
+                                <div class="bg-primary h-full rounded-full" :style="'width:' + Math.min(100, (reportStats.count / 200) * 100) + '%'"></div>
+                            </div>
+                        </div>
+                        <div class="rounded-xl bg-white border border-[#e2e2e5] p-4">
+                            <span class="text-xs font-medium text-[#424751] font-mono uppercase tracking-wider">Rata-Rata</span>
+                            <p class="text-xl font-bold font-heading mt-1" x-text="'Rp ' + Number(reportStats.avg_per_tx).toLocaleString('id-ID')"></p>
+                            <div class="mt-2 text-xs text-[#424751]">Per Order</div>
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl bg-white border border-[#e2e2e5] p-4 mb-6">
+                        <h3 class="text-lg font-bold font-heading mb-4">Statistik Penjualan</h3>
+                        <div class="h-40 flex items-end justify-between gap-1 px-1" x-show="chartData.length > 0">
+                            <template x-for="c in chartData" :key="c.date">
+                                <div class="flex flex-col items-center gap-1 flex-1">
+                                    <span class="text-[10px] font-mono text-[#424751]" x-show="c.total > 0" x-text="'Rp ' + (Math.round(c.total / 1000)) + 'k'"></span>
+                                    <div class="w-full bg-[#d6e3ff] rounded-t-sm relative" :style="'height:' + Math.max(2, (c.total / maxChartTotal) * 100) + '%'">
+                                        <div class="absolute bottom-0 left-0 w-full bg-primary rounded-t-sm" :style="'height:' + Math.max(2, (c.total / maxChartTotal) * 100) + '%'"></div>
+                                    </div>
+                                    <span class="text-[10px] text-[#424751]" x-text="c.day"></span>
+                                </div>
+                            </template>
+                        </div>
+                        <div x-show="chartData.length === 0" class="h-40 flex items-center justify-center text-sm text-[#424751]">Belum ada data.</div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold font-heading">Riwayat Transaksi</h3>
+                            <div class="flex gap-2">
+                                <button @click="downloadReport" class="flex items-center gap-1 rounded-lg border border-primary/10 bg-[#f3f3f6] px-3 py-1.5 text-xs font-medium text-primary hover:bg-[#d6e3ff]">CSV</button>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <template x-for="tx in reportTransactions" :key="tx.client_id">
+                                <div class="rounded-xl bg-white border border-[#e2e2e5] p-4 flex justify-between items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="rounded-lg p-2" :class="tx.sync_status === 'synced' ? 'bg-[#e8f5e9] text-[#006e1f]' : 'bg-[#fff3cd] text-[#856404]'">
+                                            <span class="text-sm">📋</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-[#1a1c1e] font-mono" x-text="tx.client_id.substring(0, 16) + '...'"></p>
+                                            <div class="flex items-center gap-2 text-xs text-[#424751]">
+                                                <span x-text="new Date(tx.created_at).toLocaleString('id-ID')"></span>
+                                                <span class="w-1 h-1 bg-[#c2c6d2] rounded-full"></span>
+                                                <span x-text="tx.store_name || 'Store #' + tx.store_id"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                                              :class="tx.sync_status === 'synced' ? 'bg-[#e8f5e9] text-[#006e1f]' : 'bg-[#ffdad6] text-[#93000a]'"
+                                              x-text="tx.sync_status === 'synced' ? 'Berhasil' : 'Pending'"></span>
+                                    </div>
+                                </div>
+                            </template>
+                            <div x-show="reportTransactions.length === 0" class="text-center text-sm text-[#424751] py-8">Belum ada transaksi.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="isLoggedIn && currentRoute === 'sales'">
+                    <div class="space-y-4">
+                        <div class="rounded-lg bg-white border border-[#e2e2e5]">
+                            <div class="p-4">
+                                <label class="mb-1 block text-sm font-medium text-[#424751]">Pilih Toko</label>
+                                <select x-model="saleForm.store_id" class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                    <option value="">-- Pilih Toko --</option>
+                                <template x-for="s in filteredStores" :key="s.id">
+                                        <option :value="s.id" x-text="s.name + ' — ' + s.owner"></option>
+                                    </template>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="rounded-lg bg-white border border-[#e2e2e5]">
+                            <div class="p-4 border-b border-[#e2e2e5]">
+                                <h3 class="text-sm font-bold font-heading text-[#1a1c1e]">Daftar Product</h3>
+                            </div>
+                            <div class="divide-y divide-[#e2e2e5]">
+                                <template x-for="p in products" :key="p.id">
+                                    <div class="p-4">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="text-sm font-medium" x-text="p.name"></p>
+                                                <p class="text-xs text-[#424751]" x-text="'Rp ' + Number(p.price).toLocaleString('id-ID') + ' / ' + p.unit"></p>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <div>
+                                                    <label class="block text-xs text-[#424751]">Jual</label>
+                                                    <input type="number" min="0" x-model="saleForm.items[p.id].qty" @input="saleForm.items[p.id] = saleForm.items[p.id] || { qty: 0, return_qty: 0 }; saleForm.items[p.id].qty = $event.target.value"
+                                                           class="w-20 min-h-[44px] rounded border border-[#c2c6d2] px-2 text-sm text-center focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs text-[#424751]">Retur</label>
+                                                    <input type="number" min="0" x-model="saleForm.items[p.id].return_qty" @input="saleForm.items[p.id] = saleForm.items[p.id] || { qty: 0, return_qty: 0 }; saleForm.items[p.id].return_qty = $event.target.value"
+                                                           class="w-20 min-h-[44px] rounded border border-[#c2c6d2] px-2 text-sm text-center focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template x-if="products.length === 0">
+                                    <div class="p-8 text-center text-sm text-[#424751]">Belum ada product.</div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div x-show="saleFormError" class="rounded bg-[#ffdad6] px-3 py-2 text-sm text-[#93000a]" x-text="saleFormError"></div>
+                        <div x-show="saleFormSuccess" class="rounded bg-[#e8f5e9] px-3 py-2 text-sm text-[#006e1f]" x-text="saleFormSuccess"></div>
+
+                        <button @click="submitSale" :disabled="saleLoading || !saleForm.store_id"
+                                class="flex min-h-[44px] w-full items-center justify-center gap-2 rounded bg-primary text-sm font-medium text-white hover:bg-primary-dark disabled:opacity-50">
+                            <span x-show="!saleLoading">Simpan Penjualan</span>
+                            <span x-show="saleLoading" class="flex items-center gap-2">
+                                <span class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                                Menyimpan...
+                            </span>
+                        </button>
+
+                        <div x-show="offlineSales.length > 0" class="rounded-lg bg-white border border-[#e2e2e5]">
+                            <div class="p-4 border-b border-[#e2e2e5]">
+                                <h3 class="text-sm font-bold font-heading text-[#1a1c1e]">Riwayat Offline</h3>
+                            </div>
+                            <div class="divide-y divide-[#e2e2e5]">
+                                <template x-for="s in offlineSales" :key="s.client_id">
+                                    <div class="p-4 flex items-center justify-between">
+                                        <div>
+                                            <p class="text-xs font-mono text-[#737782]" x-text="s.client_id"></p>
+                                            <p class="text-xs text-[#424751]" x-text="new Date(s.created_at).toLocaleString('id-ID')"></p>
+                                        </div>
+                                        <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                                              :class="s.status === 'synced' ? 'bg-[#e8f5e9] text-[#006e1f]' : s.status === 'failed' ? 'bg-[#ffdad6] text-[#93000a]' : 'bg-[#fff3cd] text-[#856404]'"
+                                              x-text="s.status === 'synced' ? 'Tersinkron' : s.status === 'failed' ? 'Gagal' : 'Menunggu'"></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div x-show="isLoggedIn && currentRoute === 'audit'">
+                    <h2 class="mb-4 text-lg font-bold font-heading text-[#1a1c1e]">Audit Log</h2>
+                    <div class="overflow-x-auto rounded-lg border border-[#e2e2e5] bg-white">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-[#f3f3f6] text-left text-xs font-medium text-[#424751] uppercase tracking-wider">
+                                    <th class="px-4 py-3 font-mono">Waktu</th>
+                                    <th class="px-4 py-3 font-mono">User</th>
+                                    <th class="px-4 py-3 font-mono">Aksi</th>
+                                    <th class="px-4 py-3 font-mono">Entitas</th>
+                                    <th class="px-4 py-3 font-mono">ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="log in auditLogs" :key="log.id">
+                                    <tr class="border-t border-[#e2e2e5]">
+                                        <td class="whitespace-nowrap px-4 py-3 text-xs" x-text="new Date(log.created_at).toLocaleString('id-ID')"></td>
+                                        <td class="px-4 py-3" x-text="log.username || '—'"></td>
+                                        <td class="px-4 py-3">
+                                            <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                                                  :class="log.action === 'create' ? 'bg-[#e8f5e9] text-[#006e1f]' : log.action === 'delete' || log.action === 'deactivate' ? 'bg-[#ffdad6] text-[#93000a]' : 'bg-[#e3f2fd] text-primary'"
+                                                  x-text="log.action"></span>
+                                        </td>
+                                        <td class="px-4 py-3" x-text="log.entity_type"></td>
+                                        <td class="px-4 py-3 font-mono text-xs" x-text="'#' + log.entity_id"></td>
+                                    </tr>
+                                </template>
+                                <tr x-show="auditLogs.length === 0">
+                                    <td colspan="5" class="px-4 py-8 text-center text-sm text-[#424751]">Belum ada aktivitas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+            <nav x-show="isLoggedIn" class="flex border-t border-[#e2e2e5] bg-white lg:hidden">
+                <template x-for="item in mobileNavItems" :key="item.id">
+                    <a :href="'#' + item.path"
+                       @click.prevent="navigate(item.path)"
+                       class="flex flex-1 flex-col items-center gap-0.5 py-2 text-xs font-medium transition-colors min-h-[44px] justify-center"
+                       :class="currentRoute === item.path ? 'text-primary' : 'text-[#737782]'">
+                        <span class="text-lg" x-text="item.icon"></span>
+                        <span x-text="item.label"></span>
+                    </a>
+                </template>
+            </nav>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
