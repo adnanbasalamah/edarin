@@ -1,69 +1,217 @@
-# CodeIgniter 4 Application Starter
+<p align="center">
+  <img src="public/edarin-logo.png" alt="Edarin" height="80">
+</p>
 
-## What is CodeIgniter?
+<h1 align="center">Edarin — Sistem Distribusi</h1>
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+<p align="center">
+  A modern, offline-capable distribution management system built with <strong>CodeIgniter 4</strong>, <strong>Alpine.js</strong>, and <strong>Tailwind CSS</strong>.
+</p>
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+<p align="center">
+  <img src="https://img.shields.io/badge/PHP-8.0+-777BB4?logo=php&logoColor=white" alt="PHP">
+  <img src="https://img.shields.io/badge/CodeIgniter-4.x-DD4814?logo=codeigniter&logoColor=white" alt="CI4">
+  <img src="https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?logo=alpine.js&logoColor=white" alt="Alpine">
+  <img src="https://img.shields.io/badge/Tailwind-3.x-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind">
+  <img src="https://img.shields.io/badge/MySQL-MariaDB-4479A1?logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/JWT-Auth-000000?logo=jsonwebtokens&logoColor=white" alt="JWT">
+  <img src="https://img.shields.io/badge/tests-37_passing-success" alt="Tests">
+</p>
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+---
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## ✨ Features
 
-## Installation & updates
+### 🔐 JWT Authentication
+- Login with role-based redirect (admin → dashboard, distributor → sales)
+- Auto-generated credentials for new sales persons
+- 8-hour token expiry with refresh endpoint
+- Full audit trail for all CRUD operations
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### 📱 Offline-First Sales Input
+- **IndexedDB** local storage for sales data
+- Automatic background sync when reconnecting
+- Unique `client_id` prevents duplicate entries
+- Visual sync status indicators (pending / synced / failed)
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### 📊 Rich Dashboards
 
-## Setup
+| Admin | Distributor |
+|-------|-------------|
+| Total Sales (IDR) with trends | Total Revenue with % change |
+| Active Sales Person count | Transaction count + progress bar |
+| Total Stores | Average per order |
+| Return Rate tracking | 7-day sales chart |
+| Top Products ranking | Historical transactions list |
+| High Return Store alerts | |
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+### 📋 Product, Store & Sales Person Management
+- Full CRUD with search, edit, and audit logging
+- GPS coordinate capture via Geolocation API
+- Auto-generated passwords for distributors
+- CSV report downloads
 
-## Important Change with index.php
+### 🛠️ One-Click Installer
+- Web-based installer at `/install.php`
+- System requirement checks
+- Auto-creates database, tables, and admin account
+- Self-destructs after installation
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+---
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## 🏗️ Tech Stack
 
-**Please** read the user guide for a better explanation of how CI4 works!
+| Layer | Technology |
+|-------|-----------|
+| Backend | CodeIgniter 4 (PHP 8.0+) |
+| Frontend | Alpine.js + Tailwind CSS (SPA) |
+| Database | MySQL / MariaDB |
+| Auth | JWT (HS256, firebase/php-jwt) |
+| Storage | IndexedDB (offline sales) |
+| Testing | PHPUnit 10 (37 tests) |
 
-## Repository Management
+## 📦 Installation
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+### Quick Install (Web)
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+1. Upload all files to your web server
+2. Open `http://your-domain.com/install.php`
+3. Follow the 3-step wizard:
+   - System check (PHP 8.0+, extensions, permissions)
+   - Database credentials + admin account
+   - Done — login at `/app.html`
 
-## Server Requirements
+### Manual Install (CLI)
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+```bash
+git clone https://github.com/your-org/edarin.git
+cd edarin
+composer install
+cp env .env
+# Edit .env with your database credentials
+php spark migrate
+php spark db:seed App\\Database\\Seeds\\AdminSeeder
+php spark serve
+```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+Then open `http://localhost:8080/app.html`
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+---
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+## 🧪 Tests
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+```bash
+vendor/bin/phpunit
+```
+
+```
+Tests: 37, Assertions: 78
+├── Auth (login, refresh, validation)
+├── Products CRUD
+├── Stores CRUD
+├── Distributors CRUD (auto-password, manual password)
+├── Sales (create, duplicate idempotency, summary)
+├── JWTAuth filter
+├── JWT helper
+├── Integration (full admin workflow)
+└── Audit log verification
+```
+
+---
+
+## 📖 API Reference
+
+Full documentation: [Edarin_API.md](Edarin_API.md)
+
+```
+POST   /api/auth/login          Login
+POST   /api/auth/refresh         Refresh token
+
+GET    /api/products             List products
+POST   /api/products             Create product  (admin)
+PUT    /api/products/{id}        Update product  (admin)
+DELETE /api/products/{id}        Delete product  (admin)
+
+GET    /api/stores               List stores
+POST   /api/stores               Create store
+PUT    /api/stores/{id}          Update store
+DELETE /api/stores/{id}          Delete store    (admin)
+
+GET    /api/distributors         List distributors    (admin)
+POST   /api/distributors         Create distributor   (admin)
+PUT    /api/distributors/{id}    Update distributor   (admin)
+DELETE /api/distributors/{id}    Deactivate distributor (admin)
+
+GET    /api/sales                List sales
+GET    /api/sales/summary        Today's sales summary
+POST   /api/sales                Submit sale
+
+GET    /api/reports              Report data
+GET    /api/reports/stats        Distributor stats + chart
+GET    /api/reports/download     Download CSV
+GET    /api/reports/dashboard    Admin dashboard data
+
+GET    /api/audit                Audit log    (admin)
+```
+
+---
+
+## 🗄️ Database Schema
+
+```
+users       — id, username, email, password_hash, role, status
+products    — id, name, description, price, unit, status
+stores      — id, name, owner, address, phone, latitude, longitude
+sales       — id, client_id, distributor_id, store_id, product_id,
+              quantity, return_qty, sale_date, sync_status
+audit_log   — id, user_id, action, entity_type, entity_id, details
+migrations  — CI4 migration tracking
+```
+
+---
+
+## 📁 Project Structure
+
+```
+edarin/
+├── app/
+│   ├── Config/         # Routes, filters, DB config
+│   ├── Controllers/    # Auth, Products, Stores, Distributors, Sales, Reports, Audit
+│   ├── Database/
+│   │   ├── Migrations/ # Table schemas
+│   │   └── Seeds/      # Admin seeder
+│   ├── Filters/        # JWTAuth, RoleCheck
+│   ├── Helpers/        # JWT generation/validation
+│   └── Models/         # User, Product, Store, Sale, AuditLog
+├── public/
+│   ├── app.html        # SPA entry point
+│   ├── install.php     # Web installer
+│   ├── js/app.js       # Alpine.js application
+│   ├── css/app.css     # Custom styles
+│   └── edarin-logo.png
+├── tests/
+│   ├── controllers/    # Feature tests
+│   └── unit/           # Unit tests
+├── desain/             # Design system & mockups
+├── conductor/          # Project planning & tracks
+├── Edarin_API.md       # Full API documentation
+└── README.md
+```
+
+---
+
+## 🔒 Security
+
+- Passwords hashed with **bcrypt**
+- JWT tokens signed with **HS256**, expire in 8 hours
+- All inputs validated & sanitized via CI4 validation
+- Role-based access control (admin vs distributor)
+- SQL injection prevention via CI4 Query Builder
+- Installer self-destructs after successful setup
+- `.env` excluded from version control
+
+---
+
+## 📝 License
+
+MIT © 2026 Edarin
