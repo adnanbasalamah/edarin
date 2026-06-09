@@ -4,3 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
+- [ ] **Track: Redirect Root URL to public/app.html**
+*Link: [./tracks/root_redirect_20260609/](./tracks/root_redirect_20260609/)*
+
