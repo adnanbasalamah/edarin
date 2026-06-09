@@ -1,4 +1,4 @@
-const API_BASE = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '') + '/api';
+const API_BASE = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '') + '/api.php';
 
 const DB_NAME = 'edarin_offline';
 const DB_VERSION = 1;
@@ -193,8 +193,14 @@ function app() {
             const headers = { 'Content-Type': 'application/json' };
             if (this.token) headers['Authorization'] = 'Bearer ' + this.token;
 
+            const qIndex = path.indexOf('?');
+            const route = qIndex >= 0 ? path.substring(0, qIndex) : path;
+            const qs = qIndex >= 0 ? path.substring(qIndex + 1) : '';
+            let url = API_BASE + '?path=' + route;
+            if (qs) url += '&' + qs;
+
             try {
-                const res = await fetch(API_BASE + path, { ...options, headers });
+                const res = await fetch(url, { ...options, headers });
                 const data = await res.json();
 
                 if (res.status === 401 && this.isLoggedIn) {
@@ -204,6 +210,7 @@ function app() {
 
                 return { status: res.status, data };
             } catch (err) {
+                console.error('API fetch failed:', err, 'URL:', url);
                 this.queueRequest(path, options);
                 return null;
             }
@@ -237,7 +244,12 @@ function app() {
                     const headers = { 'Content-Type': 'application/json' };
                     if (this.token) headers['Authorization'] = 'Bearer ' + this.token;
 
-                    const res = await fetch(API_BASE + item.path, { ...item.options, headers });
+                    const qi = item.path.indexOf('?');
+                    const p = qi >= 0 ? item.path.substring(0, qi) : item.path;
+                    const q = qi >= 0 ? item.path.substring(qi + 1) : '';
+                    let iurl = API_BASE + '?path=' + p;
+                    if (q) iurl += '&' + q;
+                    const res = await fetch(iurl, { ...item.options, headers });
                     if (!res.ok && res.status !== 409) {
                         remaining.push(item);
                     }
@@ -308,7 +320,7 @@ function app() {
                     const headers = { 'Content-Type': 'application/json' };
                     if (this.token) headers['Authorization'] = 'Bearer ' + this.token;
 
-                    const res = await fetch(API_BASE + '/sales', {
+                    const res = await fetch(API_BASE + '?path=/sales', {
                         method: 'POST',
                         headers,
                         body: JSON.stringify(sale),
@@ -370,7 +382,12 @@ function app() {
             if (params.length) url += '?' + params.join('&');
 
             try {
-                const res = await fetch(API_BASE + url, {
+                const qi = url.indexOf('?');
+                const purl = qi >= 0 ? url.substring(0, qi) : url;
+                const pqs = qi >= 0 ? url.substring(qi + 1) : '';
+                let durl = API_BASE + '?path=' + purl;
+                if (pqs) durl += '&' + pqs;
+                const res = await fetch(durl, {
                     headers: { 'Authorization': 'Bearer ' + this.token },
                 });
                 const blob = await res.blob();

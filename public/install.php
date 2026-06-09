@@ -124,6 +124,7 @@ if ($step === 2 && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->exec("USE `{$dbName}`");
 
             $encryptionKey = generateKey();
+            $jwtKey = generateKey();
 
             $envContent = "# Edarin Environment\n";
             $envContent .= "CI_ENVIRONMENT = production\n";
@@ -138,6 +139,7 @@ if ($step === 2 && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $envContent .= "database.default.DBDriver = MySQLi\n";
             $envContent .= "\n# Encryption\n";
             $envContent .= "encryption.key = {$encryptionKey}\n";
+            $envContent .= "jwt.key = {$jwtKey}\n";
             $envContent .= "\n# Test Database\n";
             $envContent .= "database.tests.hostname = {$dbHost}\n";
             $envContent .= "database.tests.port = {$dbPort}\n";
