@@ -14,12 +14,12 @@
     - [x] Create migration for `sales` table
     - [x] Create migration for `audit_log` table
     - [x] Create corresponding model classes with validation rules
-- [~] Task: Set up JWT authentication system
-    - [ ] Install and configure `firebase/php-jwt` library
-    - [ ] Create Auth controller with login and token refresh endpoints
-    - [ ] Implement JWT middleware/filter for protected routes
-    - [ ] Create role-based authorization helper
-    - [ ] Write unit tests for auth endpoints
+- [x] Task: Set up JWT authentication system [59c7dd3]
+    - [x] Install and configure `firebase/php-jwt` library
+    - [x] Create Auth controller with login and token refresh endpoints
+    - [x] Implement JWT middleware/filter for protected routes
+    - [x] Create role-based authorization helper
+    - [x] Write unit tests for auth endpoints
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
 ## Phase 2: Admin API — Products, Stores, and Distributors Management
