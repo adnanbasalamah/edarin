@@ -64,8 +64,9 @@ Vagrantfile
 php_errors.log
 
 #-------------------------
-# Test Files
+# Conductor
 #-------------------------
+conductor/
 /tests/coverage*
 
 # Don't save phpunit under version control.
