@@ -43,75 +43,78 @@
 
 ## Phase 3: Alpine.js SPA — Frontend Foundation & Authentication
 
-- [ ] Task: Set up frontend project structure
-    - [ ] Create HTML entry point with Alpine.js and Tailwind CSS via CDN
-    - [ ] Set up routing logic (hash-based SPA routing)
-    - [ ] Create shared layout components (navbar, sidebar, loading states)
-    - [ ] Implement responsive design: mobile-first for distributor, desktop for admin
-- [ ] Task: Build login page
-    - [ ] Create login form with username and password fields
-    - [ ] Implement JWT token storage in localStorage
-    - [ ] Add role-based redirect (admin → dashboard, distributor → sales input)
-    - [ ] Handle error states (invalid credentials, network error)
-    - [ ] Add auto-logout on token expiry
-    - [ ] Ensure all touch targets are 44x44px minimum
-- [ ] Task: Build offline detection and notification system
-    - [ ] Implement network status detection (online/offline event listeners)
-    - [ ] Create offline status indicator component
-    - [ ] Show notification: "Data akan dikirim otomatis saat koneksi tersedia"
-    - [ ] Queue failed API requests for retry when online
-    - [ ] Write tests for offline detection behavior
+- [x] Task: Set up frontend project structure
+    - [x] Create HTML entry point with Alpine.js and Tailwind CSS via CDN
+    - [x] Set up routing logic (hash-based SPA routing)
+    - [x] Create shared layout components (navbar, sidebar, loading states)
+    - [x] Implement responsive design: mobile-first for distributor, desktop for admin
+- [x] Task: Build login page
+    - [x] Create login form with username and password fields
+    - [x] Implement JWT token storage in localStorage
+    - [x] Add role-based redirect (admin → dashboard, distributor → sales input)
+    - [x] Handle error states (invalid credentials, network error)
+    - [x] Add auto-logout on token expiry
+    - [x] Ensure all touch targets are 44x44px minimum
+- [x] Task: Build offline detection and notification system
+    - [x] Implement network status detection (online/offline event listeners)
+    - [x] Create offline status indicator component
+    - [x] Show notification: "Data akan dikirim otomatis saat koneksi tersedia"
+    - [x] Queue failed API requests for retry when online
+    - [x] Write tests for offline detection behavior
 - [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
 
 ## Phase 4: Offline-Capable Sales Input for Distributors
 
-- [ ] Task: Implement IndexedDB local storage layer
-    - [ ] Create IndexedDB wrapper for sales data CRUD
-    - [ ] Store pending sales with unique client-generated IDs (UUID/timestamp)
-    - [ ] Implement data conflict prevention using client_id + timestamp
-    - [ ] Create sync status tracking (pending/synced/failed)
-- [ ] Task: Build distributor sales input page
-    - [ ] Select store from dropdown or add new store
-    - [ ] Display product list with quantity and return quantity inputs
-    - [ ] Save sales data to IndexedDB when offline
-    - [ ] Show visual sync status per entry
-    - [ ] Implement background sync on connection restore
-    - [ ] Write unit tests for offline storage and sync logic
-- [ ] Task: Build sales submission API endpoint
-    - [ ] Create Sales controller with POST endpoint accepting client_id
-    - [ ] Implement idempotency check using client_id to prevent duplicates
-    - [ ] Store sales records with distributor association
-    - [ ] Write unit tests for sales submission
+- [x] Task: Implement IndexedDB local storage layer
+    - [x] Create IndexedDB wrapper for sales data CRUD
+    - [x] Store pending sales with unique client-generated IDs (UUID/timestamp)
+    - [x] Implement data conflict prevention using client_id + timestamp
+    - [x] Create sync status tracking (pending/synced/failed)
+- [x] Task: Build distributor sales input page
+    - [x] Select store from dropdown or add new store
+    - [x] Display product list with quantity and return quantity inputs
+    - [x] Save sales data to IndexedDB when offline
+    - [x] Show visual sync status per entry
+    - [x] Implement background sync on connection restore
+    - [x] Write unit tests for offline storage and sync logic
+- [x] Task: Build sales submission API endpoint
+    - [x] Create Sales controller with POST endpoint accepting client_id
+    - [x] Implement idempotency check using client_id to prevent duplicates
+    - [x] Store sales records with distributor association
+    - [x] Write unit tests for sales submission
 - [ ] Task: Conductor - User Manual Verification 'Phase 4' (Protocol in workflow.md)
 
 ## Phase 5: Reports, Dashboards & Downloads
 
-- [ ] Task: Build admin dashboard
-    - [ ] Create overview page with summary statistics (total stores, products, distributors, today's sales)
-    - [ ] Display recent sales activity table
-    - [ ] Add date range filter
-- [ ] Task: Build distributor reports page
-    - [ ] Show personal sales history table with search and filter
-    - [ ] Implement date range filter (daily/weekly/monthly)
-    - [ ] Create download functionality (CSV format)
-    - [ ] Ensure mobile-friendly table with horizontal scroll and frozen first column
-- [ ] Task: Build distributor store management page
-    - [ ] Show list of stores with search
-    - [ ] Allow adding new store with coordinate capture
-    - [ ] Allow editing existing store data
+- [x] Task: Build admin dashboard
+    - [x] Create overview page with summary statistics (total stores, products, distributors, today's sales)
+    - [x] Display recent sales activity table
+    - [x] Add date range filter
+- [x] Task: Build distributor reports page
+    - [x] Show personal sales history table with search and filter
+    - [x] Implement date range filter (daily/weekly/monthly)
+    - [x] Create download functionality (CSV format)
+    - [x] Ensure mobile-friendly table with horizontal scroll and frozen first column
+- [x] Task: Build distributor store management page
+    - [x] Show list of stores with search
+    - [x] Allow adding new store with coordinate capture
+    - [x] Allow editing existing store data
 - [ ] Task: Conductor - User Manual Verification 'Phase 5' (Protocol in workflow.md)
 
 ## Phase 6: Integration, Testing & Deployment Preparation
 
-- [ ] Task: End-to-end integration testing
-    - [ ] Test complete admin workflow: login → manage products → manage stores → manage distributors
-    - [ ] Test complete distributor workflow: login → input sales offline → sync when online → view reports
-    - [ ] Verify offline→online sync with multiple concurrent distributor data
-    - [ ] Verify audit trail entries on all CRUD operations
-    - [ ] Test JWT expiry and refresh flow
-- [ ] Task: Polish and finalize
-    - [ ] Ensure all UI text is in Bahasa Indonesia
-    - [ ] Verify accessibility (touch targets, contrast, labels)
-    - [ ] Add loading skeletons and error states throughout
-    - [ ] Performance optimization (bundle size, API response times)
+- [x] Task: End-to-end integration testing
+    - [x] Test complete admin workflow: login → manage products → manage stores → manage distributors
+    - [x] Test complete distributor workflow: login → input sales offline → sync when online → view reports
+    - [x] Verify offline→online sync with multiple concurrent distributor data
+    - [x] Verify audit trail entries on all CRUD operations
+    - [x] Test JWT expiry and refresh flow
+- [x] Task: Polish and finalize
+    - [x] Ensure all UI text is in Bahasa Indonesia
+    - [x] Verify accessibility (touch targets, contrast, labels)
+    - [x] Add loading skeletons and error states throughout
+    - [x] Performance optimization (bundle size, API response times)
 - [ ] Task: Conductor - User Manual Verification 'Phase 6' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions [c2273af]
