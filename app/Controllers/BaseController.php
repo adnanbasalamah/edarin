@@ -27,13 +27,15 @@ abstract class BaseController extends Controller
 
     protected $helpers = ['jwt'];
 
-    protected function getInput(string $key): ?string
+    protected function getInput(string $key): mixed
     {
         $json = $this->request->getJSON(true);
         if ($json !== null && array_key_exists($key, $json)) {
-            return $json[$key];
+            $value = $json[$key];
+            return is_scalar($value) ? (string) $value : $value;
         }
-        return $this->request->getPost($key);
+        $value = $this->request->getPost($key);
+        return is_scalar($value) ? (string) $value : $value;
     }
 
     protected function getInputAll(): array
