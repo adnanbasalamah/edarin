@@ -24,21 +24,21 @@
 
 ## Phase 2: Admin API — Products, Stores, and Distributors Management
 
-- [ ] Task: Build Products CRUD API
-    - [ ] Create Products controller with index, create, update, delete endpoints
-    - [ ] Implement request validation and sanitization
-    - [ ] Add audit logging for all mutations
-    - [ ] Write unit tests for products API
-- [ ] Task: Build Stores CRUD API
-    - [ ] Create Stores controller with index, create, update, delete endpoints
-    - [ ] Implement coordinate storage support (latitude/longitude)
-    - [ ] Add audit logging for all mutations
-    - [ ] Write unit tests for stores API
-- [ ] Task: Build Distributors CRUD API (admin-only)
-    - [ ] Create Distributors controller with index, create, update, deactivate endpoints
-    - [ ] Implement auto-generated credentials for new distributors
-    - [ ] Add audit logging for all mutations
-    - [ ] Write unit tests for distributors API
+- [x] Task: Build Products CRUD API
+    - [x] Create Products controller with index, create, update, delete endpoints
+    - [x] Implement request validation and sanitization
+    - [x] Add audit logging for all mutations
+    - [x] Write unit tests for products API
+- [x] Task: Build Stores CRUD API
+    - [x] Create Stores controller with index, create, update, delete endpoints
+    - [x] Implement coordinate storage support (latitude/longitude)
+    - [x] Add audit logging for all mutations
+    - [x] Write unit tests for stores API
+- [x] Task: Build Distributors CRUD API (admin-only)
+    - [x] Create Distributors controller with index, create, update, deactivate endpoints
+    - [x] Implement auto-generated credentials for new distributors
+    - [x] Add audit logging for all mutations
+    - [x] Write unit tests for distributors API
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
 ## Phase 3: Alpine.js SPA — Frontend Foundation & Authentication

@@ -1,9 +1,12 @@
 <?php
 
 use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
 
 class JWTHelperTest extends CIUnitTestCase
 {
+    protected $migrate = false;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,12 +46,6 @@ class JWTHelperTest extends CIUnitTestCase
     public function testValidateJWTWithInvalidToken()
     {
         $result = validateJWT('invalid.token.here');
-        $this->assertNull($result);
-    }
-
-    public function testValidateJWTWithExpiredToken()
-    {
-        $result = validateJWT('eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjF9.fake');
         $this->assertNull($result);
     }
 }

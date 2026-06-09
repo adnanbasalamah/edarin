@@ -25,12 +25,22 @@ abstract class BaseController extends Controller
      * The creation of dynamic property is deprecated in PHP 8.2.
      */
 
-    // protected $session;
-
-    /**
-     * @return void
-     */
     protected $helpers = ['jwt'];
+
+    protected function getInput(string $key): ?string
+    {
+        $json = $this->request->getJSON(true);
+        if ($json !== null && array_key_exists($key, $json)) {
+            return $json[$key];
+        }
+        return $this->request->getPost($key);
+    }
+
+    protected function getInputAll(): array
+    {
+        $json = $this->request->getJSON(true);
+        return $json ?? $this->request->getPost() ?? [];
+    }
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {

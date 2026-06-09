@@ -19,8 +19,8 @@ class Auth extends BaseController
                 ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
         }
 
-        $username = $this->request->getPost('username');
-        $password = $this->request->getPost('password');
+        $username = $this->getInput('username');
+        $password = $this->getInput('password');
 
         $userModel = new UserModel();
         $user = $userModel->where('username', $username)->first();

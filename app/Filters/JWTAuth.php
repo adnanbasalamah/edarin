@@ -10,6 +10,8 @@ class JWTAuth implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
+        helper('jwt');
+
         $authHeader = $request->getHeaderLine('Authorization');
 
         if (empty($authHeader) || !str_starts_with($authHeader, 'Bearer ')) {

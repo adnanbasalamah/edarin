@@ -9,7 +9,9 @@ class AuthTest extends CIUnitTestCase
     use DatabaseTestTrait;
     use FeatureTestTrait;
 
-    protected $migrate = false;
+    protected $migrate = true;
+    protected $namespace = null;
+    protected $seed = 'Tests\Support\Database\Seeds\TestDataSeeder';
 
     protected function setUp(): void
     {

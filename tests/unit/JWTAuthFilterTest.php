@@ -1,7 +1,6 @@
 <?php
 
 use CodeIgniter\Test\CIUnitTestCase;
-use CodeIgniter\Test\FilterTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 
 class JWTAuthFilterTest extends CIUnitTestCase
