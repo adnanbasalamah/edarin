@@ -22,7 +22,7 @@
     - [x] Write unit tests for auth endpoints
 - [x] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
-## Phase 2: Admin API — Products, Stores, and Distributors Management
+## Phase 2: Admin API — Products, Stores, and Distributors Management [checkpoint: 9d79be2]
 
 - [x] Task: Build Products CRUD API
     - [x] Create Products controller with index, create, update, delete endpoints
