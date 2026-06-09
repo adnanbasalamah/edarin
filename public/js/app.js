@@ -1,4 +1,4 @@
-const API_BASE = window.location.origin + '/api';
+const API_BASE = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '') + '/api';
 
 const DB_NAME = 'edarin_offline';
 const DB_VERSION = 1;
