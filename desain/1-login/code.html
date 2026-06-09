@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Login | Edarin - Distribution Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "secondary": "#006e0d",
+                        "on-surface-variant": "#424751",
+                        "surface": "#f8f9ff",
+                        "on-tertiary-fixed": "#00201d",
+                        "outline-variant": "#c2c6d2",
+                        "surface-tint": "#255ea7",
+                        "on-surface": "#0b1c30",
+                        "tertiary": "#003c37",
+                        "tertiary-container": "#00554f",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#cbdbf5",
+                        "primary-container": "#004b93",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container": "#e5eeff",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#a8c8ff",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#4bcfc2",
+                        "on-primary-fixed": "#001b3c",
+                        "outline": "#727782",
+                        "on-primary-container": "#96bdff",
+                        "on-secondary-container": "#00750f",
+                        "secondary-container": "#90fb81",
+                        "background": "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        "primary": "#00356a",
+                        "surface-container-low": "#eff4ff",
+                        "inverse-surface": "#213145",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d6e3ff",
+                        "secondary-fixed": "#90fb81",
+                        "inverse-primary": "#a8c8ff",
+                        "on-tertiary-fixed-variant": "#00504a",
+                        "on-secondary-fixed-variant": "#005307",
+                        "surface-variant": "#d3e4fe",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-fixed": "#002201",
+                        "tertiary-fixed-dim": "#59dacd",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#78f7e9",
+                        "secondary-fixed-dim": "#74dd68",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-primary-fixed-variant": "#00468a",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background: radial-gradient(circle at top left, #e5eeff 0%, #f8f9ff 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md" x-data="{ loading: false, showPassword: false }">
+<!-- Hero Background Element for Desktop -->
+<div class="hidden lg:block fixed inset-y-0 right-0 w-1/2 overflow-hidden bg-primary overflow-hidden">
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+<div class="h-full w-full" style="background-image: radial-gradient(#a8c8ff 1px, transparent 1px); background-size: 32px 32px;"></div>
+</div>
+<div class="relative h-full flex flex-col items-center justify-center p-xl text-on-primary">
+<div class="max-w-md space-y-md">
+<h1 class="font-headline-lg text-headline-lg text-on-primary">Operational Precision.</h1>
+<p class="font-body-lg text-body-lg text-primary-fixed">Platform manajemen distribusi modern yang dirancang untuk kecepatan dan akurasi logistik tingkat tinggi.</p>
+<div class="pt-lg">
+<div class="inline-flex items-center gap-sm bg-primary-container px-md py-sm rounded-lg text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-label-md text-label-md">POWERED BY EDARIN CORE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Background Imagery for Desktop Only -->
+<div class="absolute bottom-0 right-0 w-full h-1/2 opacity-30 mix-blend-overlay">
+<img class="w-full h-full object-cover" data-alt="A high-tech distribution center at night with long exposure light trails from moving machinery and logistics drones. The atmosphere is professional and energetic, characterized by cool blue tones and sharp industrial lines. Soft ambient lighting highlights the geometric patterns of the warehouse storage systems, creating a sense of synchronized operational efficiency and kinetic energy." src="https://lh3.googleusercontent.com/aida/AP1WRLvx_W_R4QzeZ6nwiyOr0meqoBVtaj8yx-5j4z_bEHm2iXnuvxI7Mq_UT9B-WYj3CVyR6Y2IXPLQWyZeIYwct61b9V6uGqrel9WBncxZkUdWyOIiECjDh_xifDzZcVfqoUW8xpyHTlpDEuceCt7i337AvrNCog_ZS6GOgk7-3sfEi9naTi1Cg_ixWvl7NGIcP6GVGnfFwnZPb7uKX34KVvSc9W7kFg-BsdlCx628jdNQWZnAstowDkgRqc0"/>
+</div>
+</div>
+<!-- Login Container -->
+<main class="flex-grow flex items-center justify-center p-margin-mobile lg:justify-start lg:pl-[10%] relative z-10">
+<div class="w-full max-w-[400px] bg-surface-container-lowest rounded-xl border border-outline-variant p-lg shadow-sm lg:shadow-none lg:bg-transparent lg:border-none">
+<!-- Logo & Header -->
+<header class="mb-xl flex flex-col items-center lg:items-start">
+<div class="mb-md">
+<img alt="Edarin Logo" class="h-16 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkk6ES_wOixB5MiHElgEJOeBHvRwBS__8de09W5ZIxdr1006iARrLdIaoUNS40FTsswLbUSKjZiKHJFR4OXDmVowA8cLJdxLieRU_pqjspzUw51AhgOF3G1xmYgYFWrac0JNpVQxnaS5TaI85eXFenXNKxTa3COLMlGEZzbmmjjDaDfrMIi_rcOg6Zuk8T2aWRZEvqLzLxcurr9LZA2BhfOyvewcBhiULUIvnR-tDgufw5u8LAhNjbX9nCfbQoxdokd68"/>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary lg:font-headline-lg lg:text-headline-lg">Selamat Datang</h2>
+<p class="text-on-surface-variant font-body-md text-body-md mt-base">Masuk untuk mengelola distribusi Anda.</p>
+</header>
+<!-- Login Form -->
+<form @submit.prevent="loading = true; setTimeout(() =&gt; loading = false, 2000)" class="space-y-md">
+<!-- Email/Username Input -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface-variant ml-base" for="identity">Email atau Username</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+</div>
+<input class="w-full pl-xl pr-md py-sm bg-surface border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-outline/50" id="identity" name="identity" placeholder="nama@perusahaan.com" required="" type="text"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="space-y-xs">
+<div class="flex justify-between items-center px-base">
+<label class="font-label-md text-label-md text-on-surface-variant" for="password">Kata Sandi</label>
+<a class="text-primary font-label-md text-label-md hover:underline decoration-primary/30 underline-offset-4" href="#">Lupa Password?</a>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-outline group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="lock">lock</span>
+</div>
+<input :type="showPassword ? 'text' : 'password'" class="w-full pl-xl pr-xl py-sm bg-surface border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-outline/50" id="password" name="password" placeholder="••••••••" required=""/>
+<button @click="showPassword = !showPassword" class="absolute inset-y-0 right-0 pr-md flex items-center text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" x-text="showPassword ? 'visibility_off' : 'visibility'">visibility</span>
+</button>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center gap-sm px-base">
+<input class="w-4 h-4 rounded-xs border-outline-variant text-primary focus:ring-primary transition-all cursor-pointer" id="remember" type="checkbox"/>
+<label class="font-body-md text-body-md text-on-surface-variant cursor-pointer" for="remember">Ingat saya di perangkat ini</label>
+</div>
+<!-- Submit Button -->
+<div class="pt-sm">
+<button :disabled="loading" class="w-full bg-primary text-on-primary font-headline-md text-headline-md py-sm rounded-lg hover:bg-on-primary-fixed-variant active:scale-[0.98] transition-all flex justify-center items-center gap-sm disabled:opacity-70 disabled:cursor-not-allowed shadow-md shadow-primary/10" type="submit">
+<span x-show="!loading">Masuk</span>
+<span class="animate-spin material-symbols-outlined" data-icon="progress_activity" x-show="loading">progress_activity</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward" x-show="!loading">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Social/Other Login Options (Optional Utility) -->
+<div class="mt-xl">
+<div class="relative flex items-center mb-lg">
+<div class="flex-grow border-t border-outline-variant"></div>
+<span class="flex-shrink mx-md font-label-sm text-label-sm text-outline">ATAU AKSES CEPAT</span>
+<div class="flex-grow border-t border-outline-variant"></div>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<button class="flex items-center justify-center gap-sm py-sm border border-outline-variant rounded-lg font-body-md text-body-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="fingerprint">fingerprint</span>
+                        Biometrik
+                    </button>
+<button class="flex items-center justify-center gap-sm py-sm border border-outline-variant rounded-lg font-body-md text-body-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-secondary" data-icon="qr_code_scanner">qr_code_scanner</span>
+                        Scan QR
+                    </button>
+</div>
+</div>
+<!-- Footer Links -->
+<footer class="mt-xl text-center lg:text-left">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Belum punya akun? 
+                    <a class="text-primary font-bold hover:underline" href="#">Hubungi Admin IT</a>
+</p>
+</footer>
+</div>
+</main>
+<!-- Support Help FAB (Mobile Only Style) -->
+<div class="fixed bottom-margin-mobile right-margin-mobile lg:bottom-xl lg:right-xl z-20">
+<button class="h-14 w-14 rounded-full bg-secondary-container text-on-secondary-container shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+</button>
+</div>
+<!-- Small Legal Footer -->
+<footer class="p-md text-center lg:text-left lg:pl-[10%] relative z-10">
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest">
+            © 2024 Edarin Distribution Systems • Versi 2.4.0-Stable
+        </p>
+</footer>
+</body></html>

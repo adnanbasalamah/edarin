@@ -1,0 +1,435 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Logistics Management | Edarin Distribution Hub</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100..900&amp;family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet">
+<!-- Alpine.js -->
+<script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f9f9fc",
+                    "inverse-surface": "#2f3133",
+                    "primary-fixed-dim": "#a9c7ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#424751",
+                    "on-background": "#1a1c1e",
+                    "surface-bright": "#f9f9fc",
+                    "on-tertiary-fixed": "#00201c",
+                    "on-secondary-container": "#007321",
+                    "tertiary-fixed": "#85f6e5",
+                    "surface-container-high": "#e8e8ea",
+                    "surface-container-low": "#f3f3f6",
+                    "on-tertiary-container": "#53c7b7",
+                    "inverse-primary": "#a9c7ff",
+                    "surface-container-highest": "#e2e2e5",
+                    "surface-tint": "#2a5ea5",
+                    "on-surface": "#1a1c1e",
+                    "primary": "#003063",
+                    "on-error": "#ffffff",
+                    "secondary": "#006e1f",
+                    "secondary-fixed-dim": "#70de74",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e2e2e5",
+                    "on-secondary-fixed-variant": "#005315",
+                    "surface": "#f9f9fc",
+                    "on-primary-container": "#8cb6ff",
+                    "surface-dim": "#dadadc",
+                    "on-primary-fixed-variant": "#00468c",
+                    "secondary-fixed": "#8cfb8d",
+                    "outline": "#737782",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#89f88a",
+                    "outline-variant": "#c2c6d2",
+                    "primary-container": "#00468c",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#005048",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#67d9c9",
+                    "tertiary": "#003731",
+                    "surface-container": "#eeeef0",
+                    "on-tertiary-fixed-variant": "#005048",
+                    "on-primary-fixed": "#001b3d",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f0f0f3",
+                    "primary-fixed": "#d6e3ff",
+                    "on-secondary-fixed": "#002204",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "max-width": "1440px",
+                    "gutter": "24px",
+                    "margin-desktop": "32px",
+                    "margin-mobile": "16px",
+                    "base": "4px",
+                    "sidebar-width": "260px"
+            },
+            "fontFamily": {
+                    "title-md": ["IBM Plex Sans"],
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-lg-mobile": ["IBM Plex Sans"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["IBM Plex Sans"],
+                    "headline-lg": ["IBM Plex Sans"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-active { 
+            border-left: 4px solid #003063; 
+            background-color: #00468c; 
+            color: #8cb6ff; 
+            font-weight: 600; 
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex overflow-hidden" x-data="{ showForm: false }">
+<!-- SideNavBar (Authority Source: JSON) -->
+<aside class="fixed h-full w-[260px] left-0 top-0 bg-surface dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline flex flex-col h-screen py-8 px-4 z-50">
+<div class="mb-10 px-2">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-on-primary-container">Edarin</h1>
+<p class="text-on-surface-variant font-body-md text-body-md">Distribution Hub</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Navigation Items -->
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors font-body-md text-body-md rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors font-body-md text-body-md rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">inventory_2</span> Inventory
+            </a>
+<!-- Active Tab: Logistics -->
+<a class="flex items-center px-4 py-3 border-l-4 border-primary bg-primary-container text-on-primary-container font-semibold font-body-md text-body-md" href="#"><span class="material-symbols-outlined mr-3">local_shipping</span> Sales Person</a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors font-body-md text-body-md rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">storefront</span> Stores
+            </a>
+
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors font-body-md text-body-md rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">settings</span> Settings
+            </a>
+</nav>
+<div class="mt-auto space-y-1 pt-6 border-t border-outline-variant">
+
+<a class="flex items-center px-4 py-2 text-on-surface-variant hover:bg-surface-container-low transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined mr-3">help</span> Help Center
+            </a>
+<a class="flex items-center px-4 py-2 text-on-surface-variant hover:bg-surface-container-low transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined mr-3">logout</span> Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[260px] flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar (Authority Source: JSON) -->
+<header class="sticky top-0 z-40 bg-surface-bright dark:bg-surface-container-high border-b border-outline-variant dark:border-outline shadow-sm flex justify-between items-center h-16 px-8 w-full">
+<div class="flex items-center flex-1">
+
+<nav class="ml-8 flex gap-6">
+<a class="text-primary border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Reports</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">history</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLuXWKiJuitIZi_J7Um86BxstM3sf6u7PO5lhnfbXi3Y7mrR8i6vDFmTPZpyyx8WVW25T6KrC4yXSu9s3bLVgHyCytPJZs-LlYvxs30wSgTlMAHHX50nqcOAVpnmN51Dk-iFNTQRTKg_FrqI0Sdz1cIUZcAl99cDN8STZu1KnS1Wu1791ruvSzMsN0pSAJUS-sb27hgWFJBlBKd5zujMxGjgk8ZEc-E0uXMuBPtOXey_onEWLhPkLb8D80Y">
+</div>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- Page Header & Stats -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Sales Person Directory</h2>
+<p class="text-on-surface-variant font-body-md text-body-md mt-1">Manage regional distribution partners and network hubs.</p>
+</div>
+<div class="flex gap-3">
+
+<button @click="showForm = true" class="flex items-center gap-2 px-4 py-2 bg-secondary text-on-secondary rounded-lg font-semibold hover:opacity-90 transition-all"><span class="material-symbols-outlined">person_add</span> Add New Sales Person</button>
+</div>
+</div>
+<!-- Dashboard Highlights (Bento-style Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="material-symbols-outlined text-primary bg-primary-container p-2 rounded-lg">group</span>
+<span class="text-secondary font-label-sm text-label-sm">+4% vs LW</span>
+</div>
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase">TOTAL SALES PERSON</p>
+<h3 class="font-title-md text-title-md mt-1">1,248</h3>
+</div>
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="material-symbols-outlined text-secondary bg-secondary-container p-2 rounded-lg">check_circle</span>
+<span class="text-secondary font-label-sm text-label-sm">98.2%</span>
+</div>
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Active Status</p>
+<h3 class="font-title-md text-title-md mt-1">1,226</h3>
+</div>
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="material-symbols-outlined text-tertiary-container bg-tertiary-fixed p-2 rounded-lg">public</span>
+</div>
+<p class="text-on-surface-variant font-label-sm text-label-sm uppercase">Regions Covered</p>
+<h3 class="font-title-md text-title-md mt-1">24 Zones</h3>
+</div>
+
+</div>
+<!-- Distributor Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<div class="flex gap-4">
+<span class="font-title-md text-title-md text-on-surface">Sales Person</span>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-sm text-label-sm">Verified</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full font-label-sm text-label-sm">Regional</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-body-md text-body-md text-on-surface-variant">Showing 1-10 of 1,248</span>
+<div class="flex gap-1 ml-2">
+<button class="p-1 hover:bg-surface-container-low rounded"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-1 hover:bg-surface-container-low rounded"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 font-label-sm text-label-sm uppercase text-on-surface-variant">Name</th>
+<th class="px-6 py-4 font-label-sm text-label-sm uppercase text-on-surface-variant">SALES ID</th>
+<th class="px-6 py-4 font-label-sm text-label-sm uppercase text-on-surface-variant">Area/Region</th>
+<th class="px-6 py-4 font-label-sm text-label-sm uppercase text-on-surface-variant">Phone Number</th>
+<th class="px-6 py-4 font-label-sm text-label-sm uppercase text-on-surface-variant">Status</th>
+<th class="px-6 py-4 font-label-sm text-label-sm uppercase text-on-surface-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Table Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center font-bold">AL</div>
+<div>
+<p class="font-semibold text-on-surface">Alpha Logistics Co.</p>
+<p class="text-label-sm text-on-surface-variant">alpha@edarin-dist.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-label-sm text-label-sm text-primary">ED-2024-001</td>
+<td class="px-6 py-4 text-body-md">North America (Midwest)</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">+1 (555) 012-3456</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-lg font-label-sm text-label-sm">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-semibold hover:underline text-body-md">View Details</button>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-tertiary-container text-tertiary-fixed rounded-full flex items-center justify-center font-bold">SM</div>
+<div>
+<p class="font-semibold text-on-surface">Swift Moving Systems</p>
+<p class="text-label-sm text-on-surface-variant">contact@swiftmove.net</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-label-sm text-label-sm text-primary">ED-2024-042</td>
+<td class="px-6 py-4 text-body-md">Europe (DACH)</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">+49 30 1234567</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-surface-container-highest text-on-surface-variant rounded-lg font-label-sm text-label-sm">Inactive</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-semibold hover:underline text-body-md">View Details</button>
+</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center font-bold">BR</div>
+<div>
+<p class="font-semibold text-on-surface">Beacon Regional</p>
+<p class="text-label-sm text-on-surface-variant">ops@beacon-reg.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-label-sm text-label-sm text-primary">ED-2023-998</td>
+<td class="px-6 py-4 text-body-md">Asia (Southeast)</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">+65 6789 0123</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-lg font-label-sm text-label-sm">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-semibold hover:underline text-body-md">View Details</button>
+</td>
+</tr>
+<!-- Table Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center font-bold">ZT</div>
+<div>
+<p class="font-semibold text-on-surface">Zenith Transport</p>
+<p class="text-label-sm text-on-surface-variant">zenith@dist.global</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-label-sm text-label-sm text-primary">ED-2024-115</td>
+<td class="px-6 py-4 text-body-md">Oceania</td>
+<td class="px-6 py-4 text-body-md text-on-surface-variant">+61 2 9876 5432</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-lg font-label-sm text-label-sm">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-semibold hover:underline text-body-md">View Details</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Slide-over / Form Modal: Add New Distributor -->
+<div aria-labelledby="slide-over-title" aria-modal="true" class="fixed inset-0 z-50 overflow-hidden" role="dialog" x-show="showForm" style="display: none;">
+<div class="absolute inset-0 overflow-hidden">
+<!-- Background Overlay -->
+<div @click="showForm = false" aria-hidden="true" class="absolute inset-0 bg-on-background/40 backdrop-blur-sm transition-opacity" x-show="showForm" x-transition:enter="ease-in-out duration-500" x-transition:enter-end="opacity-100" x-transition:enter-start="opacity-0" x-transition:leave="ease-in-out duration-500" x-transition:leave-end="opacity-0" x-transition:leave-start="opacity-100" style="display: none;"></div>
+<div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+<div class="pointer-events-auto w-screen max-w-md" x-show="showForm" x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700" x-transition:enter-end="translate-x-0" x-transition:enter-start="translate-x-full" x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700" x-transition:leave-end="translate-x-full" x-transition:leave-start="translate-x-0" style="display: none;">
+<div class="flex h-full flex-col overflow-y-scroll bg-surface-container-lowest shadow-xl">
+<div class="px-6 py-6 border-b border-outline-variant bg-surface-bright">
+<div class="flex items-start justify-between">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary" id="slide-over-title">Add New Distributor</h2>
+<div class="ml-3 flex h-7 items-center">
+<button @click="showForm = false" class="relative rounded-md text-on-surface-variant hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary" type="button">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<p class="mt-1 text-body-md text-on-surface-variant">Register a new partner to the Edarin distribution network.</p>
+</div>
+<div class="relative mt-6 flex-1 px-6">
+<!-- Add New Distributor Form -->
+<form action="#" class="space-y-6" method="POST">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2" for="full-name">Full Name</label>
+<input class="block w-full rounded-lg border-outline-variant focus:border-primary focus:ring-primary text-body-md py-3" id="full-name" name="full-name" placeholder="e.g. Johnathan Logistics" type="text">
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2" for="email">Email Address</label>
+<input class="block w-full rounded-lg border-outline-variant focus:border-primary focus:ring-primary text-body-md py-3" id="email" name="email" placeholder="distributor@domain.com" type="email">
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2" for="phone">Phone Number</label>
+<input class="block w-full rounded-lg border-outline-variant focus:border-primary focus:ring-primary text-body-md py-3" id="phone" name="phone" placeholder="+1 (555) 000-0000" type="tel">
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2" for="region">Assigned Region</label>
+<select class="block w-full rounded-lg border-outline-variant focus:border-primary focus:ring-primary text-body-md py-3" id="region" name="region">
+<option>North America - East</option>
+<option>North America - West</option>
+<option>Europe - Central</option>
+<option>Asia - Pacific</option>
+<option>Latin America</option>
+</select>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2" for="password">Initial Password</label>
+<div class="relative">
+<input class="block w-full rounded-lg border-outline-variant focus:border-primary focus:ring-primary text-body-md py-3" id="password" name="password" type="password" value="Temporary2024!">
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+<p class="mt-2 text-label-sm text-on-surface-variant italic">Password will require reset on first login.</p>
+</div>
+<div class="bg-surface-container p-4 rounded-lg flex items-center gap-3 mt-8">
+<span class="material-symbols-outlined text-secondary">info</span>
+<p class="text-label-sm text-on-surface">The distributor will receive an automated invitation email with their access credentials.</p>
+</div>
+</form>
+</div>
+<div class="border-t border-outline-variant px-6 py-6 bg-surface-bright">
+<div class="flex gap-4">
+<button @click="showForm = false" class="flex-1 px-4 py-3 border border-outline-variant rounded-lg font-semibold hover:bg-surface-container-low transition-colors" type="button">Cancel</button>
+<button class="flex-1 px-4 py-3 bg-primary text-on-primary rounded-lg font-semibold hover:opacity-90 transition-all shadow-md" type="submit">Create Distributor</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BottomNavBar (Authority Source: JSON) - Mobile Only Hidden by MD:HIDDEN -->
+<nav class="md:hidden flex justify-around items-center h-20 pb-safe px-4 fixed bottom-0 w-full z-50 bg-surface-container-highest dark:bg-inverse-surface shadow-lg border-t border-outline-variant">
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container-high transition-transform scale-95">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container-high transition-transform scale-95">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label-md text-label-md">Forms</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:bg-surface-container-high transition-transform scale-95">
+<span class="material-symbols-outlined">assignment_return</span>
+<span class="font-label-md text-label-md">Returns</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container-high transition-transform scale-95">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</div>
+</nav>
+<script>
+        // Simple micro-interactions for the UI
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('click', () => {
+                // In a real app, this might navigate or show details
+                console.log('Row clicked');
+            });
+        });
+    </script>
+
+
+</body></html>

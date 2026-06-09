@@ -2,19 +2,19 @@
 
 ## Phase 1: Project Setup & CodeIgniter 4 Backend Foundation
 
-- [ ] Task: Initialize CodeIgniter 4 project with Composer
-    - [ ] Run `composer create-project codeigniter4/appstarter`
-    - [ ] Configure `.env` with database credentials
-    - [ ] Set up MariaDB/MySQL database and run initial migration
-    - [ ] Configure base URL and environment settings
-- [ ] Task: Set up database schema and models
-    - [ ] Create migration for `users` table (id, username, email, password_hash, role, status, created_at, updated_at)
-    - [ ] Create migration for `products` table (id, name, description, price, unit, status, created_at, updated_at)
-    - [ ] Create migration for `stores` table (id, name, owner, address, phone, latitude, longitude, created_at, updated_at)
-    - [ ] Create migration for `sales` table (id, client_id, distributor_id, store_id, product_id, quantity, return_qty, sale_date, sync_status, created_at, updated_at)
-    - [ ] Create migration for `audit_log` table (id, user_id, action, entity_type, entity_id, details, created_at)
-    - [ ] Create corresponding model classes with validation rules
-- [ ] Task: Set up JWT authentication system
+- [x] Task: Initialize CodeIgniter 4 project with Composer
+    - [x] Run `composer create-project codeigniter4/appstarter`
+    - [x] Configure `.env` with database credentials
+    - [x] Set up MariaDB/MySQL database and run initial migration
+    - [x] Configure base URL and environment settings
+- [x] Task: Set up database schema and models
+    - [x] Create migration for `users` table
+    - [x] Create migration for `products` table
+    - [x] Create migration for `stores` table
+    - [x] Create migration for `sales` table
+    - [x] Create migration for `audit_log` table
+    - [x] Create corresponding model classes with validation rules
+- [~] Task: Set up JWT authentication system
     - [ ] Install and configure `firebase/php-jwt` library
     - [ ] Create Auth controller with login and token refresh endpoints
     - [ ] Implement JWT middleware/filter for protected routes

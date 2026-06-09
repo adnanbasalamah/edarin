@@ -1,0 +1,306 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Add New Distributor | Edarin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-ibm { font-family: 'IBM Plex Sans', sans-serif; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2f3133",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e2e2e5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#007321",
+                        "tertiary-fixed": "#85f6e5",
+                        "tertiary-container": "#005048",
+                        "primary-fixed-dim": "#a9c7ff",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "surface-container-low": "#f3f3f6",
+                        "secondary": "#006e1f",
+                        "primary-fixed": "#d6e3ff",
+                        "on-secondary-fixed-variant": "#005315",
+                        "on-background": "#1a1c1e",
+                        "surface-container-high": "#e8e8ea",
+                        "secondary-fixed": "#8cfb8d",
+                        "primary": "#003063",
+                        "on-tertiary-container": "#53c7b7",
+                        "secondary-container": "#89f88a",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#00468c",
+                        "on-tertiary-fixed": "#00201c",
+                        "on-secondary-fixed": "#002204",
+                        "on-surface-variant": "#424751",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#00468c",
+                        "inverse-on-surface": "#f0f0f3",
+                        "background": "#f9f9fc",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c2c6d2",
+                        "on-primary-container": "#8cb6ff",
+                        "surface-container": "#eeeef0",
+                        "on-primary-fixed": "#001b3d",
+                        "surface-container-highest": "#e2e2e5",
+                        "on-surface": "#1a1c1e",
+                        "surface-bright": "#f9f9fc",
+                        "tertiary-fixed-dim": "#67d9c9",
+                        "tertiary": "#003731",
+                        "surface": "#f9f9fc",
+                        "outline": "#737782",
+                        "inverse-primary": "#a9c7ff",
+                        "surface-tint": "#2a5ea5",
+                        "surface-dim": "#dadadc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px",
+                        "gutter": "24px",
+                        "max-width": "1440px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["IBM Plex Sans"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["IBM Plex Sans"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["IBM Plex Sans"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center px-margin-desktop py-4 w-full bg-surface dark:bg-inverse-surface sticky top-0 z-50 border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-4">
+<span class="font-title-md text-title-md font-bold text-primary dark:text-primary-fixed">Edarin</span>
+</div>
+<div class="flex items-center gap-6">
+
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full text-on-surface-variant active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full text-on-surface-variant active:scale-95">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full text-on-surface-variant active:scale-95">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="h-full w-full object-cover" data-alt="A professional headshot of a middle-aged male operations manager wearing a clean white shirt. The background is a soft-focus office setting with modern glass partitions. The lighting is bright and even, reinforcing a corporate light-mode aesthetic that communicates reliability and professionalism. The overall tone is calm, focused, and executive." src="https://lh3.googleusercontent.com/aida/AP1WRLsejPm15s-sYoBYUzXiYxUGr_qoY5R9KGm3vW-RLsypI7ReIOXOFbCS5w6OofHgPGr8jmc_6DZbdnz5QXXi9PF2cVpCOmoz-UbZQ-eY4KUEWk8dKzZ0SThbT5eQb7L-Z6uDvk6tQ81893xe08pXJ_N6X_akGU28UxSQlgE3g3ECfl9elAKSZj9IB9lgselQz9wiJbGlQERnBBZIuLaDQNFvdfyCR1XJV9VTCqPZnW9FJFA9m8SEK0RI0TAT">
+</div>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-72px)]">
+<!-- Side Navigation Bar -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-72px)] w-64 fixed left-0 top-[72px] bg-surface-container-low dark:bg-inverse-surface border-r border-outline-variant dark:border-outline py-8 px-4 gap-4">
+<div class="flex flex-col gap-1 mb-6 px-2">
+<span class="font-title-md text-title-md font-bold text-primary dark:text-primary-fixed">Edarin</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Distribution Management</span>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Inventory</span>
+</a>
+<!-- Active Tab: Logistics -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary dark:border-primary-fixed-dim bg-primary-container/10 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-body-md text-body-md">Sales Person</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">store</span>
+<span class="font-body-md text-body-md">Stores</span>
+</a>
+</nav>
+
+
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 p-margin-desktop bg-background">
+<div class="max-w-4xl mx-auto">
+<!-- Header & Breadcrumbs -->
+<div class="mb-8">
+<nav class="flex items-center gap-2 text-on-surface-variant mb-2">
+<span class="font-label-sm text-label-sm uppercase">Sales Directory</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-label-sm text-label-sm uppercase text-primary">Add Sales Person</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-primary">Add New Sales Person</h1>
+<p class="text-on-surface-variant font-body-md mt-1">Register a new sales person into the Edarin distribution network.</p>
+</div>
+<!-- Form Sections -->
+<form class="space-y-gutter">
+<!-- Section 1: Personal Identity -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(0,70,140,0.05)]">
+<div class="p-6 border-b border-outline-variant bg-surface-container-low flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person</span>
+<h2 class="font-title-md text-title-md">Personal Identity</h2>
+</div>
+<div class="p-8">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Photo Upload -->
+<div class="md:col-span-4 flex flex-col items-center">
+<div class="w-32 h-32 rounded-full border-2 border-dashed border-outline-variant flex items-center justify-center bg-surface-container-low group relative overflow-hidden cursor-pointer hover:border-primary transition-colors">
+<div class="text-center p-4">
+<span class="material-symbols-outlined text-outline text-3xl mb-1 group-hover:text-primary transition-colors">upload</span>
+<p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Upload Photo</p>
+</div>
+<input class="absolute inset-0 opacity-0 cursor-pointer" type="file">
+</div>
+<p class="text-label-sm font-label-sm mt-3 text-on-surface-variant">JPG, PNG up to 5MB</p>
+</div>
+<!-- Personal Info Fields -->
+<div class="md:col-span-8 space-y-4">
+<div>
+<label class="block text-on-surface font-title-md text-[14px] mb-1.5">Full Name</label>
+<input class="w-full border border-outline-variant rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-body-md placeholder:text-outline" placeholder="Enter sales person's full name" type="text">
+</div>
+<div>
+<label class="block text-on-surface font-title-md text-[14px] mb-1.5">National ID / NIK</label>
+<input class="w-full border border-outline-variant rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-body-md placeholder:text-outline font-label-sm" placeholder="16-digit identification number" type="text">
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Contact Information -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(0,70,140,0.05)]">
+<div class="p-6 border-b border-outline-variant bg-surface-container-low flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">contact_mail</span>
+<h2 class="font-title-md text-title-md">Contact Information</h2>
+</div>
+<div class="p-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-4">
+<div>
+<label class="block text-on-surface font-title-md text-[14px] mb-1.5">Phone Number</label>
+<div class="relative">
+<span class="absolute left-4 top-2.5 text-on-surface-variant font-body-md">+62</span>
+<input class="w-full border border-outline-variant rounded-lg pl-14 pr-4 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-body-md" placeholder="812 3456 7890" type="tel">
+</div>
+</div>
+<div>
+<label class="block text-on-surface font-title-md text-[14px] mb-1.5">Email Address</label>
+<input class="w-full border border-outline-variant rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-body-md" placeholder="example@edarin.com" type="email">
+</div>
+<div class="md:col-span-2">
+<label class="block text-on-surface font-title-md text-[14px] mb-1.5">Full Address</label>
+<textarea class="w-full border border-outline-variant rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-body-md resize-none" placeholder="Enter complete residential or office address" rows="3"></textarea>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Distribution Assignment -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(0,70,140,0.05)]">
+<div class="p-6 border-b border-outline-variant bg-surface-container-low flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">assignment</span>
+<h2 class="font-title-md text-title-md">Distribution Assignment</h2>
+</div>
+<div class="p-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div>
+<label class="block text-on-surface font-title-md text-[14px] mb-1.5">Assigned Region / Zone</label>
+<select class="w-full border border-outline-variant rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-body-md appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%23737782%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:20px] bg-[right_12px_center] bg-no-repeat">
+<option value="">Select Zone</option>
+<option value="west">West Jakarta - Zone A</option>
+<option value="central">Central Jakarta - Zone B</option>
+<option value="east">East Jakarta - Zone C</option>
+<option value="south">South Jakarta - Zone D</option>
+</select>
+</div>
+<div>
+<label class="block text-on-surface font-title-md text-[14px] mb-1.5">Target Sales (Monthly)</label>
+<div class="relative">
+<span class="absolute left-4 top-2.5 text-on-surface-variant font-label-sm">Rp</span>
+<input class="w-full border border-outline-variant rounded-lg pl-12 pr-4 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-body-md font-label-sm" placeholder="50.000.000" type="text">
+</div>
+</div>
+<div>
+<label class="block text-on-surface font-title-md text-[14px] mb-1.5">Join Date</label>
+<input class="w-full border border-outline-variant rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-body-md" type="date">
+</div>
+</div>
+</div>
+</section>
+<!-- Form Actions -->
+<div class="flex items-center justify-end gap-4 pt-6 border-t border-outline-variant">
+<button class="px-8 py-3 rounded-lg border border-outline text-on-surface-variant font-title-md hover:bg-surface-container-high transition-colors active:scale-95" type="button">
+                            Cancel
+                        </button>
+<button class="px-10 py-3 rounded-lg bg-secondary text-on-secondary font-title-md hover:brightness-110 shadow-lg shadow-secondary/20 transition-all active:scale-95 flex items-center gap-2" type="submit"><span class="material-symbols-outlined">save</span>Save Sales Person</button>
+</div>
+</form>
+<!-- Informational Sidebar or Contextual Card (Bento element) -->
+
+</div>
+</main>
+</div>
+<!-- Micro-interaction JS -->
+<script>
+        // Subtle input hover/focus animations handled by Tailwind
+        // Form submission prevention for demo
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Saving...`;
+            btn.classList.add('opacity-80');
+            
+            setTimeout(() => {
+                btn.innerHTML = `<span class="material-symbols-outlined">check_circle</span> Saved Successfully`;
+                btn.classList.remove('bg-secondary');
+                btn.classList.add('bg-on-secondary-container', 'text-white');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.classList.add('bg-secondary');
+                    btn.classList.remove('bg-on-secondary-container', 'text-white', 'opacity-80');
+                }, 2000);
+            }, 1500);
+        });
+    </script>
+
+
+</body></html>

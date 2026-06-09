@@ -1,0 +1,355 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Edarin - Add New Store</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#dadadc",
+                        "secondary-fixed-dim": "#70de74",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#001b3d",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#2a5ea5",
+                        "background": "#f9f9fc",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#002204",
+                        "tertiary-fixed": "#85f6e5",
+                        "tertiary": "#003731",
+                        "on-primary-fixed-variant": "#00468c",
+                        "on-background": "#1a1c1e",
+                        "surface-container-low": "#f3f3f6",
+                        "surface-container-highest": "#e2e2e5",
+                        "inverse-surface": "#2f3133",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "surface-container": "#eeeef0",
+                        "on-primary-container": "#8cb6ff",
+                        "surface-container-high": "#e8e8ea",
+                        "tertiary-container": "#005048",
+                        "primary-fixed": "#d6e3ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#8cfb8d",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#89f88a",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f0f0f3",
+                        "on-tertiary-fixed": "#00201c",
+                        "surface-bright": "#f9f9fc",
+                        "on-secondary-container": "#007321",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#a9c7ff",
+                        "outline": "#737782",
+                        "on-surface": "#1a1c1e",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#53c7b7",
+                        "tertiary-fixed-dim": "#67d9c9",
+                        "secondary": "#006e1f",
+                        "primary-container": "#00468c",
+                        "primary": "#003063",
+                        "on-secondary-fixed-variant": "#005315",
+                        "surface": "#f9f9fc",
+                        "inverse-primary": "#a9c7ff",
+                        "surface-variant": "#e2e2e5",
+                        "outline-variant": "#c2c6d2",
+                        "on-surface-variant": "#424751"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "max-width": "1440px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["JetBrains Mono"],
+                        "display-lg": ["IBM Plex Sans"],
+                        "title-md": ["IBM Plex Sans"],
+                        "headline-lg-mobile": ["IBM Plex Sans"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["IBM Plex Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Predicted Component: SideNavBar -->
+<aside class="flex flex-col h-full py-4 w-64 border-r border-outline-variant bg-surface-container-low dark:bg-surface-container shrink-0">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full flex items-center justify-center bg-primary overflow-hidden">
+<img alt="Edarin Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLtQlMg9-Kqe7CIBJqAgi2oDNIunU_HDKKkr-lOhEYfm4O8004hFGouQXHFPnty4CvmtuurV4-1NKPVmk3a9DnvNqi-q80c5slvmdNZsJ2DJz6hWx0YRN_oZxxGS7eXQRunQUyb3oB7AT16A-SM9sPDzZywg_uq6MdQvtlBi8BYvzEOOVUkxIe07JHsrDxnsa7LqM5Rpd6BiNhi23PBJV3cXAsNzhqhLjbiRhIx0sRRRkdhPA-AYQuNxBpfW">
+</div>
+<div>
+<h1 class="font-title-md text-title-md font-bold text-primary dark:text-primary-fixed-dim leading-none">Edarin</h1>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider mt-1">Distribution Management</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Dashboard -->
+<a class="flex items-center px-4 py-2 text-on-surface-variant hover:text-on-surface mx-2 hover:bg-surface-container-high transition-all duration-200 active:scale-95 group" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<!-- Inventory -->
+<a class="flex items-center px-4 py-2 text-on-surface-variant hover:text-on-surface mx-2 hover:bg-surface-container-high transition-all duration-200 active:scale-95 group" href="#">
+<span class="material-symbols-outlined mr-3">inventory_2</span>
+<span class="font-body-md text-body-md">Inventory</span>
+</a>
+<!-- Sales Person -->
+<a class="flex items-center px-4 py-2 text-on-surface-variant hover:text-on-surface mx-2 hover:bg-surface-container-high transition-all duration-200 active:scale-95 group" href="#">
+<span class="material-symbols-outlined mr-3">person</span>
+<span class="font-body-md text-body-md">Sales Person</span>
+</a>
+<!-- Stores (Active) -->
+<a class="flex items-center px-4 py-2 bg-primary-container text-on-primary-container font-semibold rounded-lg mx-2 transition-all duration-200 active:scale-95 group" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">store</span>
+<span class="font-body-md text-body-md">Stores</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center px-4 py-2 text-on-surface-variant hover:text-on-surface mx-2 hover:bg-surface-container-high transition-all duration-200 active:scale-95 group" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-6 pt-4 border-t border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container text-sm">support_agent</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Support Hub</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col min-w-0 bg-background overflow-hidden">
+<!-- Predicted Component: TopNavBar -->
+<header class="flex justify-between items-center px-margin-desktop w-full h-16 border-b border-outline-variant bg-surface dark:bg-surface-container-lowest shrink-0">
+<div class="flex items-center gap-8">
+<div class="flex gap-6 h-full">
+<a class="text-on-surface-variant hover:text-primary pb-1 font-label-sm text-label-sm flex items-center transition-colors duration-200 cursor-pointer" href="#">Reports</a>
+<a class="text-on-surface-variant hover:text-primary pb-1 font-label-sm text-label-sm flex items-center transition-colors duration-200 cursor-pointer" href="#">Analytics</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer">
+<div class="text-right">
+<p class="font-label-sm text-label-sm text-on-surface font-bold">Admin Portal</p>
+<p class="text-[10px] text-on-surface-variant">Central Station</p>
+</div>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida/AP1WRLt_tGb8-vDWupy7RmEUnAYBYnwqe8xaIHOJItem3Q9_3dLij5aW8lexkUkMRv6ZeunO40PrYX1qYJ65efWQZqtQcJHUgDMAk-biqEMs53bnKeHIsZzgx4RKecfeosiRSyo2T9R4jmV6SIn2DRuHFyGTy2zwD99rdEyf7qZmYBlRktGHkjCY4nd4AkzP698tnyMW_5jayYThW2tCmVX5JGmDeg0ch97DTHziAgcZE3Fnj3scVZKc1KDbn6jH">
+</div>
+</div>
+</header>
+<!-- Main Content Area: Add New Store Form -->
+<div class="flex-1 overflow-y-auto p-margin-desktop">
+<div class="max-w-4xl mx-auto">
+<!-- Page Header -->
+<div class="mb-8">
+<nav aria-label="Breadcrumb" class="flex mb-2">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center text-on-surface-variant font-label-sm text-label-sm">
+<a class="hover:text-primary" href="#">Stores</a>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-sm text-outline-variant">chevron_right</span>
+<span class="ml-1 text-on-surface font-label-sm text-label-sm">Add New Store</span>
+</div>
+</li>
+</ol>
+</nav>
+<h2 class="font-headline-lg text-headline-lg text-primary">Establish New Store</h2>
+<p class="text-on-surface-variant font-body-md text-body-md mt-1">Register a new distribution point within the Edarin network.</p>
+</div>
+<!-- Form Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0px_4px_20px_rgba(0,70,140,0.05)] overflow-hidden">
+<!-- Visual Header -->
+<div class="h-32 bg-gradient-to-r from-primary to-secondary relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_2px_2px,white_1px,transparent_0)] bg-[length:24px_24px]"></div>
+<div class="absolute bottom-4 left-6 flex items-center gap-4">
+<div class="w-16 h-16 bg-surface-container-lowest rounded-full border-4 border-surface shadow-md flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">add_business</span>
+</div>
+<div class="text-white">
+<span class="font-label-sm text-label-sm bg-white/20 px-2 py-0.5 rounded backdrop-blur-sm">Phase 1</span>
+<p class="font-title-md text-title-md">Store Identification</p>
+</div>
+</div>
+</div>
+<form class="p-8 space-y-8">
+<!-- Store Information Section -->
+<section>
+<div class="flex items-center gap-2 mb-6 border-b border-outline-variant pb-2">
+<span class="material-symbols-outlined text-secondary text-xl">info</span>
+<h3 class="font-title-md text-title-md text-on-surface">Store Details</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant block">Store Name</label>
+<input class="w-full bg-surface border-outline-variant rounded-lg px-4 py-2.5 font-body-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Enter store legal name" type="text">
+</div>
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant block">Store Status</label>
+<select class="w-full bg-surface border-outline-variant rounded-lg px-4 py-2.5 font-body-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none appearance-none">
+<option value="active">Active (Full Distribution Access)</option>
+<option value="inactive">Inactive (Suspended)</option>
+</select>
+</div>
+<div class="md:col-span-2 space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant block">Location / Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl">location_on</span>
+<input class="w-full bg-surface border-outline-variant rounded-lg pl-10 pr-4 py-2.5 font-body-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Full physical address" type="text">
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Person Section -->
+<section>
+<div class="flex items-center gap-2 mb-6 border-b border-outline-variant pb-2">
+<span class="material-symbols-outlined text-secondary text-xl">contact_mail</span>
+<h3 class="font-title-md text-title-md text-on-surface">Point of Contact</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant block">Contact Person Name</label>
+<input class="w-full bg-surface border-outline-variant rounded-lg px-4 py-2.5 font-body-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="e.g. John Doe" type="text">
+</div>
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant block">Phone Number</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl">call</span>
+<input class="w-full bg-surface border-outline-variant rounded-lg pl-10 pr-4 py-2.5 font-body-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="+62 XXX XXXX XXXX" type="tel">
+</div>
+</div>
+<div class="md:col-span-2 space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant block">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl">mail</span>
+<input class="w-full bg-surface border-outline-variant rounded-lg pl-10 pr-4 py-2.5 font-body-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="store@example.com" type="email">
+</div>
+</div>
+</div>
+</section>
+<!-- Map Preview (Aesthetic Element) -->
+<div class="h-48 rounded-xl bg-surface-container relative overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover grayscale opacity-50" data-alt="A clean, minimalist topographical map style background with subtle blue and green vector overlays. The map shows city blocks and streets in a light grey palette with a single primary blue pin icon in the center indicating a store location. Professional, industrial aesthetic for a logistics dashboard." data-location="Jakarta" src="https://lh3.googleusercontent.com/aida/AP1WRLuvWvKxKZ0tBII7p07lBJ9pyhQu72z5gnyeWJzfJ99jkfSFBufF6W9021nRuRiO3bR2dVGHngmMjDjy86xSoC6DaOV-rR_v632fe35gxX9pqFrmT16KqzQxCaDPxogKtSZLu8sJXUWnso1bNT5WojfCDRb7NnB82O84gA8IR92HGXqgU3ZbTNvp_Pu0vV7ofmMOjwUSixzvTJEsC_ruSnkrQIR-QXTK2E8HfEOepxn4-bqxRfm9OBs6wjY">
+<div class="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+<span class="material-symbols-outlined text-primary text-4xl">map</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Geo-location visualization will appear here</span>
+</div>
+</div>
+<!-- Form Actions -->
+<div class="flex items-center justify-end gap-4 pt-4 border-t border-outline-variant">
+<button class="px-6 py-2.5 border border-outline-variant text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface rounded-lg font-body-md text-body-md transition-all active:scale-95" type="button">
+                                    Cancel
+                                </button>
+<button class="px-8 py-2.5 bg-primary text-white hover:bg-on-primary-fixed-variant rounded-lg font-body-md text-body-md font-semibold shadow-lg shadow-primary/20 flex items-center gap-2 transition-all active:scale-95" type="submit">
+<span class="material-symbols-outlined text-sm">save</span>
+                                    Save Store
+                                </button>
+</div>
+</form>
+</div>
+<!-- Additional Info / Tips -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="flex gap-4 items-start p-4 bg-secondary/5 rounded-lg border border-secondary/20">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<div>
+<h4 class="font-label-sm text-label-sm text-secondary font-bold">Verification</h4>
+<p class="text-[12px] text-on-surface-variant leading-tight">All new stores undergo a 24h verification process.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start p-4 bg-primary/5 rounded-lg border border-primary/20">
+<span class="material-symbols-outlined text-primary">lan</span>
+<div>
+<h4 class="font-label-sm text-label-sm text-primary font-bold">Network Integration</h4>
+<p class="text-[12px] text-on-surface-variant leading-tight">The store will be automatically synced with active warehouses.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start p-4 bg-surface-container rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant">help</span>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant font-bold">Need Help?</h4>
+<p class="text-[12px] text-on-surface-variant leading-tight">Consult the distribution manual for regional requirements.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('focus', () => {
+                element.parentElement.querySelector('label')?.classList.add('text-primary');
+            });
+            element.addEventListener('blur', () => {
+                element.parentElement.querySelector('label')?.classList.remove('text-primary');
+            });
+        });
+
+        // Form submission prevent default for demo
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Saving...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Store Saved!';
+                btn.classList.replace('bg-primary', 'bg-secondary');
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.classList.replace('bg-secondary', 'bg-primary');
+                    btn.disabled = false;
+                }, 2000);
+            }, 1500);
+        });
+    </script>
+</body></html>

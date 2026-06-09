@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edarin - Laporan &amp; Riwayat Penjualan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "secondary": "#006e0d",
+                        "on-surface-variant": "#424751",
+                        "surface": "#f8f9ff",
+                        "on-tertiary-fixed": "#00201d",
+                        "outline-variant": "#c2c6d2",
+                        "surface-tint": "#255ea7",
+                        "on-surface": "#0b1c30",
+                        "tertiary": "#003c37",
+                        "tertiary-container": "#00554f",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#cbdbf5",
+                        "primary-container": "#004b93",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container": "#e5eeff",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#a8c8ff",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#4bcfc2",
+                        "on-primary-fixed": "#001b3c",
+                        "outline": "#727782",
+                        "on-primary-container": "#96bdff",
+                        "on-secondary-container": "#00750f",
+                        "secondary-container": "#90fb81",
+                        "background": "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        "primary": "#00356a",
+                        "surface-container-low": "#eff4ff",
+                        "inverse-surface": "#213145",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d6e3ff",
+                        "secondary-fixed": "#90fb81",
+                        "inverse-primary": "#a8c8ff",
+                        "on-tertiary-fixed-variant": "#00504a",
+                        "on-secondary-fixed-variant": "#005307",
+                        "surface-variant": "#d3e4fe",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-fixed": "#002201",
+                        "tertiary-fixed-dim": "#59dacd",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#78f7e9",
+                        "secondary-fixed-dim": "#74dd68",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-primary-fixed-variant": "#00468a",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #f8f9ff; color: #0b1c30; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; }
+        .chart-bar { transition: height 1s ease-in-out; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-on-surface flex justify-between items-center w-full px-margin-mobile h-16 docked full-width top-0 sticky z-50 border-b border-outline-variant dark:border-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="package_2">package_2</span>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-primary dark:text-primary-fixed-dim tracking-tight">Edarin</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container-low dark:hover:bg-on-surface-variant transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-outline" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-screen-xl mx-auto px-margin-mobile py-lg">
+<!-- Welcome & Fast Filters -->
+<section class="mb-lg">
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Laporan Penjualan</h2>
+<p class="text-on-surface-variant mb-6">Ringkasan operasional dan distribusi real-time.</p>
+<div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full font-body-md whitespace-nowrap">Hari Ini</button>
+<button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-body-md whitespace-nowrap hover:bg-surface-variant transition-colors">Minggu Ini</button>
+<button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-body-md whitespace-nowrap hover:bg-surface-variant transition-colors">Bulan Ini</button>
+<button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-body-md whitespace-nowrap hover:bg-surface-variant transition-colors">Kustom</button>
+</div>
+</section>
+<!-- Stats Grid (Bento Style) -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-sm mb-lg">
+<div class="col-span-2 md:col-span-2 bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex flex-col justify-between">
+<div>
+<span class="text-label-md font-label-md text-on-surface-variant">TOTAL PENDAPATAN</span>
+<p class="text-headline-lg font-headline-lg text-primary mt-1">Rp 12.450.000</p>
+</div>
+<div class="mt-4 flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span class="text-label-sm font-label-sm">+12.5% vs Kemarin</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl">
+<span class="text-label-md font-label-md text-on-surface-variant">TRANSAKSI</span>
+<p class="text-headline-md font-headline-md text-on-surface mt-1">142</p>
+<div class="mt-4 h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary h-full w-3/4"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl">
+<span class="text-label-md font-label-md text-on-surface-variant">RATA-RATA</span>
+<p class="text-headline-md font-headline-md text-on-surface mt-1">Rp 87k</p>
+<div class="mt-4 flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="timer">timer</span>
+<span class="text-label-sm font-label-sm">Per Order</span>
+</div>
+</div>
+</section>
+<!-- Chart Section -->
+<section class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl mb-lg">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md">Statistik Penjualan</h3>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+<span class="text-label-md font-label-md">Revenue</span>
+</div>
+</div>
+<div class="relative h-48 w-full flex items-end justify-between px-2 pt-4">
+<!-- Simple Tailwind Bars -->
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="chart-bar w-8 bg-primary-container/20 rounded-t-sm relative group cursor-pointer" style="height: 60%;">
+<div class="chart-bar absolute bottom-0 left-0 w-full bg-primary rounded-t-sm" style="height: 80%;"></div>
+<div class="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-2 py-1 rounded text-label-sm transition-opacity">Rp 2.1M</div>
+</div>
+<span class="text-label-sm font-label-sm">Sen</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="chart-bar w-8 bg-primary-container/20 rounded-t-sm relative group" style="height: 85%;">
+<div class="chart-bar absolute bottom-0 left-0 w-full bg-primary rounded-t-sm" style="height: 70%;"></div>
+</div>
+<span class="text-label-sm font-label-sm">Sel</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="chart-bar w-8 bg-primary-container/20 rounded-t-sm relative group" style="height: 40%;">
+<div class="chart-bar absolute bottom-0 left-0 w-full bg-primary rounded-t-sm" style="height: 90%;"></div>
+</div>
+<span class="text-label-sm font-label-sm">Rab</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="chart-bar w-8 bg-primary-container/20 rounded-t-sm relative group" style="height: 100%;">
+<div class="chart-bar absolute bottom-0 left-0 w-full bg-primary rounded-t-sm" style="height: 65%;"></div>
+</div>
+<span class="text-label-sm font-label-sm">Kam</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="chart-bar w-8 bg-primary-container/20 rounded-t-sm relative group" style="height: 75%;">
+<div class="chart-bar absolute bottom-0 left-0 w-full bg-primary rounded-t-sm" style="height: 85%;"></div>
+</div>
+<span class="text-label-sm font-label-sm">Jum</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="chart-bar w-8 bg-primary-container/20 rounded-t-sm relative group" style="height: 30%;">
+<div class="chart-bar absolute bottom-0 left-0 w-full bg-primary rounded-t-sm" style="height: 40%;"></div>
+</div>
+<span class="text-label-sm font-label-sm">Sab</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="chart-bar w-8 bg-primary-container/20 rounded-t-sm relative group" style="height: 50%;">
+<div class="chart-bar absolute bottom-0 left-0 w-full bg-primary rounded-t-sm" style="height: 30%;"></div>
+</div>
+<span class="text-label-sm font-label-sm">Min</span>
+</div>
+</div>
+</section>
+<!-- History Table & Actions -->
+<section>
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md text-headline-md">Riwayat Transaksi</h3>
+<div class="flex gap-2">
+<button class="flex items-center gap-1 bg-surface-container text-primary font-body-md px-3 py-1.5 rounded-lg border border-primary/10 hover:bg-primary-container/20 transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+                        PDF
+                    </button>
+<button class="flex items-center gap-1 bg-surface-container text-primary font-body-md px-3 py-1.5 rounded-lg border border-primary/10 hover:bg-primary-container/20 transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="file_download">file_download</span>
+                        CSV
+                    </button>
+</div>
+</div>
+<div class="space-y-3">
+<!-- Transaction Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex justify-between items-center group active:scale-[0.98] transition-all">
+<div class="flex items-center gap-md">
+<div class="bg-secondary-container text-on-secondary-container p-2 rounded-lg">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+</div>
+<div>
+<p class="font-body-lg text-on-surface">TRX-20231105-001</p>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="text-label-md font-label-md">05 Nov, 14:20</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="text-label-md font-label-md">Gudang A</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-lg font-semibold text-on-surface">Rp 450.000</p>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-label-sm bg-secondary-container text-on-secondary-container">Berhasil</span>
+</div>
+</div>
+<!-- Transaction Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex justify-between items-center group active:scale-[0.98] transition-all">
+<div class="flex items-center gap-md">
+<div class="bg-secondary-container text-on-secondary-container p-2 rounded-lg">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+</div>
+<div>
+<p class="font-body-lg text-on-surface">TRX-20231105-002</p>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="text-label-md font-label-md">05 Nov, 12:45</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="text-label-md font-label-md">Mitra Banten</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-lg font-semibold text-on-surface">Rp 1.200.000</p>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-label-sm bg-secondary-container text-on-secondary-container">Berhasil</span>
+</div>
+</div>
+<!-- Transaction Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex justify-between items-center group active:scale-[0.98] transition-all">
+<div class="flex items-center gap-md">
+<div class="bg-error-container text-on-error-container p-2 rounded-lg">
+<span class="material-symbols-outlined" data-icon="block">block</span>
+</div>
+<div>
+<p class="font-body-lg text-on-surface">TRX-20231105-003</p>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="text-label-md font-label-md">05 Nov, 10:15</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="text-label-md font-label-md">Gudang C</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-body-lg font-semibold text-on-surface">Rp 320.000</p>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-label-sm bg-error-container text-on-error-container">Dibatalkan</span>
+</div>
+</div>
+<!-- Load More -->
+<button class="w-full py-md text-primary font-body-md hover:underline">
+                    Lihat 25 transaksi lainnya
+                </button>
+</div>
+</section>
+<!-- Placeholder Banner Image -->
+<div class="mt-lg rounded-xl overflow-hidden relative h-32 bg-primary">
+<img class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="A cinematic, high-angle shot of a busy logistics distribution center with workers moving packages and digital overlays representing data flow. The lighting is cool-toned with highlights of primary blue, reflecting an efficient corporate and modern professional atmosphere. The scene is clean, bustling with operational precision, and emphasizes technological integration in logistics." src="https://lh3.googleusercontent.com/aida/AP1WRLuriFa6INi0EXYPbGURlN2fFyZGhcbHgl6YVnn05sFfYUwmR8d6b-HcVuAN0IH8CUC0YzvLHbnJTAtlQC6zdAIiyjrmYm2i6Gjiq0a5NvW4tlOLKc86ZarNRbGKyB9AZnVyGSgo_GciOsnPf_8kvBTaFsY10jY_SDatwUusW2dz_9zI3jUi5aWY6Ml2dGRwu11cST_wkZ0OYWcrtFlazHH58OjjNljzMeygCnO8RFiBA3k1HID68fAQ9uMC"/>
+<div class="absolute inset-0 flex flex-col justify-center px-md text-white">
+<p class="text-label-md font-label-md uppercase tracking-widest opacity-80">Insight Distribusi</p>
+<p class="text-headline-md font-headline-md leading-tight">Optimalkan rute pengiriman <br/> minggu depan.</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-2 pb-safe bg-surface dark:bg-on-surface border-t border-outline-variant dark:border-on-surface-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-4 py-1 hover:bg-surface-container-high dark:hover:bg-on-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-4 py-1 hover:bg-surface-container-high dark:hover:bg-on-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="edit_square">edit_square</span>
+<span class="text-label-sm font-label-sm">Input</span>
+</a>
+<!-- ACTIVE MENU: Reports -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container dark:bg-primary dark:text-on-primary rounded-full px-4 py-1 scale-95 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-label-sm font-label-sm">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-4 py-1 hover:bg-surface-container-high dark:hover:bg-on-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple Interaction: Simulate chart data loading
+        document.addEventListener('DOMContentLoaded', () => {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach(bar => {
+                const originalHeight = bar.style.height;
+                bar.style.height = '0%';
+                setTimeout(() => {
+                    bar.style.height = originalHeight;
+                }, 300);
+            });
+        });
+    </script>
+</body></html>
