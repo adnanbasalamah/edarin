@@ -109,7 +109,7 @@ class Distributors extends BaseController
         }
 
         if ($data !== []) {
-            $userModel->update($id, $data);
+            $userModel->skipValidation(true)->update($id, $data);
         }
 
         $this->logAudit('update', 'distributor', $id);
