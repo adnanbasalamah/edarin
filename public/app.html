@@ -118,7 +118,7 @@
                         </template>
                     </nav>
                     <div class="border-t border-[#e2e2e5] p-4">
-                        <button @click="logout" class="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-[#424751] hover:bg-[#f3f3f6]">
+                        <button @click="logout; mobileMenuOpen = false" class="flex w-full items-center gap-3 rounded px-3 py-2.5 text-sm font-medium text-[#424751] hover:bg-[#f3f3f6]">
                             <span>🚪</span>
                             <span>Keluar</span>
                         </button>
@@ -851,7 +851,7 @@
             <nav x-show="isLoggedIn" class="flex border-t border-[#e2e2e5] bg-white lg:hidden">
                 <template x-for="item in mobileNavItems" :key="item.id">
                     <a :href="'#' + item.path"
-                       @click.prevent="navigate(item.path)"
+                       @click.prevent="navigate(item.path); mobileMenuOpen = false"
                        class="flex flex-1 flex-col items-center gap-0.5 py-2 text-xs font-medium transition-colors min-h-[44px] justify-center"
                        :class="currentRoute === item.path ? 'text-primary' : 'text-[#737782]'">
                         <span class="text-lg" x-text="item.icon"></span>
