@@ -2,12 +2,12 @@
 
 ## Phase 1: Database Schema & Models
 
-- [ ] Task: Create notas table migration
-    - [ ] Create migration file `CreateNotasTable` with fields: id, client_id, distributor_id, store_id, note_date (DATE), total_value (DECIMAL), sync_status, timestamps
-    - [ ] Run migration to verify table creation
-- [ ] Task: Create nota_items table migration
-    - [ ] Create migration file `CreateNotaItemsTable` with fields: id, nota_id (FK), product_id (FK), quantity, return_qty, price (DECIMAL), timestamps
-    - [ ] Run migration to verify table creation
+- [x] Task: Create notas table migration (abc12d0)
+    - [x] Create migration file `CreateNotasTable` with fields: id, client_id, distributor_id, store_id, note_date (DATE), total_value (DECIMAL), sync_status, timestamps
+    - [x] Run migration to verify table creation
+- [x] Task: Create nota_items table migration
+    - [x] Create migration file `CreateNotaItemsTable` with fields: id, nota_id (FK), product_id (FK), quantity, return_qty, price (DECIMAL), timestamps
+    - [x] Run migration to verify table creation
 - [ ] Task: Write tests for NotaModel
     - [ ] Write unit tests for NotaModel (create, read, validation rules)
     - [ ] Confirm tests fail (Red phase)
