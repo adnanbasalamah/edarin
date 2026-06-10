@@ -5,8 +5,13 @@
  * Auto-deletes itself after successful installation.
  */
 
+// Auto-fix: if .env is in public/ but should be in project root, move it
+if (file_exists(__DIR__ . '/.env') && !file_exists(__DIR__ . '/../.env')) {
+    @rename(__DIR__ . '/.env', __DIR__ . '/../.env');
+}
+
 // If already installed (app.html exists and .env exists), redirect
-if (file_exists(__DIR__ . '/.env') && file_exists(__DIR__ . '/app.html')) {
+if (file_exists(__DIR__ . '/../.env') && file_exists(__DIR__ . '/app.html')) {
     header('Location: app.html');
     exit;
 }
@@ -82,17 +87,39 @@ if (isset($_GET['action']) && $_GET['action'] === 'install') {
         $envContent .= "database.tests.DBDriver = MySQLi\n";
         $envContent .= "database.tests.port = " . ((int)($db['port'] ?? 3306)) . "\n";
 
-        file_put_contents(__DIR__ . '/.env', $envContent);
+        // Write .env — try project root first, then public/ as fallback
+        $envPaths = [__DIR__ . '/../.env', __DIR__ . '/.env'];
+        $envWritten = false;
+        foreach ($envPaths as $envPath) {
+            $envDir = dirname($envPath);
+            if (!is_dir($envDir)) {
+                @mkdir($envDir, 0755, true);
+            }
+            if (file_put_contents($envPath, $envContent) !== false) {
+                chmod($envPath, 0644);
+                $envWritten = true;
+            }
+        }
+        if (!$envWritten) {
+            echo json_encode(['success' => false, 'error' => 'Gagal menulis file .env. Periksa permission direktori.']);
+            exit;
+        }
 
-        // Create uploads directories
+        // Create & chmod writable directories
         $dirs = [
-            __DIR__ . '/../writable/uploads/stores/',
-            __DIR__ . '/../writable/logs/',
+            __DIR__ . '/../writable',
+            __DIR__ . '/../writable/cache',
+            __DIR__ . '/../writable/logs',
+            __DIR__ . '/../writable/session',
+            __DIR__ . '/../writable/debugbar',
+            __DIR__ . '/../writable/uploads',
+            __DIR__ . '/../writable/uploads/stores',
         ];
         foreach ($dirs as $dir) {
             if (!is_dir($dir)) {
                 @mkdir($dir, 0755, true);
             }
+            @chmod($dir, 0755);
         }
 
         // Delete installer
@@ -119,7 +146,7 @@ $reqs = [
     'ext_json'     => ['label' => 'JSON Extension',    'pass' => extension_loaded('json'), 'value' => extension_loaded('json') ? 'OK' : 'Missing'],
     'ext_mbstring' => ['label' => 'MBString Extension','pass' => extension_loaded('mbstring'), 'value' => extension_loaded('mbstring') ? 'OK' : 'Missing'],
     'ext_fileinfo' => ['label' => 'Fileinfo Extension','pass' => extension_loaded('fileinfo'), 'value' => extension_loaded('fileinfo') ? 'OK' : 'Missing'],
-    'writable'     => ['label' => 'Writable Permission','pass' => is_writable(__DIR__), 'value' => is_writable(__DIR__) ? 'OK' : 'Not Writable'],
+    'writable'     => ['label' => 'Writable Permission','pass' => is_writable(__DIR__ . '/../writable'), 'value' => is_writable(__DIR__ . '/../writable') ? 'OK' : 'Not Writable'],
 ];
 
 $allPass = array_reduce($reqs, fn($carry, $r) => $carry && $r['pass'], true);
@@ -231,7 +258,7 @@ function getTableSchemas(): array {
 }
 
 // If already installed, hide form
-$alreadyInstalled = file_exists(__DIR__ . '/.env');
+$alreadyInstalled = file_exists(__DIR__ . '/../.env');
 ?>
 <!DOCTYPE html>
 <html lang="id">
