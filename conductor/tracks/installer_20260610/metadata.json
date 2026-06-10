@@ -1,8 +1,0 @@
-{
-  "track_id": "installer_20260610",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-06-10T07:55:29Z",
-  "updated_at": "2026-06-10T07:55:29Z",
-  "description": "Universal Web Installer - Installer satu halaman untuk Apache & Nginx, auto-setup database + admin, auto-delete setelah selesai."
-}
