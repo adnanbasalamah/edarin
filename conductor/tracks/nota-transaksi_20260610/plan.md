@@ -2,7 +2,7 @@
 
 ## Phase 1: Database Schema & Models
 
-- [x] Task: Create notas table migration (abc12d0)
+- [x] Task: Create notas table migration (250db38)
     - [x] Create migration file `CreateNotasTable` with fields: id, client_id, distributor_id, store_id, note_date (DATE), total_value (DECIMAL), sync_status, timestamps
     - [x] Run migration to verify table creation
 - [x] Task: Create nota_items table migration
