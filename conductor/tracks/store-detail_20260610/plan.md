@@ -2,14 +2,14 @@
 
 ## Phase 1: Backend - Verifikasi & Test Store Detail API
 
-- [ ] Task: Verifikasi endpoint API detail toko sudah tersedia
+- [x] Task: Verifikasi endpoint API detail toko sudah tersedia
     - [ ] Periksa route `GET /api/stores/{id}` di `app/Config/Routes.php`
     - [ ] Periksa controller dan method yang menangani endpoint tersebut
     - [ ] Pastikan response mengembalikan field: nama toko, owner, alamat, no HP, foto, latitude, longitude
-- [ ] Task: Tulis backend test untuk endpoint detail toko
-    - [ ] Test: endpoint mengembalikan data toko yang valid dengan status 200
-    - [ ] Test: endpoint mengembalikan 404 untuk toko yang tidak ditemukan
-    - [ ] Test: response menyertakan semua field yang diperlukan
+- [x] Task: Tulis backend test untuk endpoint detail toko [64ff263]
+    - [x] Test: endpoint mengembalikan data toko yang valid dengan status 200
+    - [x] Test: endpoint mengembalikan 404 untuk toko yang tidak ditemukan
+    - [x] Test: response menyertakan semua field yang diperlukan
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
 ## Phase 2: Frontend - Halaman Detail Toko
