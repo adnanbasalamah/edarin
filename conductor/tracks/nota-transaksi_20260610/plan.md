@@ -11,15 +11,15 @@
 - [~] Task: Write tests for NotaModel
     - [x] Write unit tests for NotaModel (create, read, validation rules)
     - [x] Confirm tests fail (Red phase)
-- [x] Task: Implement NotaModel
+- [x] Task: Implement NotaModel (0337122)
     - [x] Create NotaModel.php with allowedFields, validationRules, relationships (store, distributor, items)
     - [x] Run tests to confirm they pass (Green phase)
-- [ ] Task: Write tests for NotaItemModel
-    - [ ] Write unit tests for NotaItemModel (create, read, validation)
-    - [ ] Confirm tests fail (Red phase)
-- [ ] Task: Implement NotaItemModel
-    - [ ] Create NotaItemModel.php with allowedFields, validationRules, relationships (nota, product)
-    - [ ] Run tests to confirm they pass (Green phase)
+- [~] Task: Write tests for NotaItemModel
+    - [x] Write unit tests for NotaItemModel (create, read, validation)
+    - [x] Confirm tests fail (Red phase)
+- [x] Task: Implement NotaItemModel
+    - [x] Create NotaItemModel.php with allowedFields, validationRules, relationships (nota, product)
+    - [x] Run tests to confirm they pass (Green phase)
 - [ ] Task: Conductor - User Manual Verification 'Database Schema & Models' (Protocol in workflow.md)
 
 ## Phase 2: Backend API - Nota Endpoints
