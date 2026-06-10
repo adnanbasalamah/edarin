@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\StoreModel;
 use App\Models\AuditLogModel;
+use CodeIgniter\Images\Image;
 
 class Stores extends BaseController
 {
@@ -40,7 +41,7 @@ class Stores extends BaseController
             'longitude' => 'permit_empty|numeric',
         ];
 
-        if (!$this->validate($rules)) {
+        if (! $this->validate($rules)) {
             return $this->response
                 ->setStatusCode(400)
                 ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
@@ -58,11 +59,17 @@ class Stores extends BaseController
 
         $storeId = $storeModel->insertID;
 
+        $imagePath = $this->processStoreImage($storeId);
+
+        if ($imagePath) {
+            $storeModel->update($storeId, ['image' => $imagePath]);
+        }
+
         $this->logAudit('create', 'store', $storeId);
 
         return $this->response
             ->setStatusCode(201)
-            ->setJSON(['message' => 'Store created', 'id' => $storeId]);
+            ->setJSON(['message' => 'Store created', 'id' => $storeId, 'image' => $imagePath]);
     }
 
     public function update($id = null)
@@ -85,7 +92,7 @@ class Stores extends BaseController
             'longitude' => 'permit_empty|numeric',
         ];
 
-        if (!$this->validate($rules)) {
+        if (! $this->validate($rules)) {
             return $this->response
                 ->setStatusCode(400)
                 ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
@@ -99,10 +106,22 @@ class Stores extends BaseController
             }
         }
 
-        $storeModel->update($id, $data);
+        $imagePath = $this->processStoreImage($id);
+
+        if ($imagePath) {
+            if ($store['image'] && file_exists(WRITEPATH . $store['image'])) {
+                unlink(WRITEPATH . $store['image']);
+            }
+            $data['image'] = $imagePath;
+        }
+
+        if ($data !== []) {
+            $storeModel->update($id, $data);
+        }
+
         $this->logAudit('update', 'store', $id);
 
-        return $this->response->setJSON(['message' => 'Store updated']);
+        return $this->response->setJSON(['message' => 'Store updated', 'image' => $imagePath]);
     }
 
     public function delete($id = null)
@@ -116,10 +135,44 @@ class Stores extends BaseController
                 ->setJSON(['error' => 'Store not found']);
         }
 
+        if ($store['image'] && file_exists(WRITEPATH . $store['image'])) {
+            unlink(WRITEPATH . $store['image']);
+        }
+
         $storeModel->delete($id);
         $this->logAudit('delete', 'store', $id);
 
         return $this->response->setJSON(['message' => 'Store deleted']);
+    }
+
+    private function processStoreImage(int $storeId): ?string
+    {
+        $file = $this->request->getFile('image');
+
+        if (! $file || ! $file->isValid()) {
+            return null;
+        }
+
+        $mimeType = $file->getMimeType();
+        if (! in_array($mimeType, ['image/jpeg', 'image/jpg'])) {
+            return null;
+        }
+
+        $uploadDir = WRITEPATH . 'uploads/stores/';
+
+        if (! is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $filename = 'store_' . $storeId . '_' . time() . '.jpg';
+        $filepath = $uploadDir . $filename;
+
+        $image = \Config\Services::image()
+            ->withFile($file)
+            ->fit(800, 800, 'center')
+            ->save($filepath, 85);
+
+        return 'uploads/stores/' . $filename;
     }
 
     private function logAudit(string $action, string $entityType, ?int $entityId): void

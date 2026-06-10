@@ -13,6 +13,7 @@ class StoreModel extends Model
         'owner',
         'address',
         'phone',
+        'image',
         'latitude',
         'longitude',
     ];

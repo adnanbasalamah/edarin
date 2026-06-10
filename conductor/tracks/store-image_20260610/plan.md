@@ -2,26 +2,26 @@
 
 ## Phase 1: Database & Backend API
 
-- [ ] Task: Create stores image column migration
-    - [ ] Create migration file menambahkan kolom `image` (VARCHAR 255, nullable) ke tabel `stores`
-    - [ ] Run migration
-- [ ] Task: Write tests for store image upload
-    - [ ] Write test untuk POST api/stores dengan multipart/form-data (image + store data)
-    - [ ] Write test untuk GET api/stores/:id (memastikan response memiliki `image` field)
-    - [ ] Confirm all tests fail (Red phase)
-- [ ] Task: Implement store image upload di Stores controller
-    - [ ] Update create() untuk menerima file upload (image)
-    - [ ] Implement image processing: crop square 1:1 center, resize ke 800x800, simpan di writable/uploads/stores/
-    - [ ] Update show() response menyertakan URL gambar
-    - [ ] Update StoreModel allowedFields menambahkan `image`
-    - [ ] Run tests to confirm they pass (Green phase)
-- [ ] Task: Write tests for store update with image
-    - [ ] Write test untuk PUT api/stores/:id dengan image
-    - [ ] Write test untuk validasi file type (hanya JPG) dan size (max 2MB)
-    - [ ] Confirm tests fail (Red phase)
-- [ ] Task: Implement store update with image support
-    - [ ] Update Stores controller update() untuk menerima image
-    - [ ] Run tests to confirm they pass (Green phase)
+- [x] Task: Create stores image column migration
+    - [x] Create migration file menambahkan kolom `image` (VARCHAR 255, nullable) ke tabel `stores`
+    - [x] Run migration
+- [x] Task: Write tests for store image upload
+    - [x] Write test untuk POST api/stores dengan multipart/form-data (image + store data)
+    - [x] Write test untuk GET api/stores/:id (memastikan response memiliki `image` field)
+    - [x] Confirm all tests fail (Red phase)
+- [x] Task: Implement store image upload di Stores controller
+    - [x] Update create() untuk menerima file upload (image)
+    - [x] Implement image processing: crop square 1:1 center, resize ke 800x800, simpan di writable/uploads/stores/
+    - [x] Update show() response menyertakan URL gambar
+    - [x] Update StoreModel allowedFields menambahkan `image`
+    - [x] Run tests to confirm they pass (Green phase)
+- [x] Task: Write tests for store update with image
+    - [x] Write test untuk PUT api/stores/:id dengan image
+    - [x] Write test untuk validasi file type (hanya JPG) dan size (max 2MB)
+    - [x] Confirm tests fail (Red phase)
+- [x] Task: Implement store update with image support
+    - [x] Update Stores controller update() untuk menerima image
+    - [x] Run tests to confirm they pass (Green phase)
 - [ ] Task: Conductor - User Manual Verification 'Database & Backend API' (Protocol in workflow.md)
 
 ## Phase 2: Frontend Integration
