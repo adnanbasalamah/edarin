@@ -58,17 +58,17 @@
 
 ## Phase 4: Frontend Integration & Polish
 
-- [ ] Task: Update distributor transaction history view
-    - [ ] Create Nota list page showing summary cards (store name, date, total value, item count)
-    - [ ] Wire up API calls to fetch notas list
-    - [ ] Implement loading/empty/error states
-- [ ] Task: Create Nota detail page
-    - [ ] Display full nota info: store details, distributor, timestamp
-    - [ ] Show sold products table (name, qty, price, total)
-    - [ ] Show returned products table (name, qty returned)
-    - [ ] Add back button navigation to nota list
-- [ ] Task: Verify mobile responsiveness
-    - [ ] Test nota list on mobile viewport (< 480px)
-    - [ ] Test nota detail on mobile viewport
-    - [ ] Ensure touch targets >= 44px
+- [x] Task: Update distributor transaction history view
+    - [x] Create Nota list page showing summary cards (store name, date, total value, item count)
+    - [x] Wire up API calls to fetch notas list
+    - [x] Implement loading/empty/error states
+- [x] Task: Create Nota detail page
+    - [x] Display full nota info: store details, distributor, timestamp
+    - [x] Show sold products table (name, qty, price, total)
+    - [x] Show returned products table (name, qty returned)
+    - [x] Add back button navigation to nota list
+- [x] Task: Verify mobile responsiveness
+    - [x] Test nota list on mobile viewport (< 480px)
+    - [x] Test nota detail on mobile viewport
+    - [x] Ensure touch targets >= 44px
 - [ ] Task: Conductor - User Manual Verification 'Frontend Integration & Polish' (Protocol in workflow.md)

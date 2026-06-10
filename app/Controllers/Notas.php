@@ -14,7 +14,7 @@ class Notas extends BaseController
         $role = $this->request->user->role ?? '';
 
         $builder = $notaModel->builder();
-        $builder->select('notas.*, stores.name as store_name, stores.owner as store_owner');
+        $builder->select('notas.*, stores.name as store_name, stores.owner as store_owner, (SELECT COUNT(*) FROM nota_items WHERE nota_items.nota_id = notas.id) as item_count');
         $builder->join('stores', 'stores.id = notas.store_id', 'left');
 
         if ($role !== 'admin') {

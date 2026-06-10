@@ -589,35 +589,148 @@
 
                     <div>
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold font-heading">Riwayat Transaksi</h3>
+                            <h3 class="text-lg font-bold font-heading">Riwayat Nota</h3>
                             <div class="flex gap-2">
                                 <button @click="downloadReport" class="flex items-center gap-1 rounded-lg border border-primary/10 bg-[#f3f3f6] px-3 py-1.5 text-xs font-medium text-primary hover:bg-[#d6e3ff]">CSV</button>
                             </div>
                         </div>
                         <div class="space-y-3">
-                            <template x-for="tx in reportTransactions" :key="tx.client_id">
-                                <div class="rounded-xl bg-white border border-[#e2e2e5] p-4 flex justify-between items-center">
-                                    <div class="flex items-center gap-3">
-                                        <div class="rounded-lg p-2" :class="tx.sync_status === 'synced' ? 'bg-[#e8f5e9] text-[#006e1f]' : 'bg-[#fff3cd] text-[#856404]'">
-                                            <span class="text-sm">📋</span>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm font-medium text-[#1a1c1e] font-mono" x-text="tx.client_id.substring(0, 16) + '...'"></p>
-                                            <div class="flex items-center gap-2 text-xs text-[#424751]">
-                                                <span x-text="new Date(tx.created_at).toLocaleString('id-ID')"></span>
-                                                <span class="w-1 h-1 bg-[#c2c6d2] rounded-full"></span>
-                                                <span x-text="tx.store_name || 'Store #' + tx.store_id"></span>
+                            <template x-for="nota in notas" :key="nota.id">
+                                <div @click="viewNota(nota.id)" class="cursor-pointer rounded-xl bg-white border border-[#e2e2e5] p-4 hover:border-primary/30 hover:shadow-sm transition-all min-h-[44px]">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex items-start gap-3">
+                                            <div class="rounded-lg p-2 bg-[#d6e3ff] text-primary">
+                                                <span class="text-sm">📋</span>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-[#1a1c1e]" x-text="nota.store_name"></p>
+                                                <div class="flex items-center gap-2 text-xs text-[#424751] mt-0.5">
+                                                    <span x-text="nota.note_date"></span>
+                                                    <span class="w-1 h-1 bg-[#c2c6d2] rounded-full"></span>
+                                                    <span x-text="nota.store_owner"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-                                              :class="tx.sync_status === 'synced' ? 'bg-[#e8f5e9] text-[#006e1f]' : 'bg-[#ffdad6] text-[#93000a]'"
-                                              x-text="tx.sync_status === 'synced' ? 'Berhasil' : 'Pending'"></span>
+                                        <div class="text-right">
+                                            <p class="text-sm font-bold text-primary font-mono" x-text="'Rp ' + Number(nota.total_value).toLocaleString('id-ID')"></p>
+                                            <p class="text-xs text-[#737782] mt-0.5" x-text="nota.item_count ? nota.item_count + ' item' : ''"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </template>
-                            <div x-show="reportTransactions.length === 0" class="text-center text-sm text-[#424751] py-8">Belum ada transaksi.</div>
+                            <div x-show="notas.length === 0" class="text-center text-sm text-[#424751] py-8">Belum ada nota transaksi.</div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+
+                <div x-show="isLoggedIn && currentRoute.startsWith('nota-detail')">
+                    <button @click="goBackToNotas" class="flex items-center gap-1 text-sm text-primary hover:text-primary-dark mb-4 min-h-[44px]">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Kembali ke Riwayat</span>
+                    </button>
+
+                    <div x-show="!notaDetail" class="text-center text-sm text-[#424751] py-16">
+                        <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-3"></div>
+                        Memuat nota...
+                    </div>
+
+                    <div x-show="notaDetail" class="space-y-4">
+                        <div class="rounded-xl bg-white border border-[#e2e2e5] p-4">
+                            <div class="flex items-start justify-between mb-3">
+                                <div>
+                                    <h2 class="text-lg font-bold font-heading text-primary">Detail Nota</h2>
+                                    <p class="text-xs text-[#737782] font-mono mt-1" x-text="notaDetail.client_id"></p>
+                                </div>
+                                <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                                      :class="notaDetail.sync_status === 'synced' ? 'bg-[#e8f5e9] text-[#006e1f]' : 'bg-[#fff3cd] text-[#856404]'"
+                                      x-text="notaDetail.sync_status === 'synced' ? 'Berhasil' : 'Pending'"></span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div>
+                                    <p class="text-xs text-[#737782]">Toko</p>
+                                    <p class="text-sm font-medium" x-text="notaDetail.store_name"></p>
+                                    <p class="text-xs text-[#424751]" x-text="notaDetail.store_owner"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-[#737782]">Distributor</p>
+                                    <p class="text-sm font-medium" x-text="notaDetail.distributor_name"></p>
+                                    <p class="text-xs text-[#424751]">Sales Person</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-[#737782]">Tanggal</p>
+                                    <p class="text-sm font-medium" x-text="notaDetail.note_date"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-[#737782]">Total</p>
+                                    <p class="text-sm font-bold text-primary font-mono" x-text="'Rp ' + Number(notaDetail.total_value).toLocaleString('id-ID')"></p>
+                                </div>
+                            </div>
+
+                            <div x-show="notaDetail.store_address || notaDetail.store_phone" class="text-xs text-[#737782] mb-4 p-2 bg-[#f3f3f6] rounded">
+                                <span x-show="notaDetail.store_address" x-text="notaDetail.store_address"></span>
+                                <span x-show="notaDetail.store_address && notaDetail.store_phone"> &middot; </span>
+                                <span x-show="notaDetail.store_phone" x-text="notaDetail.store_phone"></span>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl bg-white border border-[#e2e2e5] overflow-hidden">
+                            <div class="px-4 py-3 border-b border-[#e2e2e5] bg-[#f3f3f6]">
+                                <h3 class="text-sm font-bold font-heading">Produk Terjual</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead class="text-xs font-medium text-[#424751] uppercase tracking-wider font-mono">
+                                        <tr class="bg-[#f9f9fc]">
+                                            <th class="px-4 py-2 text-left">Nama Produk</th>
+                                            <th class="px-4 py-2 text-right">Qty</th>
+                                            <th class="px-4 py-2 text-right">Harga</th>
+                                            <th class="px-4 py-2 text-right">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-[#e2e2e5]">
+                                        <template x-for="item in notaDetail.items.filter(i => parseInt(i.quantity || 0) > 0)" :key="item.id">
+                                            <tr class="hover:bg-[#f9f9fc]">
+                                                <td class="px-4 py-3 font-medium" x-text="item.product_name"></td>
+                                                <td class="px-4 py-3 text-right font-mono" x-text="item.quantity"></td>
+                                                <td class="px-4 py-3 text-right font-mono" x-text="'Rp ' + Number(item.price).toLocaleString('id-ID')"></td>
+                                                <td class="px-4 py-3 text-right font-mono text-primary" x-text="'Rp ' + Number(item.quantity * item.price).toLocaleString('id-ID')"></td>
+                                            </tr>
+                                        </template>
+                                        <template x-if="!notaDetail.items || notaDetail.items.filter(i => parseInt(i.quantity || 0) > 0).length === 0">
+                                            <tr><td colspan="4" class="px-4 py-4 text-center text-sm text-[#424751]">Tidak ada produk terjual.</td></tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl bg-white border border-[#e2e2e5] overflow-hidden" x-show="notaDetail.items && notaDetail.items.filter(i => parseInt(i.return_qty || 0) > 0).length > 0">
+                            <div class="px-4 py-3 border-b border-[#e2e2e5] bg-[#fff3cd]">
+                                <h3 class="text-sm font-bold font-heading text-[#856404]">Produk Retur</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead class="text-xs font-medium text-[#424751] uppercase tracking-wider font-mono">
+                                        <tr class="bg-[#f9f9fc]">
+                                            <th class="px-4 py-2 text-left">Nama Produk</th>
+                                            <th class="px-4 py-2 text-right">Qty Retur</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-[#e2e2e5]">
+                                        <template x-for="item in notaDetail.items.filter(i => parseInt(i.return_qty || 0) > 0)" :key="'r-' + item.id">
+                                            <tr class="hover:bg-[#f9f9fc]">
+                                                <td class="px-4 py-3 font-medium" x-text="item.product_name"></td>
+                                                <td class="px-4 py-3 text-right font-mono text-danger" x-text="item.return_qty"></td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

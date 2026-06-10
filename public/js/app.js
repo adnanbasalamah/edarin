@@ -66,6 +66,8 @@ function app() {
         reportStats: { total_revenue: 0, count: 0, avg_per_tx: 0, percent_change: 0 },
         chartData: [],
         reportTransactions: [],
+        notas: [],
+        notaDetail: null,
         auditLogs: [],
         syncQueue: [],
         isSyncing: false,
@@ -141,6 +143,7 @@ function app() {
 
         handleRoute() {
             const hash = window.location.hash.slice(1) || 'login';
+            const [base, ...rest] = hash.split('/');
             this.currentRoute = hash;
 
             if (hash === 'login') {
@@ -166,23 +169,32 @@ function app() {
                 distributors: 'Distributor',
                 sales: 'Input Penjualan',
                 reports: 'Report',
+                'nota-detail': 'Detail Nota',
             };
-            this.pageTitle = titles[hash] || 'Edarin';
+            this.pageTitle = titles[base] || 'Edarin';
 
-            if (hash === 'dashboard') {
+            if (base === 'dashboard') {
                 this.filterDateFrom = new Date().toISOString().slice(0, 10);
                 this.filterDateTo = new Date().toISOString().slice(0, 10);
                 this.loadStats();
             }
-            if (hash === 'products') this.loadProducts();
-            if (hash === 'stores') this.loadStores();
-            if (hash === 'distributors') this.loadDistributors();
-            if (hash === 'sales') this.loadSalesFormData();
-            if (hash === 'reports') {
+            if (base === 'products') this.loadProducts();
+            if (base === 'stores') this.loadStores();
+            if (base === 'distributors') this.loadDistributors();
+            if (base === 'sales') this.loadSalesFormData();
+            if (base === 'reports') {
                 this.reportPeriod = 'today';
                 this.loadReports();
+                this.loadNotas();
             }
-            if (hash === 'audit') this.loadAudit();
+            if (base === 'audit') this.loadAudit();
+            if (base === 'nota-detail') {
+                this.pageTitle = 'Detail Nota';
+                if (rest.length && rest[0] && !this.notaDetail) {
+                    const notaId = rest[0];
+                    this.viewNota(notaId);
+                }
+            }
         },
 
         navigate(path) {
@@ -480,6 +492,26 @@ function app() {
 
             setTimeout(() => { this.saleFormSuccess = ''; }, 5000);
             this.offlineSales = await this.getOfflineSales();
+        },
+
+        async loadNotas() {
+            const result = await this.api('/notas');
+            if (result) {
+                this.notas = result.data || [];
+            }
+        },
+
+        async viewNota(notaId) {
+            const result = await this.api('/notas/' + notaId);
+            if (result && result.status === 200) {
+                this.notaDetail = result.data;
+                window.location.hash = 'nota-detail/' + notaId;
+            }
+        },
+
+        goBackToNotas() {
+            this.notaDetail = null;
+            window.location.hash = 'reports';
         },
 
         parseJwt(token) {
