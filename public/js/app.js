@@ -774,8 +774,12 @@ function app() {
                             this.storeDetailError = 'Gagal memperbarui detail toko.';
                         }
                     }
+                } else {
+                    const msg = json?.messages ? Object.values(json.messages).join(', ') : (json?.error || 'Gagal menyimpan.');
+                    alert('Gagal menyimpan: ' + msg);
                 }
             } catch (err) {
+                alert('Gagal menyimpan: ' + (err.message || 'Koneksi terputus.'));
                 console.error('Update store failed:', err);
             }
         },
