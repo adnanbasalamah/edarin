@@ -395,7 +395,9 @@
                             <tbody>
                                 <template x-for="s in filteredStores" :key="s.id">
                                     <tr class="border-t border-[#e2e2e5]">
-                                        <td class="px-4 py-3 font-medium" x-text="s.name"></td>
+                                        <td class="px-4 py-3 font-medium">
+                                            <a :href="'#store-detail/' + s.id" @click.prevent="navigate('store-detail/' + s.id)" class="text-primary hover:underline min-h-[44px] flex items-center" x-text="s.name"></a>
+                                        </td>
                                         <td class="px-4 py-3" x-text="s.owner"></td>
                                         <td class="hidden px-4 py-3 md:table-cell" x-text="s.address"></td>
                                         <td class="px-4 py-3" x-text="s.phone"></td>
