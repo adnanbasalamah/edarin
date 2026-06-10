@@ -775,11 +775,11 @@ function app() {
                         }
                     }
                 } else {
-                    const msg = json?.messages ? Object.values(json.messages).join(', ') : (json?.error || 'Gagal menyimpan.');
-                    alert('Gagal menyimpan: ' + msg);
+                    const msg = json?.messages ? Object.values(json.messages).join(', ') : (json?.error || 'Tidak diketahui');
+                    alert('Gagal menyimpan (status ' + res.status + '): ' + msg);
                 }
             } catch (err) {
-                alert('Gagal menyimpan: ' + (err.message || 'Koneksi terputus.'));
+                alert('Error: ' + (err.message || 'Koneksi terputus'));
                 console.error('Update store failed:', err);
             }
         },
