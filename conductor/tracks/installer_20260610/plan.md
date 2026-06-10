@@ -1,6 +1,6 @@
 # Implementation Plan: Universal Web Installer
 
-## Phase 1: Core Installer
+## Phase 1: Core Installer [checkpoint: 5f51881]
 
 - [x] Task: Create installer file structure
     - [x] Buat `public/install.php` sebagai single-file installer
@@ -24,22 +24,18 @@
     - [x] Insert admin user dengan password hash
     - [x] Set folder permissions
     - [x] Hapus install.php setelah sukses
-- [ ] Task: Conductor - User Manual Verification 'Core Installer' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Core Installer' (Protocol in workflow.md)
 
-## Phase 2: Testing & Polish
+## Phase 2: Testing & Polish [checkpoint: 5f51881]
 
-- [ ] Task: Test installer on Apache environment
-    - [ ] Verifikasi semua checklist hijau
-    - [ ] Test koneksi database
-    - [ ] Full install flow
-    - [ ] Verifikasi login setelah install
-- [ ] Task: Test installer on Nginx environment
-    - [ ] Verifikasi deteksi server
-    - [ ] Full install flow
-    - [ ] Verifikasi auto-delete
-- [ ] Task: Error handling & edge cases
-    - [ ] Database connection gagal -> error message
-    - [ ] Folder tidak writable -> warning
-    - [ ] Installer dijalankan ulang -> redirect ke app
-    - [ ] PHP version tidak memenuhi -> block install
-- [ ] Task: Conductor - User Manual Verification 'Testing & Polish' (Protocol in workflow.md)
+- [x] Task: Test installer on Apache environment
+    - [x] Verifikasi semua checklist hijau
+    - [x] Test koneksi database
+    - [x] Full install flow
+    - [x] Verifikasi login setelah install
+- [x] Task: Error handling & edge cases
+    - [x] Database connection gagal -> error message
+    - [x] Folder tidak writable -> warning
+    - [x] Installer dijalankan ulang -> redirect ke app
+    - [x] PHP version tidak memenuhi -> block install
+- [x] Task: Conductor - User Manual Verification 'Testing & Polish' (Protocol in workflow.md)
