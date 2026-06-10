@@ -22,7 +22,7 @@
     - [x] Run tests to confirm they pass (Green phase)
 - [ ] Task: Conductor - User Manual Verification 'Database Schema & Models' (Protocol in workflow.md)
 
-## Phase 2: Backend API - Nota Endpoints
+## Phase 2: Backend API - Nota Endpoints [checkpoint: 846d9aa]
 
 - [~] Task: Write tests for Notas controller
     - [x] Write controller tests for `GET api/notas` (index)
@@ -37,7 +37,7 @@
     - [x] Write test for create(): verify a Nota + NotaItems are created alongside the sales records
     - [x] Write test for index(): verify response returns notas instead of individual sales
     - [x] Confirm tests fail (Red phase)
-- [x] Task: Modify Sales controller to integrate Nota creation
+- [x] Task: Modify Sales controller to integrate Nota creation (96d87c4)
     - [x] Update create() to group entries by store and generate a Nota with NotaItems
     - [x] Modify index() to return notas list instead of raw sales entries
     - [x] Run tests to confirm they pass (Green phase)
