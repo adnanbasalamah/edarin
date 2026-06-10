@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\StoreModel;
 use App\Models\AuditLogModel;
-use CodeIgniter\Images\Image;
 
 class Stores extends BaseController
 {
@@ -32,96 +31,116 @@ class Stores extends BaseController
 
     public function create()
     {
-        $rules = [
-            'name'    => 'required|max_length[255]',
-            'owner'   => 'required|max_length[255]',
-            'address' => 'required',
-            'phone'   => 'required|max_length[20]',
-            'latitude'  => 'permit_empty|numeric',
-            'longitude' => 'permit_empty|numeric',
-        ];
+        try {
+            $rules = [
+                'name'    => 'required|max_length[255]',
+                'owner'   => 'required|max_length[255]',
+                'address' => 'required',
+                'phone'   => 'required|max_length[20]',
+                'latitude'  => 'permit_empty|numeric',
+                'longitude' => 'permit_empty|numeric',
+            ];
 
-        if (! $this->validate($rules)) {
+            if (! $this->validate($rules)) {
+                return $this->response
+                    ->setStatusCode(400)
+                    ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
+            }
+
+            $storeModel = new StoreModel();
+            $storeModel->insert([
+                'name'    => $this->getInput('name'),
+                'owner'   => $this->getInput('owner'),
+                'address' => $this->getInput('address'),
+                'phone'   => $this->getInput('phone'),
+                'latitude'  => $this->getInput('latitude') ?: null,
+                'longitude' => $this->getInput('longitude') ?: null,
+            ]);
+
+            $storeId = $storeModel->insertID;
+
+            $imagePath = $this->processStoreImage($storeId);
+
+            if ($imagePath) {
+                $storeModel->update($storeId, ['image' => $imagePath]);
+            }
+
+            $this->logAudit('create', 'store', $storeId);
+
             return $this->response
-                ->setStatusCode(400)
-                ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
+                ->setStatusCode(201)
+                ->setJSON(['message' => 'Store created', 'id' => $storeId, 'image' => $imagePath]);
+        } catch (\Throwable $e) {
+            log_message('error', 'Store create error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            return $this->response
+                ->setStatusCode(500)
+                ->setJSON(['error' => $e->getMessage()]);
         }
-
-        $storeModel = new StoreModel();
-        $storeModel->insert([
-            'name'    => $this->getInput('name'),
-            'owner'   => $this->getInput('owner'),
-            'address' => $this->getInput('address'),
-            'phone'   => $this->getInput('phone'),
-            'latitude'  => $this->getInput('latitude'),
-            'longitude' => $this->getInput('longitude'),
-        ]);
-
-        $storeId = $storeModel->insertID;
-
-        $imagePath = $this->processStoreImage($storeId);
-
-        if ($imagePath) {
-            $storeModel->update($storeId, ['image' => $imagePath]);
-        }
-
-        $this->logAudit('create', 'store', $storeId);
-
-        return $this->response
-            ->setStatusCode(201)
-            ->setJSON(['message' => 'Store created', 'id' => $storeId, 'image' => $imagePath]);
     }
 
     public function update($id = null)
     {
-        $storeModel = new StoreModel();
-        $store = $storeModel->find($id);
+        try {
+            $storeModel = new StoreModel();
+            $store = $storeModel->find($id);
 
-        if ($store === null) {
-            return $this->response
-                ->setStatusCode(404)
-                ->setJSON(['error' => 'Store not found']);
-        }
-
-        $rules = [
-            'name'    => 'permit_empty|max_length[255]',
-            'owner'   => 'permit_empty|max_length[255]',
-            'address' => 'permit_empty',
-            'phone'   => 'permit_empty|max_length[20]',
-            'latitude'  => 'permit_empty|numeric',
-            'longitude' => 'permit_empty|numeric',
-        ];
-
-        if (! $this->validate($rules)) {
-            return $this->response
-                ->setStatusCode(400)
-                ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
-        }
-
-        $data = [];
-        foreach (['name', 'owner', 'address', 'phone', 'latitude', 'longitude'] as $field) {
-            $value = $this->getInput($field);
-            if ($value !== null) {
-                $data[$field] = $value;
+            if ($store === null) {
+                return $this->response
+                    ->setStatusCode(404)
+                    ->setJSON(['error' => 'Store not found']);
             }
-        }
 
-        $imagePath = $this->processStoreImage($id);
+            $rules = [
+                'name'    => 'permit_empty|max_length[255]',
+                'owner'   => 'permit_empty|max_length[255]',
+                'address' => 'permit_empty',
+                'phone'   => 'permit_empty|max_length[20]',
+                'latitude'  => 'permit_empty|numeric',
+                'longitude' => 'permit_empty|numeric',
+            ];
 
-        if ($imagePath) {
-            if ($store['image'] && file_exists(WRITEPATH . $store['image'])) {
-                unlink(WRITEPATH . $store['image']);
+            if (! $this->validate($rules)) {
+                return $this->response
+                    ->setStatusCode(400)
+                    ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
             }
-            $data['image'] = $imagePath;
+
+            $data = [];
+            foreach (['name', 'owner', 'address', 'phone', 'latitude', 'longitude'] as $field) {
+                $value = $this->getInput($field);
+                if ($value !== null && $value !== '') {
+                    $data[$field] = $value;
+                } else if ($value === '' && in_array($field, ['latitude', 'longitude'])) {
+                    $data[$field] = null;
+                }
+            }
+
+            $imagePath = $this->processStoreImage($id);
+
+            if ($imagePath) {
+                if ($store['image'] && file_exists(WRITEPATH . $store['image'])) {
+                    unlink(WRITEPATH . $store['image']);
+                }
+                $data['image'] = $imagePath;
+            }
+
+            if ($data !== []) {
+                if (! $storeModel->update($id, $data)) {
+                    return $this->response
+                        ->setStatusCode(400)
+                        ->setJSON(['error' => 'Update failed', 'messages' => $storeModel->errors()]);
+                }
+            }
+
+            $this->logAudit('update', 'store', $id);
+
+            return $this->response->setJSON(['message' => 'Store updated', 'image' => $imagePath]);
+        } catch (\Throwable $e) {
+            log_message('error', 'Store update error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            return $this->response
+                ->setStatusCode(500)
+                ->setJSON(['error' => $e->getMessage()]);
         }
-
-        if ($data !== []) {
-            $storeModel->update($id, $data);
-        }
-
-        $this->logAudit('update', 'store', $id);
-
-        return $this->response->setJSON(['message' => 'Store updated', 'image' => $imagePath]);
     }
 
     public function delete($id = null)
@@ -186,7 +205,7 @@ class Stores extends BaseController
         $uploadDir = WRITEPATH . 'uploads/stores/';
 
         if (! is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
+            mkdir($uploadDir, 0777, true);
         }
 
         $ext = match ($mimeType) {
@@ -198,25 +217,46 @@ class Stores extends BaseController
         $filename = 'store_' . $storeId . '_' . time() . '.' . $ext;
         $filepath = $uploadDir . $filename;
 
-        \Config\Services::image()
-            ->withFile($file)
-            ->fit(800, 800, 'center')
-            ->save($filepath, 85);
+        try {
+            \Config\Services::image()
+                ->withFile($file)
+                ->fit(800, 800, 'center')
+                ->save($filepath, 85);
+        } catch (\Throwable $e) {
+            if ($file->move($uploadDir, $filename)) {
+                return 'uploads/stores/' . $filename;
+            }
+            log_message('error', 'Store image save failed: ' . $e->getMessage());
+            return null;
+        }
 
         return 'uploads/stores/' . $filename;
     }
 
     private function logAudit(string $action, string $entityType, ?int $entityId): void
     {
-        $auditLog = new AuditLogModel();
-        $userId = $this->request->user->sub ?? null;
+        try {
+            $auditLog = new AuditLogModel();
+            $payload = $this->request->getPost() ?: $this->request->getJSON(true) ?: [];
+            $userId = null;
+            $authHeader = $this->request->getHeaderLine('Authorization');
+            if (str_starts_with($authHeader, 'Bearer ')) {
+                helper('jwt');
+                $decoded = validateJWT(substr($authHeader, 7));
+                if ($decoded) {
+                    $userId = $decoded->sub ?? null;
+                }
+            }
 
-        $auditLog->insert([
-            'user_id' => $userId,
-            'action' => $action,
-            'entity_type' => $entityType,
-            'entity_id' => $entityId,
-            'details' => json_encode($this->getInputAll()),
-        ]);
+            $auditLog->insert([
+                'user_id'      => $userId,
+                'action'       => $action,
+                'entity_type'  => $entityType,
+                'entity_id'    => $entityId,
+                'details'      => json_encode($payload),
+            ]);
+        } catch (\Throwable $e) {
+            log_message('error', 'Audit log error: ' . $e->getMessage());
+        }
     }
 }

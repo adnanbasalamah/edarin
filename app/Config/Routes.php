@@ -7,6 +7,7 @@ $routes->get('/', 'Home::index');
 
 $routes->post('api/auth/login', 'Auth::login');
 $routes->post('api/auth/refresh', 'Auth::refresh', ['filter' => 'jwt-auth']);
+$routes->get('api/stores/image/(:segment)', 'Stores::image/$1');
 
 $routes->group('api', ['filter' => 'jwt-auth'], static function ($routes) {
     $routes->group('products', static function ($routes) {
@@ -19,7 +20,6 @@ $routes->group('api', ['filter' => 'jwt-auth'], static function ($routes) {
 
     $routes->group('stores', static function ($routes) {
         $routes->get('/', 'Stores::index');
-        $routes->get('image/(:segment)', 'Stores::image/$1');
         $routes->get('(:num)', 'Stores::show/$1');
         $routes->post('/', 'Stores::create');
         $routes->put('(:num)', 'Stores::update/$1');

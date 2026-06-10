@@ -38,7 +38,6 @@ function app() {
         stores: [],
         distributors: [],
         showProductForm: false,
-        showStoreForm: false,
         showDistributorForm: false,
         productForm: {},
         storeForm: {},
@@ -171,6 +170,7 @@ function app() {
                 dashboard: 'Dashboard',
                 products: 'Product',
                 stores: 'Store',
+                'store-form': 'Store',
                 distributors: 'Distributor',
                 sales: 'Input Penjualan',
                 reports: 'Report',
@@ -204,6 +204,18 @@ function app() {
                 this.pageTitle = 'Detail Toko';
                 if (rest.length && rest[0] && (!this.storeDetail || String(this.storeDetail.id) !== rest[0])) {
                     this.viewStore(rest[0]);
+                }
+            }
+            if (base === 'store-form') {
+                if (rest.length && rest[0]) {
+                    this.pageTitle = 'Edit Store';
+                    this.loadStoreForEdit(rest[0]);
+                } else {
+                    this.pageTitle = 'Tambah Store';
+                    this.storeForm = {};
+                    this.storeImageFile = null;
+                    this.storeImagePreview = null;
+                    this.locationError = '';
                 }
             }
         },
@@ -695,10 +707,27 @@ function app() {
         },
 
         editStore(store) {
-            this.storeForm = { ...store };
+            this.navigate('store-form/' + store.id);
+        },
+
+        async loadStoreForEdit(storeId) {
+            const result = await this.api('/stores/' + storeId);
+            if (result && result.status === 200) {
+                const store = result.data;
+                this.storeForm = { ...store };
+                this.storeImageFile = null;
+                this.storeImagePreview = store.image ? (API_BASE + '?path=/stores/image/' + store.image.split('/').pop()) : null;
+                this.locationError = '';
+            }
+        },
+
+        cancelStoreForm() {
+            const id = this.storeForm.id;
+            this.storeForm = {};
             this.storeImageFile = null;
-            this.storeImagePreview = store.image ? (API_BASE + '&path=/stores/image/' + store.image.split('/').pop()) : null;
-            this.showStoreForm = true;
+            this.storeImagePreview = null;
+            this.locationError = '';
+            this.navigate(id ? 'store-detail/' + id : 'stores');
         },
 
         handleStoreImage(event) {
@@ -731,11 +760,10 @@ function app() {
                 const res = await fetch(url, { method: 'POST', headers, body: data });
                 const json = await res.json();
                 if (res.status === 201) {
-                    this.showStoreForm = false;
                     this.storeForm = {};
                     this.storeImageFile = null;
                     this.storeImagePreview = null;
-                    await this.loadStores();
+                    this.navigate('stores');
                 }
             } catch (err) {
                 console.error('Create store failed:', err);
@@ -762,21 +790,13 @@ function app() {
 
             try {
                 const res = await fetch(url, { method: 'POST', headers, body: data });
-                const json = await res.json();
+                let json = null;
+                try { json = await res.json(); } catch {}
                 if (res.status === 200) {
-                    this.showStoreForm = false;
-                    this.storeForm = {};
                     this.storeImageFile = null;
                     this.storeImagePreview = null;
-                    await this.loadStores();
-                    if (this.storeDetail && String(this.storeDetail.id) === String(id)) {
-                        const result = await this.api('/stores/' + id);
-                        if (result && result.status === 200) {
-                            this.storeDetail = result.data;
-                        } else {
-                            this.storeDetailError = 'Gagal memperbarui detail toko.';
-                        }
-                    }
+                    this.storeDetail = null;
+                    this.navigate('store-detail/' + id);
                 } else {
                     const msg = json?.messages ? Object.values(json.messages).join(', ') : (json?.error || 'Tidak diketahui');
                     alert('Gagal menyimpan (status ' + res.status + '): ' + msg);
