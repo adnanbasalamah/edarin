@@ -35,12 +35,12 @@
 
 ## Phase 3: Navigasi dari Daftar Toko
 
-- [ ] Task: Ubah nama toko di daftar toko menjadi link
-    - [ ] Modifikasi view daftar toko agar nama toko dapat diklik
-    - [ ] Link mengarah ke `/stores/{id}`
-    - [ ] Pastikan navigasi berfungsi di mobile dan desktop
-- [ ] Task: Tulis test untuk navigasi daftar toko
-    - [ ] Test: klik nama toko mengarahkan ke URL yang benar
+- [x] Task: Ubah nama toko di daftar toko menjadi link [813e62d]
+    - [x] Modifikasi view daftar toko agar nama toko dapat diklik
+    - [x] Link mengarah ke `/stores/{id}`
+    - [x] Pastikan navigasi berfungsi di mobile dan desktop
+- [x] Task: Tulis test untuk navigasi daftar toko [813e62d]
+    - [x] Test: klik nama toko mengarahkan ke URL yang benar
 - [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
 
 ## Phase 4: Tombol Edit & Finalisasi
