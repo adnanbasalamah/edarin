@@ -1,0 +1,8 @@
+{
+  "track_id": "store-detail_20260610",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-06-10T09:38:34Z",
+  "updated_at": "2026-06-10T09:38:34Z",
+  "description": "Halaman detail toko yang menampilkan informasi lengkap toko (nama, owner, alamat, no HP, foto) beserta peta lokasi menggunakan Leaflet.js + OSM, diakses dengan mengklik nama toko dari daftar toko."
+}
