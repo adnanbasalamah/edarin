@@ -4,6 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Auto-Hide Mobile Sidebar Menu**
+- [x] **Track: Auto-Hide Mobile Sidebar Menu**
 *Link: [./tracks/mobile-sidebar_20260610/](./tracks/mobile-sidebar_20260610/)*
 
