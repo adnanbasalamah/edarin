@@ -51,3 +51,7 @@
 - [x] Task: Tulis integration test end-to-end [9b12aae]
     - [x] Test: alur lengkap dari daftar toko -> detail -> edit
 - [x] Task: Conductor - User Manual Verification 'Phase 4' (Protocol in workflow.md) [c47ab99]
+
+## Phase: Review Fixes
+
+- [x] Task: Apply review suggestions [f5ab2aa]
