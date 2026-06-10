@@ -3,7 +3,10 @@
 namespace App\Controllers;
 
 use App\Models\SaleModel;
+use App\Models\NotaModel;
+use App\Models\NotaItemModel;
 use App\Models\AuditLogModel;
+use App\Models\ProductModel;
 
 class Sales extends BaseController
 {
@@ -82,7 +85,7 @@ class Sales extends BaseController
             'sale_date'     => 'required|valid_date[Y-m-d]',
         ];
 
-        if (!$this->validate($rules)) {
+        if (! $this->validate($rules)) {
             return $this->response
                 ->setStatusCode(400)
                 ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
@@ -99,25 +102,82 @@ class Sales extends BaseController
         }
 
         $userId = $this->request->user->sub ?? null;
+        $storeId = $this->getInput('store_id');
+        $productId = $this->getInput('product_id');
+        $quantity = $this->getInput('quantity');
+        $returnQty = $this->getInput('return_qty') ?? 0;
+        $saleDate = $this->getInput('sale_date');
 
         $saleModel->insert([
             'client_id'      => $clientId,
             'distributor_id' => $userId,
-            'store_id'       => $this->getInput('store_id'),
-            'product_id'     => $this->getInput('product_id'),
-            'quantity'       => $this->getInput('quantity'),
-            'return_qty'     => $this->getInput('return_qty') ?? 0,
-            'sale_date'      => $this->getInput('sale_date'),
+            'store_id'       => $storeId,
+            'product_id'     => $productId,
+            'quantity'       => $quantity,
+            'return_qty'     => $returnQty,
+            'sale_date'      => $saleDate,
             'sync_status'    => 'synced',
         ]);
 
         $saleId = $saleModel->insertID;
 
+        $notaId = $this->syncSaleToNota($userId, $storeId, $productId, $quantity, $returnQty, $saleDate);
+
         $this->logAudit('create', 'sale', $saleId);
 
         return $this->response
             ->setStatusCode(201)
-            ->setJSON(['message' => 'Sale created', 'id' => $saleId]);
+            ->setJSON(['message' => 'Sale created', 'id' => $saleId, 'nota_id' => $notaId]);
+    }
+
+    private function syncSaleToNota(int $distributorId, int $storeId, int $productId, int $quantity, int $returnQty, string $saleDate): int
+    {
+        $notaModel = new NotaModel();
+        $notaItemModel = new NotaItemModel();
+        $productModel = new ProductModel();
+
+        $product = $productModel->find($productId);
+        $price = $product ? (float) $product['price'] : 0;
+
+        $existingNota = $notaModel
+            ->where('store_id', $storeId)
+            ->where('note_date', $saleDate)
+            ->where('distributor_id', $distributorId)
+            ->first();
+
+        if ($existingNota) {
+            $notaId = $existingNota['id'];
+
+            $notaItemModel->insert([
+                'nota_id'    => $notaId,
+                'product_id' => $productId,
+                'quantity'   => $quantity,
+                'return_qty' => $returnQty,
+                'price'      => $price,
+            ]);
+
+            $newTotal = (float) $existingNota['total_value'] + ($quantity * $price);
+            $notaModel->update($notaId, ['total_value' => $newTotal]);
+        } else {
+            $notaId = $notaModel->insert([
+                'client_id'      => 'nota_' . $notaModel->countAll() . '_' . uniqid(),
+                'distributor_id' => $distributorId,
+                'store_id'       => $storeId,
+                'note_date'      => $saleDate,
+                'total_value'    => $quantity * $price,
+                'sync_status'    => 'synced',
+            ]);
+
+            $notaItemModel->insert([
+                'nota_id'    => $notaId,
+                'product_id' => $productId,
+                'quantity'   => $quantity,
+                'return_qty' => $returnQty,
+                'price'      => $price,
+            ]);
+        }
+
+        return $notaId;
     }
 
     private function logAudit(string $action, string $entityType, ?int $entityId): void

@@ -28,19 +28,19 @@
     - [x] Write controller tests for `GET api/notas` (index)
     - [x] Write controller tests for `GET api/notas/(:num)` (show)
     - [x] Confirm all tests fail (Red phase)
-- [x] Task: Implement Notas controller (index & show)
+- [x] Task: Implement Notas controller (index & show) (09f6b33)
     - [x] Create Notas.php controller with index() (list notas for authenticated user, with store+items joins)
     - [x] Implement show() (single nota with all items, store, distributor details)
     - [x] Add routes: GET api/notas, GET api/notas/(:num) with jwt-auth filter
     - [x] Run tests to confirm they pass (Green phase)
-- [ ] Task: Write tests for Sales controller modification
-    - [ ] Write test for create(): verify a Nota + NotaItems are created alongside the sales records
-    - [ ] Write test for index(): verify response returns notas instead of individual sales
-    - [ ] Confirm tests fail (Red phase)
-- [ ] Task: Modify Sales controller to integrate Nota creation
-    - [ ] Update create() to group entries by store and generate a Nota with NotaItems
-    - [ ] Modify index() to return notas list instead of raw sales entries
-    - [ ] Run tests to confirm they pass (Green phase)
+- [~] Task: Write tests for Sales controller modification
+    - [x] Write test for create(): verify a Nota + NotaItems are created alongside the sales records
+    - [x] Write test for index(): verify response returns notas instead of individual sales
+    - [x] Confirm tests fail (Red phase)
+- [x] Task: Modify Sales controller to integrate Nota creation
+    - [x] Update create() to group entries by store and generate a Nota with NotaItems
+    - [x] Modify index() to return notas list instead of raw sales entries
+    - [x] Run tests to confirm they pass (Green phase)
 - [ ] Task: Conductor - User Manual Verification 'Backend API - Nota Endpoints' (Protocol in workflow.md)
 
 ## Phase 3: Data Migration

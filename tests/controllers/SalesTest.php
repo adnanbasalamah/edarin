@@ -138,4 +138,60 @@ class SalesTest extends CIUnitTestCase
         $this->assertArrayHasKey('today_sales', $json);
         $this->assertGreaterThanOrEqual(1, $json['today_sales']);
     }
+
+    public function testCreateSaleAlsoCreatesNota()
+    {
+        $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ])->withBodyFormat('json')->post('api/sales', [
+            'client_id'  => 'nota_test_' . uniqid(),
+            'store_id'   => $this->storeId,
+            'product_id' => $this->productId,
+            'quantity'   => 10,
+            'return_qty' => 2,
+            'sale_date'  => date('Y-m-d'),
+        ]);
+
+        $db = db_connect();
+        $notas = $db->table('notas')->where('store_id', $this->storeId)->get()->getResultArray();
+        $this->assertNotEmpty($notas, 'Nota should be created for the store.');
+        $this->assertCount(1, $notas);
+
+        $notaItems = $db->table('nota_items')->where('nota_id', $notas[0]['id'])->get()->getResultArray();
+        $this->assertNotEmpty($notaItems, 'Nota items should be created.');
+        $this->assertCount(1, $notaItems);
+    }
+
+    public function testCreateMultipleSalesSameStoreCreatesOneNota()
+    {
+        $clientId1 = 'multi_nota_1_' . uniqid();
+        $clientId2 = 'multi_nota_2_' . uniqid();
+
+        $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ])->withBodyFormat('json')->post('api/sales', [
+            'client_id'  => $clientId1,
+            'store_id'   => $this->storeId,
+            'product_id' => $this->productId,
+            'quantity'   => 5,
+            'sale_date'  => date('Y-m-d'),
+        ]);
+
+        $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ])->withBodyFormat('json')->post('api/sales', [
+            'client_id'  => $clientId2,
+            'store_id'   => $this->storeId,
+            'product_id' => $this->productId,
+            'quantity'   => 3,
+            'sale_date'  => date('Y-m-d'),
+        ]);
+
+        $db = db_connect();
+        $notas = $db->table('notas')->where('store_id', $this->storeId)->get()->getResultArray();
+        $this->assertCount(1, $notas, 'Only one nota should exist for the same store and date.');
+
+        $notaItems = $db->table('nota_items')->where('nota_id', $notas[0]['id'])->get()->getResultArray();
+        $this->assertCount(2, $notaItems, 'Both sales should be items in the same nota.');
+    }
 }
