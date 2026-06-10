@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         tailwind.config = {
             theme: {
@@ -464,6 +466,72 @@
                                     <button type="submit" class="flex-1 min-h-[44px] rounded bg-primary text-sm font-medium text-white hover:bg-primary-dark">Simpan</button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="isLoggedIn && currentRoute.startsWith('store-detail')">
+                    <button @click="goBackToStores" class="flex items-center gap-1 text-sm text-primary hover:text-primary-dark mb-4 min-h-[44px]">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Kembali ke Daftar Toko</span>
+                    </button>
+
+                    <div x-show="storeDetailLoading" class="text-center text-sm text-[#424751] py-16">
+                        <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-3"></div>
+                        Memuat data toko...
+                    </div>
+
+                    <div x-show="storeDetail" class="space-y-4">
+                        <div class="rounded-xl bg-white border border-[#e2e2e5] p-4">
+                            <div class="flex items-start justify-between mb-3">
+                                <h2 class="text-lg font-bold font-heading text-primary" x-text="storeDetail.name"></h2>
+                                <button @click="editStore(storeDetail)" class="flex min-h-[44px] items-center gap-1 rounded bg-primary px-4 text-sm font-medium text-white hover:bg-primary-dark">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                    Edit
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div>
+                                    <p class="text-xs text-[#737782]">Pemilik</p>
+                                    <p class="text-sm font-medium" x-text="storeDetail.owner"></p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-[#737782]">Telepon</p>
+                                    <p class="text-sm font-medium font-mono" x-text="storeDetail.phone"></p>
+                                </div>
+                                <div class="col-span-2">
+                                    <p class="text-xs text-[#737782]">Alamat</p>
+                                    <p class="text-sm font-medium" x-text="storeDetail.address"></p>
+                                </div>
+                            </div>
+
+                            <div x-show="storeDetail.image" class="mb-4">
+                                <p class="text-xs text-[#737782] mb-1">Foto Toko</p>
+                                <img :src="window.location.origin + '/api.php?path=' + storeDetail.image" alt="Foto Toko" class="w-full max-w-xs rounded-lg border border-[#e2e2e5] object-cover">
+                            </div>
+                            <div x-show="!storeDetail.image" class="mb-4">
+                                <p class="text-xs text-[#737782] mb-1">Foto Toko</p>
+                                <div class="w-full max-w-xs h-40 rounded-lg border border-dashed border-[#c2c6d2] bg-[#f9f9fc] flex items-center justify-center">
+                                    <span class="text-sm text-[#737782]">Tidak ada foto</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl bg-white border border-[#e2e2e5] overflow-hidden">
+                            <div class="px-4 py-3 border-b border-[#e2e2e5] bg-[#f3f3f6]">
+                                <h3 class="text-sm font-bold font-heading">Lokasi</h3>
+                            </div>
+                            <div x-show="storeDetail.latitude && storeDetail.longitude">
+                                <div id="store-map" class="h-64 w-full"></div>
+                            </div>
+                            <div x-show="!storeDetail.latitude || !storeDetail.longitude" class="px-4 py-8 text-center">
+                                <span class="text-sm text-[#737782]">Lokasi tidak tersedia</span>
+                            </div>
                         </div>
                     </div>
                 </div>

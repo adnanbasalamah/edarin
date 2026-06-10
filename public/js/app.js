@@ -70,6 +70,8 @@ function app() {
         reportTransactions: [],
         notas: [],
         notaDetail: null,
+        storeDetail: null,
+        storeDetailLoading: false,
         auditLogs: [],
         syncQueue: [],
         isSyncing: false,
@@ -195,6 +197,12 @@ function app() {
                 if (rest.length && rest[0] && !this.notaDetail) {
                     const notaId = rest[0];
                     this.viewNota(notaId);
+                }
+            }
+            if (base === 'store-detail') {
+                this.pageTitle = 'Detail Toko';
+                if (rest.length && rest[0] && (!this.storeDetail || String(this.storeDetail.id) !== rest[0])) {
+                    this.viewStore(rest[0]);
                 }
             }
         },
@@ -518,6 +526,40 @@ function app() {
             window.location.hash = 'reports';
         },
 
+        async viewStore(storeId) {
+            this.storeDetailLoading = true;
+            this.storeDetail = null;
+            const result = await this.api('/stores/' + storeId);
+            if (result && result.status === 200) {
+                this.storeDetail = result.data;
+                window.location.hash = 'store-detail/' + storeId;
+                this.$nextTick(() => {
+                    this.initStoreMap();
+                });
+            }
+            this.storeDetailLoading = false;
+        },
+
+        goBackToStores() {
+            this.storeDetail = null;
+            window.location.hash = 'stores';
+        },
+
+        initStoreMap() {
+            const el = document.getElementById('store-map');
+            if (!el || !this.storeDetail || !this.storeDetail.latitude || !this.storeDetail.longitude) return;
+            if (el._leaflet_id) {
+                el._leaflet_map.remove();
+            }
+            const map = L.map('store-map').setView([parseFloat(this.storeDetail.latitude), parseFloat(this.storeDetail.longitude)], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(map);
+            L.marker([parseFloat(this.storeDetail.latitude), parseFloat(this.storeDetail.longitude)]).addTo(map);
+            setTimeout(() => map.invalidateSize(), 200);
+        },
+
         parseJwt(token) {
             try {
                 return JSON.parse(atob(token.split('.')[1]));
@@ -709,6 +751,12 @@ function app() {
                     this.storeImageFile = null;
                     this.storeImagePreview = null;
                     await this.loadStores();
+                    if (this.storeDetail && String(this.storeDetail.id) === String(id)) {
+                        const result = await this.api('/stores/' + id);
+                        if (result && result.status === 200) {
+                            this.storeDetail = result.data;
+                        }
+                    }
                 }
             } catch (err) {
                 console.error('Update store failed:', err);
