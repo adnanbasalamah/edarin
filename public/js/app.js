@@ -498,6 +498,8 @@ function app() {
             const result = await this.api('/notas');
             if (result) {
                 this.notas = result.data || [];
+            } else {
+                this.notas = [];
             }
         },
 
