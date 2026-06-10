@@ -14,23 +14,23 @@
 
 ## Phase 2: Frontend - Halaman Detail Toko
 
-- [ ] Task: Buat struktur halaman detail toko
-    - [ ] Buat view template untuk halaman detail toko (`stores/detail.php`)
-    - [ ] Terapkan layout responsif dengan Tailwind CSS (mobile-first)
-    - [ ] Buat Alpine.js component untuk fetch data toko dari API
-- [ ] Task: Integrasi Leaflet.js + OpenStreetMap
-    - [ ] Sertakan library Leaflet.js (CDN atau local)
-    - [ ] Inisialisasi peta dengan koordinat toko (lat, long)
-    - [ ] Tambahkan marker/pin pada titik koordinat
-    - [ ] Handle fallback: tampilkan "Lokasi tidak tersedia" jika koordinat kosong
-- [ ] Task: Implementasi fallback states
-    - [ ] Fallback foto: tampilkan placeholder jika foto tidak tersedia
-    - [ ] Fallback koordinat: "Lokasi tidak tersedia"
-    - [ ] Loading state saat fetch data
-- [ ] Task: Tulis frontend test untuk halaman detail toko
-    - [ ] Test: render semua field data toko dengan benar
-    - [ ] Test: peta dirender dengan koordinat yang benar
-    - [ ] Test: fallback states bekerja dengan benar
+- [x] Task: Buat struktur halaman detail toko [9b12aae]
+    - [x] Buat view template untuk halaman detail toko (`stores/detail.php`)
+    - [x] Terapkan layout responsif dengan Tailwind CSS (mobile-first)
+    - [x] Buat Alpine.js component untuk fetch data toko dari API
+- [x] Task: Integrasi Leaflet.js + OpenStreetMap [9b12aae]
+    - [x] Sertakan library Leaflet.js (CDN atau local)
+    - [x] Inisialisasi peta dengan koordinat toko (lat, long)
+    - [x] Tambahkan marker/pin pada titik koordinat
+    - [x] Handle fallback: tampilkan "Lokasi tidak tersedia" jika koordinat kosong
+- [x] Task: Implementasi fallback states [9b12aae]
+    - [x] Fallback foto: tampilkan placeholder jika foto tidak tersedia
+    - [x] Fallback koordinat: "Lokasi tidak tersedia"
+    - [x] Loading state saat fetch data
+- [x] Task: Tulis frontend test untuk halaman detail toko [9b12aae]
+    - [x] Test: render semua field data toko dengan benar
+    - [x] Test: peta dirender dengan koordinat yang benar
+    - [x] Test: fallback states bekerja dengan benar
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
 ## Phase 3: Navigasi dari Daftar Toko
