@@ -56,7 +56,7 @@
     - [x] Run migration and confirm tests pass (Green phase)
 - [ ] Task: Conductor - User Manual Verification 'Data Migration' (Protocol in workflow.md)
 
-## Phase 4: Frontend Integration & Polish
+## Phase 4: Frontend Integration & Polish [checkpoint: e3adc1d]
 
 - [x] Task: Update distributor transaction history view
     - [x] Create Nota list page showing summary cards (store name, date, total value, item count)
