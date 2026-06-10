@@ -84,6 +84,44 @@ class StoresTest extends CIUnitTestCase
         $result->assertStatus(404);
     }
 
+    public function testShowStoreReturnsAllRequiredFields()
+    {
+        $db = db_connect();
+        $db->table('stores')->insert([
+            'name'      => 'Toko Detail Test',
+            'owner'     => 'Pemilik Detail',
+            'address'   => 'Jl. Detail No. 1',
+            'phone'     => '08123456789',
+            'image'     => 'uploads/stores/detail_test.jpg',
+            'latitude'  => -6.2000000,
+            'longitude' => 106.8166667,
+        ]);
+        $storeId = $db->insertID();
+
+        $result = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ])->get('api/stores/' . $storeId);
+
+        $result->assertStatus(200);
+        $json = json_decode($result->getJSON(), true);
+
+        $this->assertArrayHasKey('name', $json);
+        $this->assertArrayHasKey('owner', $json);
+        $this->assertArrayHasKey('address', $json);
+        $this->assertArrayHasKey('phone', $json);
+        $this->assertArrayHasKey('image', $json);
+        $this->assertArrayHasKey('latitude', $json);
+        $this->assertArrayHasKey('longitude', $json);
+
+        $this->assertEquals('Toko Detail Test', $json['name']);
+        $this->assertEquals('Pemilik Detail', $json['owner']);
+        $this->assertEquals('Jl. Detail No. 1', $json['address']);
+        $this->assertEquals('08123456789', $json['phone']);
+        $this->assertEquals('uploads/stores/detail_test.jpg', $json['image']);
+        $this->assertEquals('-6.2000000', $json['latitude']);
+        $this->assertEquals('106.8166667', $json['longitude']);
+    }
+
     public function testUpdateStore()
     {
         $createResult = $this->withHeaders([
