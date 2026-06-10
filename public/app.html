@@ -372,7 +372,7 @@
                         <div class="flex items-center gap-2">
                             <input type="text" x-model="storeSearch" placeholder="Cari store..."
                                    class="min-h-[44px] w-48 rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
-                            <button @click="showStoreForm = true; storeForm = {}" class="flex min-h-[44px] items-center gap-1.5 rounded bg-primary px-4 text-sm font-medium text-white hover:bg-primary-dark">
+                            <button @click="showStoreForm = true; storeForm = {}; storeImageFile = null; storeImagePreview = null" class="flex min-h-[44px] items-center gap-1.5 rounded bg-primary px-4 text-sm font-medium text-white hover:bg-primary-dark">
                                 <span>+</span>
                                 <span>Tambah Store</span>
                             </button>
@@ -434,6 +434,20 @@
                                     <input type="text" x-model="storeForm.phone" required class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
                                 </div>
                                 <div>
+                                    <label class="mb-1 block text-sm font-medium text-[#424751]">Foto Toko</label>
+                                    <input type="file" accept="image/*" capture="environment" @change="handleStoreImage($event)"
+                                           class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 file:mr-3 file:rounded file:border-0 file:bg-primary file:px-3 file:py-1 file:text-xs file:font-medium file:text-white hover:file:bg-primary-dark">
+                                    <div x-show="storeImagePreview" class="mt-2">
+                                        <img :src="storeImagePreview" class="w-32 h-32 object-cover rounded-lg border border-[#e2e2e5]" alt="Preview">
+                                    </div>
+                                    <div x-show="!storeImagePreview && storeForm.image" class="mt-2">
+                                        <div class="text-xs text-[#424751]">
+                                            Gambar sudah ada: <span x-text="storeForm.image" class="font-mono"></span>
+                                        </div>
+                                    </div>
+                                    <p class="mt-1 text-xs text-[#737782]">Ambil foto toko dari kamera. Gambar akan di-crop 1:1.</p>
+                                </div>
+                                <div>
                                     <label class="mb-1 block text-sm font-medium text-[#424751]">Lokasi (Koordinat)</label>
                                     <div class="flex gap-2">
                                         <input type="text" x-model="storeForm.latitude" placeholder="Latitude" class="min-h-[44px] w-1/2 rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
@@ -446,7 +460,7 @@
                                     <p x-show="locationError" class="mt-1 text-xs text-danger" x-text="locationError"></p>
                                 </div>
                                 <div class="flex gap-3">
-                                    <button type="button" @click="showStoreForm = false" class="flex-1 min-h-[44px] rounded border border-[#c2c6d2] text-sm font-medium text-[#424751] hover:bg-[#f3f3f6]">Batal</button>
+                                    <button type="button" @click="showStoreForm = false; storeImageFile = null; storeImagePreview = null" class="flex-1 min-h-[44px] rounded border border-[#c2c6d2] text-sm font-medium text-[#424751] hover:bg-[#f3f3f6]">Batal</button>
                                     <button type="submit" class="flex-1 min-h-[44px] rounded bg-primary text-sm font-medium text-white hover:bg-primary-dark">Simpan</button>
                                 </div>
                             </form>

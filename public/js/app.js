@@ -42,6 +42,8 @@ function app() {
         showDistributorForm: false,
         productForm: {},
         storeForm: {},
+        storeImageFile: null,
+        storeImagePreview: null,
         distributorForm: {},
         createdPassword: '',
         locationError: '',
@@ -637,35 +639,79 @@ function app() {
 
         editStore(store) {
             this.storeForm = { ...store };
+            this.storeImageFile = null;
+            this.storeImagePreview = store.image ? (window.location.origin + '/api.php?path=' + store.image) : null;
             this.showStoreForm = true;
         },
 
+        handleStoreImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            this.storeImageFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.storeImagePreview = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+
         async createStore() {
-            const result = await this.api('/stores', {
-                method: 'POST',
-                body: JSON.stringify(this.storeForm),
-            });
-            if (result && result.status === 201) {
-                this.showStoreForm = false;
-                this.storeForm = {};
-                await this.loadStores();
-            } else if (result) {
-                this.locationError = result.data?.error || 'Gagal menyimpan store.';
+            const data = new FormData();
+            data.append('name', this.storeForm.name || '');
+            data.append('owner', this.storeForm.owner || '');
+            data.append('address', this.storeForm.address || '');
+            data.append('phone', this.storeForm.phone || '');
+            if (this.storeForm.latitude) data.append('latitude', this.storeForm.latitude);
+            if (this.storeForm.longitude) data.append('longitude', this.storeForm.longitude);
+            if (this.storeImageFile) {
+                data.append('image', this.storeImageFile);
+            }
+
+            const headers = { 'Authorization': 'Bearer ' + this.token };
+            let url = API_BASE + '?path=/stores';
+
+            try {
+                const res = await fetch(url, { method: 'POST', headers, body: data });
+                const json = await res.json();
+                if (res.status === 201) {
+                    this.showStoreForm = false;
+                    this.storeForm = {};
+                    this.storeImageFile = null;
+                    this.storeImagePreview = null;
+                    await this.loadStores();
+                }
+            } catch (err) {
+                console.error('Create store failed:', err);
             }
         },
 
         async updateStore() {
-            const { id, ...data } = this.storeForm;
-            const result = await this.api('/stores/' + id, {
-                method: 'PUT',
-                body: JSON.stringify(data),
-            });
-            if (result && result.status === 200) {
-                this.showStoreForm = false;
-                this.storeForm = {};
-                await this.loadStores();
-            } else if (result) {
-                this.locationError = result.data?.error || 'Gagal menyimpan store.';
+            const { id, ...rest } = this.storeForm;
+            const data = new FormData();
+            for (const [key, value] of Object.entries(rest)) {
+                if (value !== null && value !== '') {
+                    data.append(key, value);
+                }
+            }
+            if (this.storeImageFile) {
+                data.append('image', this.storeImageFile);
+            }
+
+            const headers = { 'Authorization': 'Bearer ' + this.token };
+            let url = API_BASE + '?path=/stores/' + id;
+
+            try {
+                const res = await fetch(url, { method: 'PUT', headers, body: data });
+                const json = await res.json();
+                if (res.status === 200) {
+                    this.showStoreForm = false;
+                    this.storeForm = {};
+                    this.storeImageFile = null;
+                    this.storeImagePreview = null;
+                    await this.loadStores();
+                }
+            } catch (err) {
+                console.error('Update store failed:', err);
             }
         },
 

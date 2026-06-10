@@ -1,6 +1,6 @@
 # Implementation Plan: Upload Gambar Toko
 
-## Phase 1: Database & Backend API
+## Phase 1: Database & Backend API [checkpoint: 7535125]
 
 - [x] Task: Create stores image column migration
     - [x] Create migration file menambahkan kolom `image` (VARCHAR 255, nullable) ke tabel `stores`
@@ -26,12 +26,12 @@
 
 ## Phase 2: Frontend Integration
 
-- [ ] Task: Add camera capture to store form
-    - [ ] Tambahkan input type=file dengan accept=image/* capture=camera di form Tambah Store
-    - [ ] Tambahkan preview gambar sebelum submit
-    - [ ] Kirim sebagai FormData (multipart) bukan JSON
-- [ ] Task: Display store image in store detail/edit
-    - [ ] Tampilkan gambar di form edit toko
-    - [ ] Tampilkan placeholder jika tidak ada gambar
-    - [ ] Styling responsive mobile-first
+- [x] Task: Add camera capture to store form
+    - [x] Tambahkan input type=file dengan accept=image/* capture=camera di form Tambah Store
+    - [x] Tambahkan preview gambar sebelum submit
+    - [x] Kirim sebagai FormData (multipart) bukan JSON
+- [x] Task: Display store image in store detail/edit
+    - [x] Tampilkan gambar di form edit toko
+    - [x] Tampilkan placeholder jika tidak ada gambar
+    - [x] Styling responsive mobile-first
 - [ ] Task: Conductor - User Manual Verification 'Frontend Integration' (Protocol in workflow.md)
