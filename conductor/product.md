@@ -13,7 +13,7 @@ Edarin is a distribution management system designed to streamline the flow of go
 
 ## Core Features (MVP)
 - **Authentication & User Management:** JWT-based login system. Admins can create, edit, and manage distributor accounts.
-- **Store Management:** Full CRUD for store data including store name, owner name, address, phone number, and automatic coordinate capture.
+- **Store Management:** Full CRUD for store data including store name, owner name, address, phone number, store photo (camera capture), and automatic coordinate capture.
 - **Sales & Returns Input:** Distributors can input sales quantities per product per store, along with return quantities. Each submission automatically generates a Nota (invoice) grouping all products for that store.
 - **Reports & Analytics:** Distributors can view their transaction history as Notas (invoices) with detailed product breakdowns, and download reports (daily/weekly/monthly). Admins can view all distributor data and Notas across the network.
 

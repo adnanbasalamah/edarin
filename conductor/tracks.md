@@ -4,6 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Upload Gambar Toko**
+- [x] **Track: Upload Gambar Toko**
 *Link: [./tracks/store-image_20260610/](./tracks/store-image_20260610/)*
 

@@ -24,7 +24,7 @@
     - [x] Run tests to confirm they pass (Green phase)
 - [ ] Task: Conductor - User Manual Verification 'Database & Backend API' (Protocol in workflow.md)
 
-## Phase 2: Frontend Integration
+## Phase 2: Frontend Integration [checkpoint: aaa09fc]
 
 - [x] Task: Add camera capture to store form
     - [x] Tambahkan input type=file dengan accept=image/* capture=camera di form Tambah Store
