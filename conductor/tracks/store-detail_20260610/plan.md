@@ -45,9 +45,9 @@
 
 ## Phase 4: Tombol Edit & Finalisasi
 
-- [ ] Task: Tambahkan tombol Edit di halaman detail toko
-    - [ ] Tambahkan tombol Edit yang mengarah ke halaman edit toko
-    - [ ] Pastikan tombol hanya muncul untuk role yang berwenang
-- [ ] Task: Tulis integration test end-to-end
-    - [ ] Test: alur lengkap dari daftar toko -> detail -> edit
+- [x] Task: Tambahkan tombol Edit di halaman detail toko [9b12aae]
+    - [x] Tambahkan tombol Edit yang mengarah ke halaman edit toko
+    - [x] Pastikan tombol hanya muncul untuk role yang berwenang
+- [x] Task: Tulis integration test end-to-end [9b12aae]
+    - [x] Test: alur lengkap dari daftar toko -> detail -> edit
 - [ ] Task: Conductor - User Manual Verification 'Phase 4' (Protocol in workflow.md)
