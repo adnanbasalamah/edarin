@@ -8,12 +8,12 @@
 - [x] Task: Create nota_items table migration
     - [x] Create migration file `CreateNotaItemsTable` with fields: id, nota_id (FK), product_id (FK), quantity, return_qty, price (DECIMAL), timestamps
     - [x] Run migration to verify table creation
-- [ ] Task: Write tests for NotaModel
-    - [ ] Write unit tests for NotaModel (create, read, validation rules)
-    - [ ] Confirm tests fail (Red phase)
-- [ ] Task: Implement NotaModel
-    - [ ] Create NotaModel.php with allowedFields, validationRules, relationships (store, distributor, items)
-    - [ ] Run tests to confirm they pass (Green phase)
+- [~] Task: Write tests for NotaModel
+    - [x] Write unit tests for NotaModel (create, read, validation rules)
+    - [x] Confirm tests fail (Red phase)
+- [x] Task: Implement NotaModel
+    - [x] Create NotaModel.php with allowedFields, validationRules, relationships (store, distributor, items)
+    - [x] Run tests to confirm they pass (Green phase)
 - [ ] Task: Write tests for NotaItemModel
     - [ ] Write unit tests for NotaItemModel (create, read, validation)
     - [ ] Confirm tests fail (Red phase)
