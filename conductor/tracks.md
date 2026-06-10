@@ -4,6 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Sistem Nota Transaksi Penjualan**
+- [x] **Track: Sistem Nota Transaksi Penjualan**
 *Link: [./tracks/nota-transaksi_20260610/](./tracks/nota-transaksi_20260610/)*
 
