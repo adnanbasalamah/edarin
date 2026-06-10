@@ -29,19 +29,38 @@ abstract class BaseController extends Controller
 
     protected function getInput(string $key): mixed
     {
-        $json = $this->request->getJSON(true);
-        if ($json !== null && array_key_exists($key, $json)) {
-            $value = $json[$key];
-            return is_scalar($value) ? (string) $value : $value;
+        $contentType = $this->request->getHeaderLine('Content-Type');
+
+        if (! str_contains($contentType, 'multipart/form-data')) {
+            try {
+                $json = $this->request->getJSON(true);
+                if ($json !== null && array_key_exists($key, $json)) {
+                    $value = $json[$key];
+                    return is_scalar($value) ? (string) $value : $value;
+                }
+            } catch (\Throwable $e) {
+            }
         }
+
         $value = $this->request->getPost($key);
         return is_scalar($value) ? (string) $value : $value;
     }
 
     protected function getInputAll(): array
     {
-        $json = $this->request->getJSON(true);
-        return $json ?? $this->request->getPost() ?? [];
+        $contentType = $this->request->getHeaderLine('Content-Type');
+
+        if (! str_contains($contentType, 'multipart/form-data')) {
+            try {
+                $json = $this->request->getJSON(true);
+                if ($json !== null) {
+                    return $json;
+                }
+            } catch (\Throwable $e) {
+            }
+        }
+
+        return $this->request->getPost() ?? [];
     }
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)

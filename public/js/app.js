@@ -697,7 +697,7 @@ function app() {
         editStore(store) {
             this.storeForm = { ...store };
             this.storeImageFile = null;
-            this.storeImagePreview = store.image ? (window.location.origin + '/api.php?path=' + store.image) : null;
+            this.storeImagePreview = store.image ? (API_BASE + '&path=/stores/image/' + store.image.split('/').pop()) : null;
             this.showStoreForm = true;
         },
 
@@ -743,10 +743,13 @@ function app() {
         },
 
         async updateStore() {
-            const { id, ...rest } = this.storeForm;
+            const { id, created_at, updated_at, image, ...rest } = this.storeForm;
             const data = new FormData();
-            for (const [key, value] of Object.entries(rest)) {
-                if (value !== null && value !== '') {
+            data.append('_method', 'PUT');
+            const allowedFields = ['name', 'owner', 'address', 'phone', 'latitude', 'longitude'];
+            for (const key of allowedFields) {
+                const value = rest[key];
+                if (value !== null && value !== undefined && value !== '') {
                     data.append(key, value);
                 }
             }
@@ -758,7 +761,7 @@ function app() {
             let url = API_BASE + '?path=/stores/' + id;
 
             try {
-                const res = await fetch(url, { method: 'PUT', headers, body: data });
+                const res = await fetch(url, { method: 'POST', headers, body: data });
                 const json = await res.json();
                 if (res.status === 200) {
                     this.showStoreForm = false;

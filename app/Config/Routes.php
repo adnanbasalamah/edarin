@@ -19,6 +19,7 @@ $routes->group('api', ['filter' => 'jwt-auth'], static function ($routes) {
 
     $routes->group('stores', static function ($routes) {
         $routes->get('/', 'Stores::index');
+        $routes->get('image/(:segment)', 'Stores::image/$1');
         $routes->get('(:num)', 'Stores::show/$1');
         $routes->post('/', 'Stores::create');
         $routes->put('(:num)', 'Stores::update/$1');

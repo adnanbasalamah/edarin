@@ -465,7 +465,7 @@
 
                             <div x-show="storeDetail.image" class="mb-4">
                                 <p class="text-xs text-[#737782] mb-1">Foto Toko</p>
-                                <img :src="window.location.origin + '/api.php?path=' + storeDetail.image" alt="Foto Toko" class="w-full max-w-xs rounded-lg border border-[#e2e2e5] object-cover">
+                                <img :src="API_BASE + '&path=/stores/image/' + storeDetail.image.split('/').pop()" alt="Foto Toko" class="w-full max-w-xs rounded-lg border border-[#e2e2e5] object-cover">
                             </div>
                             <div x-show="!storeDetail.image" class="mb-4">
                                 <p class="text-xs text-[#737782] mb-1">Foto Toko</p>

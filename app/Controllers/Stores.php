@@ -145,6 +145,29 @@ class Stores extends BaseController
         return $this->response->setJSON(['message' => 'Store deleted']);
     }
 
+    public function image(string $filename)
+    {
+        $filepath = WRITEPATH . 'uploads/stores/' . $filename;
+
+        if (! is_file($filepath)) {
+            return $this->response
+                ->setStatusCode(404)
+                ->setJSON(['error' => 'Image not found']);
+        }
+
+        $mimeType = match (pathinfo($filename, PATHINFO_EXTENSION)) {
+            'png'  => 'image/png',
+            'webp' => 'image/webp',
+            default => 'image/jpeg',
+        };
+
+        return $this->response
+            ->setHeader('Content-Type', $mimeType)
+            ->setHeader('Content-Length', (string) filesize($filepath))
+            ->setHeader('Cache-Control', 'max-age=86400')
+            ->setBody(file_get_contents($filepath));
+    }
+
     private function processStoreImage(int $storeId): ?string
     {
         $file = $this->request->getFile('image');
@@ -154,7 +177,9 @@ class Stores extends BaseController
         }
 
         $mimeType = $file->getMimeType();
-        if (! in_array($mimeType, ['image/jpeg', 'image/jpg'])) {
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+        if (! in_array($mimeType, $allowedTypes)) {
             return null;
         }
 
@@ -164,10 +189,16 @@ class Stores extends BaseController
             mkdir($uploadDir, 0755, true);
         }
 
-        $filename = 'store_' . $storeId . '_' . time() . '.jpg';
+        $ext = match ($mimeType) {
+            'image/png'  => 'png',
+            'image/webp' => 'webp',
+            default      => 'jpg',
+        };
+
+        $filename = 'store_' . $storeId . '_' . time() . '.' . $ext;
         $filepath = $uploadDir . $filename;
 
-        $image = \Config\Services::image()
+        \Config\Services::image()
             ->withFile($file)
             ->fit(800, 800, 'center')
             ->save($filepath, 85);
