@@ -1,6 +1,6 @@
 # Implementation Plan: Sistem Nota Transaksi Penjualan
 
-## Phase 1: Database Schema & Models
+## Phase 1: Database Schema & Models [checkpoint: ce6c050]
 
 - [x] Task: Create notas table migration (250db38)
     - [x] Create migration file `CreateNotasTable` with fields: id, client_id, distributor_id, store_id, note_date (DATE), total_value (DECIMAL), sync_status, timestamps
@@ -17,7 +17,7 @@
 - [~] Task: Write tests for NotaItemModel
     - [x] Write unit tests for NotaItemModel (create, read, validation)
     - [x] Confirm tests fail (Red phase)
-- [x] Task: Implement NotaItemModel
+- [x] Task: Implement NotaItemModel (8ee0ab0)
     - [x] Create NotaItemModel.php with allowedFields, validationRules, relationships (nota, product)
     - [x] Run tests to confirm they pass (Green phase)
 - [ ] Task: Conductor - User Manual Verification 'Database Schema & Models' (Protocol in workflow.md)
