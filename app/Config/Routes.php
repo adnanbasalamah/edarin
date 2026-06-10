@@ -46,6 +46,11 @@ $routes->group('api', ['filter' => 'jwt-auth'], static function ($routes) {
         $routes->get('stats', 'Reports::stats');
     });
 
+    $routes->group('notas', static function ($routes) {
+        $routes->get('/', 'Notas::index');
+        $routes->get('(:num)', 'Notas::show/$1');
+    });
+
     $routes->group('audit', static function ($routes) {
         $routes->get('/', 'Audit::index', ['filter' => 'role-check:admin']);
     });

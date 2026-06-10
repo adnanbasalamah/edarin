@@ -24,15 +24,15 @@
 
 ## Phase 2: Backend API - Nota Endpoints
 
-- [ ] Task: Write tests for Notas controller
-    - [ ] Write controller tests for `GET api/notas` (index)
-    - [ ] Write controller tests for `GET api/notas/(:num)` (show)
-    - [ ] Confirm all tests fail (Red phase)
-- [ ] Task: Implement Notas controller (index & show)
-    - [ ] Create Notas.php controller with index() (list notas for authenticated user, with store+items joins)
-    - [ ] Implement show() (single nota with all items, store, distributor details)
-    - [ ] Add routes: GET api/notas, GET api/notas/(:num) with jwt-auth filter
-    - [ ] Run tests to confirm they pass (Green phase)
+- [~] Task: Write tests for Notas controller
+    - [x] Write controller tests for `GET api/notas` (index)
+    - [x] Write controller tests for `GET api/notas/(:num)` (show)
+    - [x] Confirm all tests fail (Red phase)
+- [x] Task: Implement Notas controller (index & show)
+    - [x] Create Notas.php controller with index() (list notas for authenticated user, with store+items joins)
+    - [x] Implement show() (single nota with all items, store, distributor details)
+    - [x] Add routes: GET api/notas, GET api/notas/(:num) with jwt-auth filter
+    - [x] Run tests to confirm they pass (Green phase)
 - [ ] Task: Write tests for Sales controller modification
     - [ ] Write test for create(): verify a Nota + NotaItems are created alongside the sales records
     - [ ] Write test for index(): verify response returns notas instead of individual sales
