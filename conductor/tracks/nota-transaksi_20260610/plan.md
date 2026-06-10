@@ -43,13 +43,13 @@
     - [x] Run tests to confirm they pass (Green phase)
 - [ ] Task: Conductor - User Manual Verification 'Backend API - Nota Endpoints' (Protocol in workflow.md)
 
-## Phase 3: Data Migration
+## Phase 3: Data Migration [checkpoint: 0e071da]
 
 - [~] Task: Write tests for data migration
     - [x] Write test to verify existing sales are grouped into Notas by store+date
     - [x] Write test to verify NotaItems are created from existing sales records
     - [x] Confirm tests fail (Red phase)
-- [x] Task: Implement data migration
+- [x] Task: Implement data migration (77d5f8b)
     - [x] Create migration script that groups existing sales records by (store_id, sale_date) into Notas
     - [x] Create NotaItems from each sale record's quantity, return_qty, product_id, and price
     - [x] Calculate and store total_value on each Nota
