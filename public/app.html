@@ -485,6 +485,10 @@
                         Memuat data toko...
                     </div>
 
+                    <div x-show="storeDetailError" class="text-center py-16">
+                        <p class="text-sm text-danger" x-text="storeDetailError"></p>
+                    </div>
+
                     <div x-show="storeDetail" class="space-y-4">
                         <div class="rounded-xl bg-white border border-[#e2e2e5] p-4">
                             <div class="flex items-start justify-between mb-3">

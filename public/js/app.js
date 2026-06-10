@@ -72,6 +72,7 @@ function app() {
         notaDetail: null,
         storeDetail: null,
         storeDetailLoading: false,
+        storeDetailError: '',
         auditLogs: [],
         syncQueue: [],
         isSyncing: false,
@@ -528,6 +529,7 @@ function app() {
 
         async viewStore(storeId) {
             this.storeDetailLoading = true;
+            this.storeDetailError = '';
             this.storeDetail = null;
             const result = await this.api('/stores/' + storeId);
             if (result && result.status === 200) {
@@ -536,12 +538,19 @@ function app() {
                 this.$nextTick(() => {
                     this.initStoreMap();
                 });
+            } else {
+                this.storeDetailError = 'Gagal memuat data toko. Silakan coba lagi.';
             }
             this.storeDetailLoading = false;
         },
 
         goBackToStores() {
+            if (this._storeMapRef) {
+                this._storeMapRef.remove();
+                this._storeMapRef = null;
+            }
             this.storeDetail = null;
+            this.storeDetailError = '';
             window.location.hash = 'stores';
         },
 
@@ -549,9 +558,15 @@ function app() {
             const el = document.getElementById('store-map');
             if (!el || !this.storeDetail || !this.storeDetail.latitude || !this.storeDetail.longitude) return;
             if (el._leaflet_id) {
-                el._leaflet_map.remove();
+                const oldMap = this._storeMapRef;
+                if (oldMap) {
+                    oldMap.remove();
+                    this._storeMapRef = null;
+                }
+                el._leaflet_id = null;
             }
             const map = L.map('store-map').setView([parseFloat(this.storeDetail.latitude), parseFloat(this.storeDetail.longitude)], 15);
+            this._storeMapRef = map;
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; OpenStreetMap'
@@ -755,6 +770,8 @@ function app() {
                         const result = await this.api('/stores/' + id);
                         if (result && result.status === 200) {
                             this.storeDetail = result.data;
+                        } else {
+                            this.storeDetailError = 'Gagal memperbarui detail toko.';
                         }
                     }
                 }
