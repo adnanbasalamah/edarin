@@ -1,6 +1,6 @@
 # Rencana Implementasi: Halaman Detail Toko
 
-## Phase 1: Backend - Verifikasi & Test Store Detail API
+## Phase 1: Backend - Verifikasi & Test Store Detail API [checkpoint: 2351d09]
 
 - [x] Task: Verifikasi endpoint API detail toko sudah tersedia
     - [ ] Periksa route `GET /api/stores/{id}` di `app/Config/Routes.php`
@@ -10,7 +10,7 @@
     - [x] Test: endpoint mengembalikan data toko yang valid dengan status 200
     - [x] Test: endpoint mengembalikan 404 untuk toko yang tidak ditemukan
     - [x] Test: response menyertakan semua field yang diperlukan
-- [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md) [2351d09]
 
 ## Phase 2: Frontend - Halaman Detail Toko
 
