@@ -33,7 +33,7 @@
     - [x] Test: fallback states bekerja dengan benar
 - [x] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md) [bd2a61f]
 
-## Phase 3: Navigasi dari Daftar Toko
+## Phase 3: Navigasi dari Daftar Toko [checkpoint: f5e8fd9]
 
 - [x] Task: Ubah nama toko di daftar toko menjadi link [813e62d]
     - [x] Modifikasi view daftar toko agar nama toko dapat diklik
@@ -41,7 +41,7 @@
     - [x] Pastikan navigasi berfungsi di mobile dan desktop
 - [x] Task: Tulis test untuk navigasi daftar toko [813e62d]
     - [x] Test: klik nama toko mengarahkan ke URL yang benar
-- [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md) [f5e8fd9]
 
 ## Phase 4: Tombol Edit & Finalisasi
 
