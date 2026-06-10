@@ -1,0 +1,8 @@
+{
+  "track_id": "nota-transaksi_20260610",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-06-10T00:48:34Z",
+  "updated_at": "2026-06-10T00:48:34Z",
+  "description": "Sistem Nota Transaksi Penjualan - Setiap input data penjualan dibuat satu nota yang berisi produk terjual dan retur. Riwayat transaksi menampilkan nota, bukan penjualan per produk."
+}
