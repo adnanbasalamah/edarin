@@ -2,28 +2,28 @@
 
 ## Phase 1: Core Installer
 
-- [ ] Task: Create installer file structure
-    - [ ] Buat `public/install.php` sebagai single-file installer
-    - [ ] Styling dengan Tailwind CDN (tanpa dependency)
-    - [ ] Header dengan logo Edarin dan judul "Instalasi"
-- [ ] Task: Implement system requirements check
-    - [ ] Cek PHP version >= 8.2
-    - [ ] Cek extensions: mysqli, gd, json, mbstring, fileinfo
-    - [ ] Cek writable/ dapat ditulis
-    - [ ] Deteksi web server (Apache/Nginx)
-    - [ ] Tampilkan checklist hijau/merah
-- [ ] Task: Implement installer form
-    - [ ] Form database: host, port, user, password, nama db
-    - [ ] Form admin: username, email, password
-    - [ ] Tombol "Test Database Connection" (AJAX)
-    - [ ] Tombol "Install"
-    - [ ] Progress indicator selama instalasi
-- [ ] Task: Implement installation logic
-    - [ ] Generate .env dari input
-    - [ ] Create semua tabel via SQL (users, products, stores, sales, audit_log, notas, nota_items)
-    - [ ] Insert admin user dengan password hash
-    - [ ] Set folder permissions
-    - [ ] Hapus install.php setelah sukses
+- [x] Task: Create installer file structure
+    - [x] Buat `public/install.php` sebagai single-file installer
+    - [x] Styling dengan Tailwind CDN (tanpa dependency)
+    - [x] Header dengan logo Edarin dan judul "Instalasi"
+- [x] Task: Implement system requirements check
+    - [x] Cek PHP version >= 8.2
+    - [x] Cek extensions: mysqli, gd, json, mbstring, fileinfo
+    - [x] Cek writable/ dapat ditulis
+    - [x] Deteksi web server (Apache/Nginx)
+    - [x] Tampilkan checklist hijau/merah
+- [x] Task: Implement installer form
+    - [x] Form database: host, port, user, password, nama db
+    - [x] Form admin: username, email, password
+    - [x] Tombol "Test Database Connection" (AJAX)
+    - [x] Tombol "Install"
+    - [x] Progress indicator selama instalasi
+- [x] Task: Implement installation logic
+    - [x] Generate .env dari input
+    - [x] Create semua tabel via SQL (users, products, stores, sales, audit_log, notas, nota_items)
+    - [x] Insert admin user dengan password hash
+    - [x] Set folder permissions
+    - [x] Hapus install.php setelah sukses
 - [ ] Task: Conductor - User Manual Verification 'Core Installer' (Protocol in workflow.md)
 
 ## Phase 2: Testing & Polish
