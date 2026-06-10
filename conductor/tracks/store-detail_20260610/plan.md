@@ -12,7 +12,7 @@
     - [x] Test: response menyertakan semua field yang diperlukan
 - [x] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md) [2351d09]
 
-## Phase 2: Frontend - Halaman Detail Toko
+## Phase 2: Frontend - Halaman Detail Toko [checkpoint: bd2a61f]
 
 - [x] Task: Buat struktur halaman detail toko [9b12aae]
     - [x] Buat view template untuk halaman detail toko (`stores/detail.php`)
@@ -31,7 +31,7 @@
     - [x] Test: render semua field data toko dengan benar
     - [x] Test: peta dirender dengan koordinat yang benar
     - [x] Test: fallback states bekerja dengan benar
-- [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md) [bd2a61f]
 
 ## Phase 3: Navigasi dari Daftar Toko
 
