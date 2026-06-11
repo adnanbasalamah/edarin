@@ -49,6 +49,7 @@ function app() {
         storeSearch: '',
         saleStoreSearch: '',
         showStoreDropdown: false,
+        highlightedStoreIndex: -1,
         saleForm: { store_id: '', items: {}, sale_date: '' },
         saleFormError: '',
         saleFormSuccess: '',
@@ -477,6 +478,32 @@ function app() {
         clearStoreSelection() {
             this.saleForm.store_id = '';
             this.saleStoreSearch = '';
+        },
+
+        navigateStoresDown() {
+            const list = this.saleFilteredStores;
+            if (!list.length) return;
+            this.highlightedStoreIndex = (this.highlightedStoreIndex + 1) % list.length;
+        },
+
+        navigateStoresUp() {
+            const list = this.saleFilteredStores;
+            if (!list.length) return;
+            this.highlightedStoreIndex = this.highlightedStoreIndex <= 0
+                ? list.length - 1
+                : this.highlightedStoreIndex - 1;
+        },
+
+        selectHighlightedStore() {
+            if (this.highlightedStoreIndex < 0) return;
+            const list = this.saleFilteredStores;
+            if (this.highlightedStoreIndex >= list.length) return;
+            this.selectStore(list[this.highlightedStoreIndex]);
+        },
+
+        closeStoreDropdown() {
+            this.showStoreDropdown = false;
+            this.highlightedStoreIndex = -1;
         },
 
         async submitSale() {
