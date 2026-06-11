@@ -48,7 +48,6 @@ function app() {
         locationError: '',
         storeSearch: '',
         saleStoreSearch: '',
-        showStoreDropdown: false,
         highlightedStoreIndex: -1,
         saleForm: { store_id: '', items: {}, sale_date: '' },
         saleFormError: '',
@@ -474,7 +473,6 @@ function app() {
         selectStore(store) {
             this.saleForm.store_id = store.id;
             this.saleStoreSearch = '';
-            this.showStoreDropdown = false;
         },
 
         clearStoreSelection() {
@@ -504,7 +502,6 @@ function app() {
         },
 
         closeStoreDropdown() {
-            this.showStoreDropdown = false;
             this.highlightedStoreIndex = -1;
         },
 

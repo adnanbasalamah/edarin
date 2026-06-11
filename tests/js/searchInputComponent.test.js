@@ -15,7 +15,6 @@ describe('Search Input Component', () => {
         data.stores = [...mockStores];
         data.saleStoreSearch = '';
         data.saleForm = { store_id: '', items: {}, sale_date: '' };
-        data.showStoreDropdown = false;
     });
 
     describe('selectStore', () => {
@@ -28,12 +27,6 @@ describe('Search Input Component', () => {
             data.saleStoreSearch = 'ber';
             data.selectStore(mockStores[0]);
             expect(data.saleStoreSearch).toBe('');
-        });
-
-        it('closes the dropdown after selection', () => {
-            data.showStoreDropdown = true;
-            data.selectStore(mockStores[0]);
-            expect(data.showStoreDropdown).toBe(false);
         });
     });
 
@@ -48,13 +41,6 @@ describe('Search Input Component', () => {
             data.saleStoreSearch = 'tok';
             data.clearStoreSelection();
             expect(data.saleStoreSearch).toBe('');
-        });
-    });
-
-    describe('showStoreDropdown', () => {
-        it('initializes as false', () => {
-            const fresh = app();
-            expect(fresh.showStoreDropdown).toBe(false);
         });
     });
 

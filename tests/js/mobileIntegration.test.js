@@ -16,7 +16,6 @@ describe('Mobile Optimization & Integration', () => {
         data.saleStoreSearch = '';
         data.storeSearch = '';
         data.saleForm = { store_id: '', items: {}, sale_date: '' };
-        data.showStoreDropdown = false;
         data.highlightedStoreIndex = -1;
     });
 
@@ -40,7 +39,6 @@ describe('Mobile Optimization & Integration', () => {
 
     it('dropdown state resets when store is deselected', () => {
         data.selectStore(mockStores[0]);
-        expect(data.showStoreDropdown).toBe(false);
         expect(data.saleStoreSearch).toBe('');
         expect(data.highlightedStoreIndex).toBe(-1);
     });

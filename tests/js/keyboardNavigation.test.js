@@ -15,7 +15,6 @@ describe('Keyboard Navigation', () => {
         data.stores = [...mockStores];
         data.saleStoreSearch = '';
         data.saleForm = { store_id: '', items: {}, sale_date: '' };
-        data.showStoreDropdown = false;
         data.highlightedStoreIndex = -1;
     });
 
@@ -70,7 +69,6 @@ describe('Keyboard Navigation', () => {
             data.selectHighlightedStore();
             expect(data.saleForm.store_id).toBe(2);
             expect(data.saleStoreSearch).toBe('');
-            expect(data.showStoreDropdown).toBe(false);
         });
 
         it('does nothing when highlightedStoreIndex is -1', () => {
@@ -81,14 +79,8 @@ describe('Keyboard Navigation', () => {
     });
 
     describe('closeStoreDropdown', () => {
-        it('closes the dropdown', () => {
-            data.showStoreDropdown = true;
-            data.closeStoreDropdown();
-            expect(data.showStoreDropdown).toBe(false);
-        });
-
-        it('resets highlightedStoreIndex to -1', () => {
-            data.highlightedStoreIndex = 1;
+        it('resets highlightedStoreIndex when closing dropdown', () => {
+            data.highlightedStoreIndex = 3;
             data.closeStoreDropdown();
             expect(data.highlightedStoreIndex).toBe(-1);
         });

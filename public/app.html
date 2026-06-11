@@ -793,7 +793,7 @@
                                                @keydown.escape.prevent="closeStoreDropdown(); storeDropdownOpen = false"
                                                placeholder="Cari atau pilih toko..."
                                                role="combobox"
-                                               aria-expanded="true"
+                                               :aria-expanded="storeDropdownOpen && !saleForm.store_id ? 'true' : 'false'"
                                                aria-autocomplete="list"
                                                :aria-activedescendant="highlightedStoreIndex >= 0 ? 'store-option-' + highlightedStoreIndex : ''"
                                                aria-label="Pilih Toko"
