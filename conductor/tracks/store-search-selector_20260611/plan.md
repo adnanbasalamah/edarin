@@ -59,18 +59,18 @@
 
 ## Phase 4: Mobile Optimization & Final Integration
 
-- [ ] Task: Write test scenarios for mobile and integration
-    - [ ] Test: touch targets are at least 44×44px
-    - [ ] Test: dropdown is scrollable with max-height
-    - [ ] Test: selected store persists when navigating away and back
-    - [ ] Test: Store view search no longer affects sales input store list
-- [ ] Task: Optimize for mobile
-    - [ ] Set dropdown max-height with overflow-y scroll
-    - [ ] Ensure all touch targets meet 44px minimum
-    - [ ] Add proper `inputmode` attribute for mobile keyboard
-    - [ ] Test on mobile viewport sizes
-- [ ] Task: Verify session persistence and bug fix
-    - [ ] Confirm `saleForm` persistence across route navigation in Alpine.js component
-    - [ ] Verify `saleFilteredStores` is fully independent from `storeSearch` (Store view)
-    - [ ] Verify dropdown is empty/closed when `saleStoreSearch` is empty and no store is selected
-- [ ] Task: Conductor - User Manual Verification 'Mobile Optimization & Final Integration' (Protocol in workflow.md)
+- [x] Task: Write test scenarios for mobile and integration
+    - [x] Test: touch targets are at least 44×44px
+    - [x] Test: dropdown is scrollable with max-height
+    - [x] Test: selected store persists when navigating away and back
+    - [x] Test: Store view search no longer affects sales input store list
+- [x] Task: Optimize for mobile
+    - [x] Set dropdown max-height with overflow-y scroll
+    - [x] Ensure all touch targets meet 44px minimum
+    - [x] Add proper `inputmode` attribute for mobile keyboard
+    - [x] Test on mobile viewport sizes
+- [x] Task: Verify session persistence and bug fix
+    - [x] Confirm `saleForm` persistence across route navigation in Alpine.js component
+    - [x] Verify `saleFilteredStores` is fully independent from `storeSearch` (Store view)
+    - [x] Verify dropdown is empty/closed when `saleStoreSearch` is empty and no store is selected
+- [~] Task: Conductor - User Manual Verification 'Mobile Optimization & Final Integration' (Protocol in workflow.md)
