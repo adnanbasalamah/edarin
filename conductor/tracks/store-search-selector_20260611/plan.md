@@ -15,7 +15,7 @@
     - [x] Run tests and confirm all pass (Green phase)
 - [x] Task: Conductor - User Manual Verification 'Data Layer' (Protocol in workflow.md)
 
-## Phase 2: Search Input UI Component
+## Phase 2: Search Input UI Component [checkpoint: 6b25d00]
 
 - [x] Task: Write test scenarios for search input component
     - [x] Test: typing in search input shows filtered results
