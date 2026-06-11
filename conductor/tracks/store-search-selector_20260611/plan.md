@@ -17,24 +17,24 @@
 
 ## Phase 2: Search Input UI Component
 
-- [ ] Task: Write test scenarios for search input component
-    - [ ] Test: typing in search input shows filtered results
-    - [ ] Test: clicking a result selects the store
-    - [ ] Test: clear button (×) deselects the store
-    - [ ] Test: clicking outside closes dropdown
-    - [ ] Test: form validation shows error when no store selected
-- [ ] Task: Replace `<select>` dropdown with search input and results dropdown
-    - [ ] Replace `<select>` at `app.html:779-789` with search input + dropdown component
-    - [ ] Add dropdown container with `x-show` for conditional display
-    - [ ] Display search results using `saleFilteredStores` with format `name — owner`
-    - [ ] Add clear button (×) to deselect store
-    - [ ] Implement click-outside directive to close dropdown
-    - [ ] Bind selected store to `saleForm.store_id`
-- [ ] Task: Style the search component to match design system
-    - [ ] Apply Tailwind classes matching existing design (rounded border, primary focus ring, min-h-[44px])
-    - [ ] Add search icon in the input field
-    - [ ] Style dropdown results with hover states
-    - [ ] Style clear button (×)
+- [x] Task: Write test scenarios for search input component
+    - [x] Test: typing in search input shows filtered results
+    - [x] Test: clicking a result selects the store
+    - [x] Test: clear button (×) deselects the store
+    - [x] Test: clicking outside closes dropdown
+    - [x] Test: form validation shows error when no store selected
+- [x] Task: Replace `<select>` dropdown with search input and results dropdown
+    - [x] Replace `<select>` at `app.html:779-789` with search input + dropdown component
+    - [x] Add dropdown container with `x-show` for conditional display
+    - [x] Display search results using `saleFilteredStores` with format `name — owner`
+    - [x] Add clear button (×) to deselect store
+    - [x] Implement click-outside directive to close dropdown
+    - [x] Bind selected store to `saleForm.store_id`
+- [x] Task: Style the search component to match design system
+    - [x] Apply Tailwind classes matching existing design (rounded border, primary focus ring, min-h-[44px])
+    - [x] Add search icon in the input field
+    - [x] Style dropdown results with hover states
+    - [x] Style clear button (×)
 - [ ] Task: Conductor - User Manual Verification 'Search Input UI' (Protocol in workflow.md)
 
 ## Phase 3: Keyboard Navigation & Accessibility
