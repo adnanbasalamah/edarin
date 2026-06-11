@@ -1,8 +1,0 @@
-{
-  "track_id": "store-search-selector_20260611",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-06-11T00:00:00Z",
-  "updated_at": "2026-06-11T00:00:00Z",
-  "description": "Replace dropdown store selector on sales input page with search-based selector (like Store view search)"
-}
