@@ -74,3 +74,7 @@
     - [x] Verify `saleFilteredStores` is fully independent from `storeSearch` (Store view)
     - [x] Verify dropdown is empty/closed when `saleStoreSearch` is empty and no store is selected
 - [x] Task: Conductor - User Manual Verification 'Mobile Optimization & Final Integration' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+
+- [x] Task: Apply review suggestions 8f81554
