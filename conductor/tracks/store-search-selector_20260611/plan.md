@@ -2,17 +2,17 @@
 
 ## Phase 1: Data Layer — Independent Search Logic
 
-- [ ] Task: Write tests for sale store search filtering
-    - [ ] Create test file verifying `saleFilteredStores` computed getter behavior
-    - [ ] Test: returns all stores when search is empty
-    - [ ] Test: filters stores by name (case-insensitive partial match)
-    - [ ] Test: filters stores by owner name (case-insensitive partial match)
-    - [ ] Test: does not filter by phone number
-    - [ ] Test: `saleFilteredStores` is independent from `filteredStores` (Store view)
-- [ ] Task: Implement `saleStoreSearch` data property and `saleFilteredStores` computed getter
-    - [ ] Add `saleStoreSearch: ''` data property in `app.js`
-    - [ ] Add `saleFilteredStores` computed getter filtering by `name` and `owner` only
-    - [ ] Run tests and confirm all pass (Green phase)
+- [x] Task: Write tests for sale store search filtering
+    - [x] Create test file verifying `saleFilteredStores` computed getter behavior
+    - [x] Test: returns all stores when search is empty
+    - [x] Test: filters stores by name (case-insensitive partial match)
+    - [x] Test: filters stores by owner name (case-insensitive partial match)
+    - [x] Test: does not filter by phone number
+    - [x] Test: `saleFilteredStores` is independent from `filteredStores` (Store view)
+- [x] Task: Implement `saleStoreSearch` data property and `saleFilteredStores` computed getter
+    - [x] Add `saleStoreSearch: ''` data property in `app.js`
+    - [x] Add `saleFilteredStores` computed getter filtering by `name` and `owner` only
+    - [x] Run tests and confirm all pass (Green phase)
 - [ ] Task: Conductor - User Manual Verification 'Data Layer' (Protocol in workflow.md)
 
 ## Phase 2: Search Input UI Component
