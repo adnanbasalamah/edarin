@@ -47,6 +47,7 @@ function app() {
         createdPassword: '',
         locationError: '',
         storeSearch: '',
+        saleStoreSearch: '',
         saleForm: { store_id: '', items: {}, sale_date: '' },
         saleFormError: '',
         saleFormSuccess: '',
@@ -109,6 +110,15 @@ function app() {
                 (s.name || '').toLowerCase().includes(q) ||
                 (s.owner || '').toLowerCase().includes(q) ||
                 (s.phone || '').toLowerCase().includes(q)
+            );
+        },
+
+        get saleFilteredStores() {
+            if (!this.saleStoreSearch) return this.stores;
+            const q = this.saleStoreSearch.toLowerCase();
+            return this.stores.filter(s =>
+                (s.name || '').toLowerCase().includes(q) ||
+                (s.owner || '').toLowerCase().includes(q)
             );
         },
 
@@ -890,4 +900,8 @@ function app() {
             await this.loadDistributors();
         },
     };
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { app };
 }

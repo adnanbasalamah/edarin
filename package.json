@@ -1,0 +1,13 @@
+{
+  "name": "edarin",
+  "private": true,
+  "description": "Edarin - Distribution Management System",
+  "scripts": {
+    "test:js": "vitest run",
+    "test:js:watch": "vitest"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "vitest": "^3.2.1"
+  }
+}
