@@ -404,9 +404,11 @@ function app() {
         },
 
         async loadSalesFormData() {
-            this.saleForm = { store_id: '', items: {}, sale_date: new Date().toISOString().slice(0, 10) };
+            const prevStoreId = this.saleForm.store_id;
+            this.saleForm = { store_id: prevStoreId || '', items: {}, sale_date: new Date().toISOString().slice(0, 10) };
             this.saleFormError = '';
             this.saleFormSuccess = '';
+            this.saleStoreSearch = prevStoreId ? '' : this.saleStoreSearch;
             await Promise.all([this.loadProducts(), this.loadStores()]);
             this.offlineSales = await this.getOfflineSales();
         },

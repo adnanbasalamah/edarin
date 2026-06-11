@@ -783,6 +783,8 @@
                                     <div x-show="!saleForm.store_id" class="relative">
                                         <input type="text"
                                                x-model="saleStoreSearch"
+                                               inputmode="text"
+                                               autocomplete="off"
                                                @focus="storeDropdownOpen = true"
                                                @input="storeDropdownOpen = true; highlightedStoreIndex = -1"
                                                @keydown.arrow-down.prevent="navigateStoresDown()"
