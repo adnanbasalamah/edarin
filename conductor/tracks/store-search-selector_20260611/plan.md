@@ -73,4 +73,4 @@
     - [x] Confirm `saleForm` persistence across route navigation in Alpine.js component
     - [x] Verify `saleFilteredStores` is fully independent from `storeSearch` (Store view)
     - [x] Verify dropdown is empty/closed when `saleStoreSearch` is empty and no store is selected
-- [~] Task: Conductor - User Manual Verification 'Mobile Optimization & Final Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Mobile Optimization & Final Integration' (Protocol in workflow.md)
