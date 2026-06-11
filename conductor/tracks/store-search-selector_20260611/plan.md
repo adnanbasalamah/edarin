@@ -57,7 +57,7 @@
     - [x] Add `role="option"` to each result item
 - [x] Task: Conductor - User Manual Verification 'Keyboard Navigation & Accessibility' (Protocol in workflow.md)
 
-## Phase 4: Mobile Optimization & Final Integration
+## Phase 4: Mobile Optimization & Final Integration [checkpoint: 375c947]
 
 - [x] Task: Write test scenarios for mobile and integration
     - [x] Test: touch targets are at least 44×44px
