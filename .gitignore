@@ -106,5 +106,7 @@ vendor/
 # Visual Studio Code
 .vscode/
 
+/node_modules/
+
 /results/
 /phpunit.xml
