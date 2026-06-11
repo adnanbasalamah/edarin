@@ -1,6 +1,6 @@
 # Implementation Plan: Search-Based Store Selector on Sales Input
 
-## Phase 1: Data Layer — Independent Search Logic
+## Phase 1: Data Layer — Independent Search Logic [checkpoint: 58883e1]
 
 - [x] Task: Write tests for sale store search filtering
     - [x] Create test file verifying `saleFilteredStores` computed getter behavior
