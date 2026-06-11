@@ -779,12 +779,39 @@
                         <div class="rounded-lg bg-white border border-[#e2e2e5]">
                             <div class="p-4">
                                 <label class="mb-1 block text-sm font-medium text-[#424751]">Pilih Toko</label>
-                                <select x-model="saleForm.store_id" class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
-                                    <option value="">-- Pilih Toko --</option>
-                                <template x-for="s in filteredStores" :key="s.id">
-                                        <option :value="s.id" x-text="s.name + ' — ' + s.owner"></option>
-                                    </template>
-                                </select>
+                                <div class="relative" x-data="{ storeDropdownOpen: false }" @click.away="storeDropdownOpen = false">
+                                    <div x-show="!saleForm.store_id" class="relative">
+                                        <input type="text"
+                                               x-model="saleStoreSearch"
+                                               @focus="storeDropdownOpen = true"
+                                               @input="storeDropdownOpen = true"
+                                               placeholder="Cari atau pilih toko..."
+                                               class="min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 pr-10 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-lg">search</span>
+                                    </div>
+                                    <div x-show="saleForm.store_id" class="flex items-center min-h-[44px] w-full rounded border border-[#c2c6d2] px-3 text-sm bg-white">
+                                        <span class="flex-1 text-[#1a1c1e] font-medium" x-text="selectedStoreName"></span>
+                                        <button @click="clearStoreSelection()" class="ml-2 flex items-center justify-center w-6 h-6 rounded-full hover:bg-[#e2e2e5] text-[#424751]">
+                                            <span class="material-symbols-outlined text-lg">close</span>
+                                        </button>
+                                    </div>
+                                    <div x-show="storeDropdownOpen && !saleForm.store_id && saleFilteredStores.length > 0"
+                                         x-transition:enter="transition ease-out duration-100"
+                                         x-transition:enter-start="opacity-0 -translate-y-1"
+                                         x-transition:enter-end="opacity-100 translate-y-0"
+                                         x-transition:leave="transition ease-in duration-75"
+                                         x-transition:leave-start="opacity-100 translate-y-0"
+                                         x-transition:leave-end="opacity-0 -translate-y-1"
+                                         class="absolute z-50 mt-1 w-full rounded border border-[#e2e2e5] bg-white shadow-lg max-h-60 overflow-y-auto">
+                                        <template x-for="s in saleFilteredStores" :key="s.id">
+                                            <button @click="selectStore(s)" type="button"
+                                                    class="w-full text-left px-4 py-3 text-sm hover:bg-primary/5 focus:bg-primary/5 focus:outline-none border-b border-[#e2e2e5] last:border-b-0 min-h-[44px]">
+                                                <span class="font-medium text-[#1a1c1e]" x-text="s.name"></span>
+                                                <span class="text-[#424751] ml-1" x-text="'— ' + s.owner"></span>
+                                            </button>
+                                        </template>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
