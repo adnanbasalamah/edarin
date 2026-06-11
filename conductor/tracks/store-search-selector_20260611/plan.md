@@ -13,7 +13,7 @@
     - [x] Add `saleStoreSearch: ''` data property in `app.js`
     - [x] Add `saleFilteredStores` computed getter filtering by `name` and `owner` only
     - [x] Run tests and confirm all pass (Green phase)
-- [ ] Task: Conductor - User Manual Verification 'Data Layer' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Data Layer' (Protocol in workflow.md)
 
 ## Phase 2: Search Input UI Component
 
