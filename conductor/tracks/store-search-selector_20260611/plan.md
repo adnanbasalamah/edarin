@@ -39,22 +39,22 @@
 
 ## Phase 3: Keyboard Navigation & Accessibility
 
-- [ ] Task: Write test scenarios for keyboard navigation
-    - [ ] Test: ArrowDown highlights next result
-    - [ ] Test: ArrowUp highlights previous result
-    - [ ] Test: Enter selects highlighted result
-    - [ ] Test: Escape closes dropdown
-- [ ] Task: Implement keyboard navigation for search dropdown
-    - [ ] Add `highlightedStoreIndex` data property
-    - [ ] Handle ArrowDown/ArrowUp key events to navigate results
-    - [ ] Handle Enter key to select highlighted result
-    - [ ] Handle Escape key to close dropdown
-    - [ ] Add `@keydown` handlers to search input
-- [ ] Task: Add accessibility attributes
-    - [ ] Add `role="combobox"` to search input
-    - [ ] Add `aria-expanded`, `aria-activedescendant`, `aria-autocomplete` attributes
-    - [ ] Add `role="listbox"` to dropdown container
-    - [ ] Add `role="option"` to each result item
+- [x] Task: Write test scenarios for keyboard navigation
+    - [x] Test: ArrowDown highlights next result
+    - [x] Test: ArrowUp highlights previous result
+    - [x] Test: Enter selects highlighted result
+    - [x] Test: Escape closes dropdown
+- [x] Task: Implement keyboard navigation for search dropdown
+    - [x] Add `highlightedStoreIndex` data property
+    - [x] Handle ArrowDown/ArrowUp key events to navigate results
+    - [x] Handle Enter key to select highlighted result
+    - [x] Handle Escape key to close dropdown
+    - [x] Add `@keydown` handlers to search input
+- [x] Task: Add accessibility attributes
+    - [x] Add `role="combobox"` to search input
+    - [x] Add `aria-expanded`, `aria-activedescendant`, `aria-autocomplete` attributes
+    - [x] Add `role="listbox"` to dropdown container
+    - [x] Add `role="option"` to each result item
 - [ ] Task: Conductor - User Manual Verification 'Keyboard Navigation & Accessibility' (Protocol in workflow.md)
 
 ## Phase 4: Mobile Optimization & Final Integration
