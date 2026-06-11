@@ -37,7 +37,7 @@
     - [x] Style clear button (×)
 - [x] Task: Conductor - User Manual Verification 'Search Input UI' (Protocol in workflow.md)
 
-## Phase 3: Keyboard Navigation & Accessibility
+## Phase 3: Keyboard Navigation & Accessibility [checkpoint: 7f4228b]
 
 - [x] Task: Write test scenarios for keyboard navigation
     - [x] Test: ArrowDown highlights next result
