@@ -43,6 +43,12 @@
         }
     </script>
     <link rel="stylesheet" href="css/app.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-180x180.png">
+    <meta name="theme-color" content="#00468c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Edarin">
 </head>
 <body class="h-full font-body text-[#1a1c1e] antialiased" x-data="app()" x-init="init()">
     <div x-show="loading" class="fixed inset-0 z-50 flex items-center justify-center bg-white/80">
@@ -958,5 +964,10 @@
     </div>
 
     <script src="js/app.js?v=2"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+    </script>
 </body>
 </html>
