@@ -48,6 +48,7 @@ function app() {
         locationError: '',
         storeSearch: '',
         saleStoreSearch: '',
+        showStoreDropdown: false,
         saleForm: { store_id: '', items: {}, sale_date: '' },
         saleFormError: '',
         saleFormSuccess: '',
@@ -120,6 +121,12 @@ function app() {
                 (s.name || '').toLowerCase().includes(q) ||
                 (s.owner || '').toLowerCase().includes(q)
             );
+        },
+
+        get selectedStoreName() {
+            if (!this.saleForm.store_id) return '';
+            const store = this.stores.find(s => s.id == this.saleForm.store_id);
+            return store ? store.name : '';
         },
 
         get maxMonthlyTotal() {
@@ -459,6 +466,17 @@ function app() {
             if (params.length) url += '?' + params.join('&');
             const result = await this.api(url);
             if (result) this.recentSales = result.data || [];
+        },
+
+        selectStore(store) {
+            this.saleForm.store_id = store.id;
+            this.saleStoreSearch = '';
+            this.showStoreDropdown = false;
+        },
+
+        clearStoreSelection() {
+            this.saleForm.store_id = '';
+            this.saleStoreSearch = '';
         },
 
         async submitSale() {
