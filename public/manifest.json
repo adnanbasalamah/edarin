@@ -3,7 +3,7 @@
     "short_name": "Edarin",
     "description": "Aplikasi manajemen distribusi dan penjualan Edarin",
     "start_url": "./app.html",
-    "scope": "/public/",
+    "scope": "./",
     "display": "standalone",
     "background_color": "#f9f9fc",
     "theme_color": "#00468c",

@@ -779,7 +779,7 @@
                         <div class="rounded-lg bg-white border border-[#e2e2e5]">
                             <div class="p-4">
                                 <label class="mb-1 block text-sm font-medium text-[#424751]">Pilih Toko</label>
-                                <div class="relative" x-data="{ storeDropdownOpen: false }" @click.away="storeDropdownOpen = false">
+                                <div class="relative" @click.away="storeDropdownOpen = false">
                                     <div x-show="!saleForm.store_id" class="relative">
                                         <input type="text"
                                                x-model="saleStoreSearch"
@@ -1006,7 +1006,7 @@
         </div>
     </div>
 
-    <script src="js/app.js?v=2"></script>
+    <script src="js/app.js?v=4"></script>
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').catch(() => {});

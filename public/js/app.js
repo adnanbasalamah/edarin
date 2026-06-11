@@ -1,7 +1,36 @@
-const API_BASE = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '') + '/api.php';
-
+const APP_DIR = window.location.pathname.replace(/\/[^/]*$/, '');
 const DB_NAME = 'edarin_offline';
 const DB_VERSION = 1;
+
+let _useRewrite = null;
+
+async function resolveApiBase() {
+    if (_useRewrite !== null) return _useRewrite;
+    const rewriteUrl = window.location.origin + APP_DIR + '/api/stores';
+    try {
+        const res = await fetch(rewriteUrl, { headers: { 'Authorization': 'Bearer ping' } });
+        if (res.status === 401 || res.status === 200) {
+            _useRewrite = true;
+            return true;
+        }
+    } catch {}
+    _useRewrite = false;
+    return false;
+}
+
+function apiUrl(path, qs) {
+    const base = _useRewrite
+        ? window.location.origin + APP_DIR + '/api'
+        : window.location.origin + APP_DIR + '/api.php';
+    if (_useRewrite) {
+        let url = base + path;
+        if (qs) url += '?' + qs;
+        return url;
+    }
+    let url = base + '?path=' + path;
+    if (qs) url += '&' + qs;
+    return url;
+}
 
 function openDB() {
     return new Promise((resolve, reject) => {
@@ -48,6 +77,7 @@ function app() {
         locationError: '',
         storeSearch: '',
         saleStoreSearch: '',
+        storeDropdownOpen: false,
         highlightedStoreIndex: -1,
         saleForm: { store_id: '', items: {}, sale_date: '' },
         saleFormError: '',
@@ -135,6 +165,8 @@ function app() {
         },
 
         async init() {
+            await resolveApiBase();
+
             if (this.token) {
                 const payload = this.parseJwt(this.token);
                 if (payload && payload.exp * 1000 > Date.now()) {
@@ -242,14 +274,17 @@ function app() {
         },
 
         async api(path, options = {}) {
-            const headers = { 'Content-Type': 'application/json' };
+            const method = (options.method || 'GET').toUpperCase();
+            const headers = {};
+            if (method !== 'GET' && method !== 'HEAD') {
+                headers['Content-Type'] = 'application/json';
+            }
             if (this.token) headers['Authorization'] = 'Bearer ' + this.token;
 
             const qIndex = path.indexOf('?');
             const route = qIndex >= 0 ? path.substring(0, qIndex) : path;
             const qs = qIndex >= 0 ? path.substring(qIndex + 1) : '';
-            let url = API_BASE + '?path=' + route;
-            if (qs) url += '&' + qs;
+            const url = apiUrl(route, qs || null);
 
             try {
                 const res = await fetch(url, { ...options, headers });
@@ -293,14 +328,17 @@ function app() {
             const remaining = [];
             for (const item of this.syncQueue) {
                 try {
-                    const headers = { 'Content-Type': 'application/json' };
+                    const method = (item.options?.method || 'GET').toUpperCase();
+                    const headers = {};
+                    if (method !== 'GET' && method !== 'HEAD') {
+                        headers['Content-Type'] = 'application/json';
+                    }
                     if (this.token) headers['Authorization'] = 'Bearer ' + this.token;
 
                     const qi = item.path.indexOf('?');
                     const p = qi >= 0 ? item.path.substring(0, qi) : item.path;
                     const q = qi >= 0 ? item.path.substring(qi + 1) : '';
-                    let iurl = API_BASE + '?path=' + p;
-                    if (q) iurl += '&' + q;
+                    const iurl = apiUrl(p, q || null);
                     const res = await fetch(iurl, { ...item.options, headers });
                     if (!res.ok && res.status !== 409) {
                         remaining.push(item);
@@ -372,7 +410,7 @@ function app() {
                     const headers = { 'Content-Type': 'application/json' };
                     if (this.token) headers['Authorization'] = 'Bearer ' + this.token;
 
-                    const res = await fetch(API_BASE + '?path=/sales', {
+                    const res = await fetch(apiUrl('/sales'), {
                         method: 'POST',
                         headers,
                         body: JSON.stringify(sale),
@@ -439,8 +477,7 @@ function app() {
                 const qi = url.indexOf('?');
                 const purl = qi >= 0 ? url.substring(0, qi) : url;
                 const pqs = qi >= 0 ? url.substring(qi + 1) : '';
-                let durl = API_BASE + '?path=' + purl;
-                if (pqs) durl += '&' + pqs;
+                const durl = apiUrl(purl, pqs || null);
                 const res = await fetch(durl, {
                     headers: { 'Authorization': 'Bearer ' + this.token },
                 });
@@ -473,11 +510,13 @@ function app() {
         selectStore(store) {
             this.saleForm.store_id = store.id;
             this.saleStoreSearch = '';
+            this.storeDropdownOpen = false;
         },
 
         clearStoreSelection() {
             this.saleForm.store_id = '';
             this.saleStoreSearch = '';
+            this.storeDropdownOpen = false;
         },
 
         navigateStoresDown() {
@@ -503,6 +542,7 @@ function app() {
 
         closeStoreDropdown() {
             this.highlightedStoreIndex = -1;
+            this.storeDropdownOpen = false;
         },
 
         async submitSale() {
@@ -716,7 +756,13 @@ function app() {
 
         async loadProducts() {
             const result = await this.api('/products');
-            if (result) this.products = result.data || [];
+            if (result && Array.isArray(result.data)) {
+                this.products = result.data;
+            } else {
+                this.products = [];
+                if (result) console.warn('loadProducts: unexpected data format', result);
+                else console.error('loadProducts: API call failed');
+            }
         },
 
         editProduct(product) {
@@ -757,7 +803,15 @@ function app() {
 
         async loadStores() {
             const result = await this.api('/stores');
-            if (result) this.stores = result.data || [];
+            if (result && Array.isArray(result.data)) {
+                this.stores = result.data;
+            } else if (result) {
+                this.stores = [];
+                console.warn('loadStores: unexpected data format', result);
+            } else {
+                this.stores = [];
+                console.error('loadStores: API call failed');
+            }
         },
 
         editStore(store) {
@@ -770,7 +824,7 @@ function app() {
                 const store = result.data;
                 this.storeForm = { ...store };
                 this.storeImageFile = null;
-                this.storeImagePreview = store.image ? (API_BASE + '?path=/stores/image/' + store.image.split('/').pop()) : null;
+                this.storeImagePreview = store.image ? apiUrl('/stores/image/' + store.image.split('/').pop()) : null;
                 this.locationError = '';
             }
         },
@@ -808,7 +862,7 @@ function app() {
             }
 
             const headers = { 'Authorization': 'Bearer ' + this.token };
-            let url = API_BASE + '?path=/stores';
+            const url = apiUrl('/stores', null);
 
             try {
                 const res = await fetch(url, { method: 'POST', headers, body: data });
@@ -840,7 +894,7 @@ function app() {
             }
 
             const headers = { 'Authorization': 'Bearer ' + this.token };
-            let url = API_BASE + '?path=/stores/' + id;
+            const url = apiUrl('/stores/' + id, null);
 
             try {
                 const res = await fetch(url, { method: 'POST', headers, body: data });
@@ -899,7 +953,13 @@ function app() {
 
         async loadDistributors() {
             const result = await this.api('/distributors');
-            if (result) this.distributors = result.data || [];
+            if (result && Array.isArray(result.data)) {
+                this.distributors = result.data;
+            } else {
+                this.distributors = [];
+                if (result) console.warn('loadDistributors: unexpected data format', result);
+                else console.error('loadDistributors: API call failed');
+            }
         },
 
         editDistributor(distributor) {
