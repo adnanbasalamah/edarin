@@ -9,15 +9,15 @@ class Reports extends BaseController
     public function dashboard()
     {
         $db = db_connect();
+        $userId = $this->request->user->sub ?? null;
+        $role = $this->request->user->role ?? '';
 
         $topProducts = $db->table('sales s')
             ->select('p.name, p.unit, SUM(s.quantity) as total_qty, SUM(s.quantity * p.price) as total_revenue')
             ->join('products p', 'p.id = s.product_id', 'left')
             ->groupBy('s.product_id')
             ->orderBy('total_qty', 'DESC')
-            ->limit(5)
-            ->get()
-            ->getResultArray();
+            ->limit(5);
 
         $topStores = $db->table('sales s')
             ->select('st.name, SUM(s.quantity * p.price) as total_sales')
@@ -25,9 +25,7 @@ class Reports extends BaseController
             ->join('products p', 'p.id = s.product_id', 'left')
             ->groupBy('s.store_id')
             ->orderBy('total_sales', 'DESC')
-            ->limit(5)
-            ->get()
-            ->getResultArray();
+            ->limit(5);
 
         $returnStores = $db->table('sales s')
             ->select('st.name, SUM(s.return_qty * p.price) as total_return, SUM(s.quantity * p.price) as total_sales')
@@ -36,24 +34,27 @@ class Reports extends BaseController
             ->groupBy('s.store_id')
             ->having('total_return >', 0)
             ->orderBy('total_return', 'DESC')
-            ->limit(3)
-            ->get()
-            ->getResultArray();
+            ->limit(3);
 
         $monthlyTrend = $db->table('sales s')
             ->select("DATE_FORMAT(s.sale_date, '%Y-%m') as month, SUM(s.quantity * p.price) as total")
             ->join('products p', 'p.id = s.product_id', 'left')
             ->groupBy('month')
             ->orderBy('month', 'ASC')
-            ->limit(12)
-            ->get()
-            ->getResultArray();
+            ->limit(12);
+
+        if ($role !== 'admin') {
+            $topProducts->where('s.distributor_id', $userId);
+            $topStores->where('s.distributor_id', $userId);
+            $returnStores->where('s.distributor_id', $userId);
+            $monthlyTrend->where('s.distributor_id', $userId);
+        }
 
         return $this->response->setJSON([
-            'top_products' => $topProducts,
-            'top_stores'   => $topStores,
-            'return_stores' => $returnStores,
-            'monthly_trend' => $monthlyTrend,
+            'top_products' => $topProducts->get()->getResultArray(),
+            'top_stores'   => $topStores->get()->getResultArray(),
+            'return_stores' => $returnStores->get()->getResultArray(),
+            'monthly_trend' => $monthlyTrend->get()->getResultArray(),
         ]);
     }
 

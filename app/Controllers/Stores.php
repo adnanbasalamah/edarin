@@ -10,7 +10,16 @@ class Stores extends BaseController
     public function index()
     {
         $storeModel = new StoreModel();
-        $stores = $storeModel->findAll();
+        $userId = $this->request->user->sub ?? null;
+        $role = $this->request->user->role ?? '';
+
+        $builder = $storeModel->builder();
+
+        if ($role !== 'admin') {
+            $builder->where('distributor_id', $userId);
+        }
+
+        $stores = $builder->get()->getResultArray();
 
         return $this->response->setJSON($stores);
     }
@@ -24,6 +33,15 @@ class Stores extends BaseController
             return $this->response
                 ->setStatusCode(404)
                 ->setJSON(['error' => 'Store not found']);
+        }
+
+        $role = $this->request->user->role ?? '';
+        $userId = $this->request->user->sub ?? null;
+
+        if ($role !== 'admin' && (int) $store['distributor_id'] !== (int) $userId) {
+            return $this->response
+                ->setStatusCode(403)
+                ->setJSON(['error' => 'Forbidden: you do not own this store']);
         }
 
         return $this->response->setJSON($store);
@@ -47,8 +65,18 @@ class Stores extends BaseController
                     ->setJSON(['error' => 'Validation failed', 'messages' => $this->validator->getErrors()]);
             }
 
+            $userId = $this->request->user->sub ?? null;
+            $role = $this->request->user->role ?? '';
+
+            $distributorId = $userId;
+            if ($role === 'admin') {
+                $inputDistId = $this->getInput('distributor_id');
+                $distributorId = $inputDistId !== null && $inputDistId !== '' ? $inputDistId : null;
+            }
+
             $storeModel = new StoreModel();
             $storeModel->insert([
+                'distributor_id' => $distributorId,
                 'name'    => $this->getInput('name'),
                 'owner'   => $this->getInput('owner'),
                 'address' => $this->getInput('address'),
@@ -88,6 +116,15 @@ class Stores extends BaseController
                 return $this->response
                     ->setStatusCode(404)
                     ->setJSON(['error' => 'Store not found']);
+            }
+
+            $role = $this->request->user->role ?? '';
+            $userId = $this->request->user->sub ?? null;
+
+            if ($role !== 'admin' && (int) $store['distributor_id'] !== (int) $userId) {
+                return $this->response
+                    ->setStatusCode(403)
+                    ->setJSON(['error' => 'Forbidden: you do not own this store']);
             }
 
             $rules = [
@@ -152,6 +189,15 @@ class Stores extends BaseController
             return $this->response
                 ->setStatusCode(404)
                 ->setJSON(['error' => 'Store not found']);
+        }
+
+        $role = $this->request->user->role ?? '';
+        $userId = $this->request->user->sub ?? null;
+
+        if ($role !== 'admin' && (int) $store['distributor_id'] !== (int) $userId) {
+            return $this->response
+                ->setStatusCode(403)
+                ->setJSON(['error' => 'Forbidden: you do not own this store']);
         }
 
         if ($store['image'] && file_exists(WRITEPATH . $store['image'])) {

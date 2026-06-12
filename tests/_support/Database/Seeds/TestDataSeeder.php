@@ -17,5 +17,25 @@ class TestDataSeeder extends Seeder
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
+
+        $this->db->table('users')->insert([
+            'username' => 'distributor',
+            'email' => 'dist@edarin.com',
+            'password_hash' => password_hash('dist123', PASSWORD_DEFAULT),
+            'role' => 'distributor',
+            'status' => 'active',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $this->db->table('users')->insert([
+            'username' => 'distributor2',
+            'email' => 'dist2@edarin.com',
+            'password_hash' => password_hash('dist2123', PASSWORD_DEFAULT),
+            'role' => 'distributor',
+            'status' => 'active',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
     }
 }

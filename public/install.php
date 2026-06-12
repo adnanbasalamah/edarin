@@ -181,6 +181,7 @@ function getTableSchemas(): array {
         // Stores
         "CREATE TABLE IF NOT EXISTS `stores` (
             `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            `distributor_id` INT UNSIGNED NULL,
             `name` VARCHAR(255) NOT NULL,
             `owner` VARCHAR(255) NOT NULL,
             `address` TEXT NOT NULL,
@@ -189,7 +190,8 @@ function getTableSchemas(): array {
             `latitude` DECIMAL(10,7) NULL,
             `longitude` DECIMAL(10,7) NULL,
             `created_at` DATETIME NULL,
-            `updated_at` DATETIME NULL
+            `updated_at` DATETIME NULL,
+            FOREIGN KEY (`distributor_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
         // Sales
